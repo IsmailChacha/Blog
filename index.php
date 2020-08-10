@@ -27,7 +27,10 @@
 				{
 					$pos = stripos($indexes, '/');
 					$newPos = $pos;
-					$key = '/'. substr($indexes, 0, $pos);
+					if($key === 'index.php' || '/index.php')
+					{
+						$key = '/'. substr($indexes, 0, $pos);
+					}
 					$value = 'Home';
 					$_GET['navigationLink'][$key] = ucfirst($value);
 				}else 
@@ -39,8 +42,17 @@
 						break;
 					} else 
 					{
-						$key = '/'. substr($indexes, 0, stripos($indexes, '/', $newPos));
-						$_GET['navigationLink'][$key] = ucfirst($value);
+						$key = substr($indexes, 0, stripos($indexes, '/', $newPos));
+						if(strstr($key, 'index.php/search?searchterm='))
+						{
+							$key = '/';
+							$value = 'Search';
+							$_GET['navigationLink'][$key] = ucfirst($value);
+						} else
+						{
+							$key = '/' . $key;
+							$_GET['navigationLink'][$key] = ucfirst($value);
+						}
 					}
 				}
 				$i++;

@@ -19,9 +19,9 @@ namespace Specific\Controllers
 			$this->postsTable = $postsTable;
 			$this->usersTable = $usersTable;
 			$this->topicsTable = $topicsTable;
-			$this->topics = $this->topicsTable->findAll();
+			$this->topics = $this->topicsTable->findAll([], 'Name DESC');
 			//RETURNS AN ARRAY OF \SPECIFC\ENTITY\JOKE OBJECTS 
-			$this->posts = $this->postsTable->findAll();
+			$this->posts = $this->postsTable->findAll(['Published' => 1], 'Date ASC');
 			$this->authentication = $authentication;
 
 			$this->ROOT_PATH = ROOT_PATH;
@@ -52,7 +52,7 @@ namespace Specific\Controllers
 
 			$title = self::TITLE;
 			$output = '';
-			$post2 = $this->postsTable->findAFew();
+			$post2 = $this->postsTable->findAll(['Published' => 1], 'Date DESC');
 			shuffle($post2);
 			
 			$recentPosts = ['posts' => $posts, 'heading' => 'Recent Articles'];
@@ -94,7 +94,7 @@ namespace Specific\Controllers
 	
 			} else
 			{
-				$posts = $this->postsTable->findAll();
+				$posts = $this->postsTable->findAll(['Published' => 1, 'Date DESC']);
 				$variables = ['title' => self::TITLE,
 											'secondHeading' => 'Articles',
 											'template' => 'articles.html.php',
@@ -272,7 +272,7 @@ namespace Specific\Controllers
 						'title' => $title,
 						'template' => 'manageposts.html.php',
 						'variables' => [
-										'posts' => $this->postsTable->findAll(),
+										'posts' => $this->postsTable->findAll([], 'Date DESC'),
 										'heading' => 'Manage Posts',
 						]
 					];
@@ -332,7 +332,7 @@ namespace Specific\Controllers
 						'title' => $title,
 						'template' => 'manageposts.html.php',
 						'variables' => [
-							'posts' => $this->postsTable->findAll(),
+							'posts' => $this->postsTable->findAll([], 'Date DESC'),
 							'heading' => 'Manage Posts',
 						]
 					];
@@ -367,7 +367,7 @@ namespace Specific\Controllers
 						'title' => $title,
 						'template' => 'manageposts.html.php',
 						'variables' => [
-							'posts' => $this->postsTable->findAll(),
+							'posts' => $this->postsTable->findAll([], 'Date DESC'),
 							'heading' => 'Manage Posts',
 						]
 					];
@@ -417,6 +417,19 @@ namespace Specific\Controllers
 				{
 					$valid = false;
 					array_push($errors, "Post image required!");
+				}				
+			} else 
+			{
+				$image_name = time() .'_'. $files['image_name']['name'];
+				$destination = ROOT_PATH.'/assets/images/' . $image_name;
+
+				$result = move_uploaded_file($files['image_name']['tmp_name'], $destination);
+
+				if ($result) {
+					$post['Image'] = $image_name;
+				} else {
+					$valid = false;
+					array_push($errors, "An error occurred uploading image");
 				}				
 			}
 
@@ -503,17 +516,22 @@ namespace Specific\Controllers
 				// Generate string identifier
 				if(isset($_POST['add']) || isset($_POST['edit']))
 				{
+					if(isset($_POST['add']))
+					{
+						$post['Date'] = $this->generateDate();
+					}
+
 					$string = trim(str_replace(' ', '-', strtolower($post['Title'])));
 					$post['String'] = $string;
 					$post['Published'] = 1;
 					$post['Draft'] = 0;
+
 				} elseif(isset($_POST['draft']))
 				{
 					$post['Published'] = 0;
 					$post['Draft'] = 1;
 				}
 
-				$post['Date'] = $this->generateDate();
 				$post['Body'] = htmlentities($post['Body']);
 
 				//SAVE POST
@@ -579,7 +597,7 @@ namespace Specific\Controllers
 										'template' => 'manageposts.html.php',
 										'variables' => [
 											'heading' => 'Manage Posts',
-											'posts' => $this->postsTable->findAll(),
+											'posts' => $this->postsTable->findAll(['Published' => 1], 'Date DESC'),
 										]
 									];
 								} else 
@@ -661,7 +679,7 @@ namespace Specific\Controllers
 				if($_SESSION['Superuser'])
 				{
 					$conditions = ['Draft' => 0];
-					$all = $this->postsTable->findAll($conditions);
+					$all = $this->postsTable->findAll($conditions, 'Date DESC');
 
 					$title = 'SuperUser Panel | Manage Posts';
 		
@@ -762,8 +780,8 @@ namespace Specific\Controllers
 
 		public function drafts()
 		{
-			$conditions = ['Published' => 0, 'Draft' => 1];
-			$drafts = $this->postsTable->findAll($conditions);
+			$conditions = ['Draft' => 1];
+			$drafts = $this->postsTable->findAll($conditions, 'Date DESC');
 
 			return [
 				'title' => $_SESSION['Superuser'] ? 'SuperUser panel | Add post' : 'Admin panel | Add post',

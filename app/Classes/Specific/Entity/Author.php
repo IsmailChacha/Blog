@@ -23,7 +23,12 @@ namespace Specific\Entity
 
 		public function getPosts()
 		{
-			return $this->postsTable->findAll(['AuthorId' => $this->Id]);
+			return $this->postsTable->findAll(['Published' => 1, 'AuthorId' => $this->Id]);
+		}
+
+		public function getDafts()
+		{
+			return $this->postsTable->findAll(['Draft' => 0, 'AuthorId' => $this->Id]);
 		}
 
 		public function addPost($post)

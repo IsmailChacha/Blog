@@ -40,7 +40,7 @@ namespace Specific\Controllers
 					'title' => $title,
 					'template' => 'managetopics.html.php',
 					'variables' => [
-						'topics' => $this->topicsTable->findAll(),
+						'topics' => $this->topicsTable->findAll([], 'Name ASC'),
 						'heading' => 'Manage Topics']
 				];
 			}
@@ -83,7 +83,7 @@ namespace Specific\Controllers
 						'template' => 'managetopics.html.php',
 						'variables' => [
 							'heading' => 'Manage Topics',
-							'topics' => $this->topicsTable->findAll(),
+							'topics' => $this->topicsTable->findAll([], 'Name ASC'),
 						]
 					];				
 				} else 
@@ -102,7 +102,7 @@ namespace Specific\Controllers
 							'template' => 'managetopics.html.php',
 							'variables' => [
 								'heading' => 'Manage Topics',
-								'topics' => $this->topicsTable->findAll(),
+								'topics' => $this->topicsTable->findAll([], 'Name ASC'),
 							]
 						];
 					} else 
@@ -138,7 +138,7 @@ namespace Specific\Controllers
 					'title' => $title,
 					'template' => 'edittopic.html.php',
 					'variables' => [
-						'topics' => $this->topicsTable->findAll(),
+						'topics' => $this->topicsTable->findAll([], 'Name ASC'),
 						'name' => $topic->Name,
 						'description' => $topic->Description,
 						'id' => $topic->Id,
@@ -168,7 +168,7 @@ namespace Specific\Controllers
 					'template' => 'managetopics.html.php',
 					'variables' => [
 						'heading' => 'Manage topics',
-						'topics' => $this->topicsTable->findAll(),
+						'topics' => $this->topicsTable->findAll([], 'Name ASC'),
 					]
 				];
 			}
@@ -192,7 +192,7 @@ namespace Specific\Controllers
 					'title' => $title,
 					'template' => 'managetopics.html.php',
 					'variables' => [
-						'topics' => $this->topicsTable->findAll(),
+						'topics' => $this->topicsTable->findAll([], 'Name ASC'),
 						'heading' => 'Manage Topics'],
 				];
 			}

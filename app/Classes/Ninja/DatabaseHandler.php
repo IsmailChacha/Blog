@@ -22,6 +22,13 @@ namespace Ninja
 			$this->constructorArgs = $constructorArgs;
 		}
 		
+		// ORDER
+	private function orderBy($sql, $orderBy)
+		{
+			$sql .= ' ORDER BY ' . $orderBy;
+			return $sql;
+		}
+
 		//EXECUTE QUERY
 		private function executeQuery($sql, $data = [])
 		{
@@ -116,9 +123,8 @@ namespace Ninja
 			return $affected_rows;
 		}
 
-
 		// FETCH ALL FROM TABLE WITH/OUT CONDITIONS
-		public function findAll (array $conditions = []):array
+		public function findAll (array $conditions = [], $orderBy = null, $limit = null):array
 		{
 			if(empty($conditions))
 			{
@@ -141,6 +147,18 @@ namespace Ninja
 					$i++;
 				}
 			}
+
+			// DEFINE THE ORDER
+			if($orderBy != null)
+			{
+				$sql = $this->orderBy($sql, $orderBy);
+			}
+
+			if($limit != null)
+			{
+				$sql .= ' LIMIT ' . $limit;
+			}
+
 			$results = $this->executeQuery($sql, $conditions);
 			return $results->fetchAll(\PDO::FETCH_CLASS, $this->className, $this->constructorArgs);
 		}
@@ -230,34 +248,6 @@ namespace Ninja
       return $row[0];
 		}
 		
-		// SELECT ONLY A FEW //POPULAR POSTS
-		public function findAFew(array $conditions = []):array 
-		{
-			if(empty($conditions))
-			{
-				$sql = "SELECT * FROM $this->table LIMIT 5";
-			} else 
-			{
-				$sql = "SELECT * FROM $this->table";
-				$i = 0;
-				foreach($conditions as $key => $value)
-				{
-					if($i === 0)
-					{
-						$sql .= " WHERE $key = ?";
-					} else 
-					{
-						$sql .= " AND $key = ? LIMIT 5";
-					}
-					$i++;
-				}
-			}
-
-			$stmt = $this->executeQuery($sql, $conditions);
-			$results = $stmt->fetchAll(\PDO::FETCH_CLASS, $this->className, $this->constructorArgs);
-			return $results;
-		}
-
 		// SELECT ONE FUNCTION
 		public function findOne (array $conditions = [])
 		{

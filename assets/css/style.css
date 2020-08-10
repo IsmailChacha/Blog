@@ -39,10 +39,14 @@ h1.post-title{
   font-weight: bold;
   font-size: 30px;
   padding: 10px;
-  text-align: left;
+  text-align: center;
   margin-bottom: 10px; 
   font-family: 'Roboto', sans-serif;
   /*text-transform: lowercase;*/
+}
+
+.main-content.single h1.post-title{
+  text-align: left;
 }
 
 h2.topics {
@@ -156,8 +160,9 @@ div.navigation {
   outline: none; /* Remove outline */
   background-color: #555; /* Set a background color */
   cursor: pointer; /* Add a mouse pointer on hover */
-  padding: 15px; /* Some padding */
-  border-radius: 10px; /* Rounded corners */
+  padding: 10px; /* Some padding */
+  border-radius: 50%; /* Rounded corners */
+  opacity: .75;
   font-size: 18px; /* Increase font size */
   transition: all .5s;
   }
@@ -471,7 +476,6 @@ a:hover {
   cursor: pointer;
   /* box-shadow: 1rem 1rem 1rem -.5rem #a0a0a0; */
   /* box-shadow: -1rem .5rem .5rem -.5rem #a0a0a0; */
-
 }
 
 .content .main-content .post .recent-post-image {
@@ -484,8 +488,8 @@ a:hover {
 }
 
 .content .main-content .post .post-image:hover {
-  transform:scale(1.05);
-  transition: all .4s;
+  /* transform:scale(1.05);
+  transition: all .4s; */
 }
 
 .content .main-content .post-preview {
@@ -623,6 +627,7 @@ a:hover {
   min-height: 100%;
   margin: 20px auto 250px;
   background: ghostwhite;
+  border: 1px solid #ccc;
   border-radius: 5px;
 }
 
@@ -884,7 +889,7 @@ header ul li ul li a{
 .auth-content {
   margin: 30px auto 290px;
   width: 100%;
-  background-color: white;
+  background: ghostwhite;
   padding: 2px 16px;
 } 
 

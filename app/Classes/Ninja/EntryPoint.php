@@ -57,7 +57,7 @@ namespace Ninja
 			$routes = $this->routes->getRoutes();
 			$authentication = $this->routes->getAuthentication();
 			$topicsTable = $this->routes->getTopicsTable();
-			$topics = $topicsTable->findAll();
+			$topics = $topicsTable->findAll([], 'Name ASC');
 
 			// CHECK WHETHER REQUESTED PAGE EXISTS IN ROUTES DATA STRUCTURE
 			if(array_key_exists($this->route, $routes))

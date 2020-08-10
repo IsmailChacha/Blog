@@ -35,15 +35,6 @@
 			</form>
 		</div>
 	<!-- Search section -->        
-		
-	<!-- Facebook page embed -->
-		<div class="section fb-page" data-href="https://www.facebook.com/Tech-Genie-101835751592250" data-tabs="" data-width=""
-			data-height="" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false"
-			data-show-facepile="true">
-			<blockquote cite="https://www.facebook.com/Tech-Genie-101835751592250" class="fb-xfbml-parse-ignore"><a
-					href="https://www.facebook.com/Tech-Genie-101835751592250">Tech Genie</a></blockquote>
-		</div>
-	<!-- Facebook page embed -->
 
 	<!-- Popular posts -->
 		<div class="section popular">
