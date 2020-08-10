@@ -1,0 +1,92 @@
+/* NAVBAR */
+header {
+  background:ghostwhite;
+}
+
+.admin-wrapper {
+  display: flex;
+  height: calc(100% - 66px);
+  width: 100%;
+  position: absolute;
+  top: 66px;
+}
+
+/* LEFT SIDEBAR */
+.admin-wrapper .left-sidebar {
+  flex: 2;
+  height: 100%;
+  border-right: 1px solid silver;
+  background-color: ghostwhite;
+  font-size: 1.15em;
+}
+
+.admin-wrapper .left-sidebar ul {
+  list-style-type: none;
+  margin: 0px;
+  padding: 0px;
+}
+
+.admin-wrapper .left-sidebar ul li a {
+  padding: 18px;
+  display: block;
+  color:#555;
+  border-bottom: 1px solid silver;
+}
+
+.admin-wrapper .left-sidebar ul li a:hover {
+  background-color: gainsboro;
+}
+
+/* ADMIN CONTENT */
+
+.admin-wrapper .admin-content {
+  flex: 10;
+  height: 100%;
+  padding: 40px 20px 40px;;
+  font-size: 1.15em;
+  overflow-y: scroll;
+}
+
+.admin-wrapper .admin-content .content .dashboard-content h4 {
+  margin: auto !important;
+  text-align: center;
+}
+
+.admin-content .page-title {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 1.1rem;
+}
+
+th, td {
+  padding: 15px;
+  text-align: left;
+  border-bottom: 1px solid #d3d3d3;
+}
+
+.edit {
+  color: green;
+}
+
+.delete {
+  color: red;
+}
+
+.publish {
+  color: blue;
+}
+
+.edit:hover, 
+.delete:hover, 
+.publish:hover {
+  text-decoration: underline;
+}
+
+form div {
+  margin-bottom: 15px;
+}
