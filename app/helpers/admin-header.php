@@ -4,7 +4,7 @@
       <h1 class="logo-text"><span class="logo-color">TECH</span>GENIE</h1>
     </a>
 
-    <i class="fas fa-bars menu-toggle" onclick="openSideNav()"></i>
+    <i class="fas fa-bars menu-toggle" id="menu-toggle"></i>
 
     <ul class="nav">
       <?php if(isset($_SESSION['username'])): ?>
@@ -23,7 +23,7 @@
     <!-- Side Nav -->
     <div class="sidenav" id="sidenav">
       <div class="sidenav2">
-      <button type="button" name="closebtn" class="closebtn btn" onclick="closeSideNav()">&times;
+      <button type="button" name="closebtn" class="closebtn btn" id="closeSideNav">&times;
         </button>
       <?php if(isset($_SESSION['username'])): ?>
        <a href="#" class="user-menu"><i class="fa fa-user"></i><?php echo $_SESSION['Name'];?><i class="fa fa-chevron-down chevron-down"></i></a>

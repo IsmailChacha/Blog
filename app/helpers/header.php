@@ -4,7 +4,7 @@
       <h1 class="logo-text"><span class="logo-color">TECH</span>GENIE</h1>
     </a>
     
-    <i class="fas fa-bars menu-toggle" onclick="openSideNav()"></i>
+    <i class="fas fa-bars menu-toggle" id="menu-toggle"></i>
 
     <ul class="nav">
       <li><a href="/index.php/aboutus">About Us</a></li>
@@ -41,7 +41,7 @@
         </form>
         <h2><?php echo "Topics"; ?></h2>
 
-        <button type="button" name="closebtn" class="closebtn btn" onclick="closeSideNav()">&times;
+        <button type="button" name="closebtn" class="closebtn btn" id="closeSideNav">&times;
         </button>
     
         <?php foreach($topics as $topic): ?>

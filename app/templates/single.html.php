@@ -10,30 +10,28 @@
       <!-- Main content wrapper -->
       <div class="main-content-wrapper">
         <!-- Main content -->
-        <section class="main-content single">
-          <article class="postinfo">
+        <section class="main-content single clearfix">
+          <article class="">
+
             <div class="image-and-moreinfo clearfix">
-              <div class="image-div">
-                <img src="<?php echo BASE_URL . '/assets/images/' . $post->Image;?>" alt="" class="post-image">             
-              </div>
+              <img src="<?php echo BASE_URL . '/assets/images/' . $post->Image;?>" alt="" class="post-image" >             
               <div class="more-info">
                 <h1 class="post-title"><?php echo $post->Title;?></h1>
                 <!-- far fa-user -->
                 <!-- far fa-calendar  -->
                 <span class="post-info"> &nbsp;<?php echo 'Written by ' . $post->getAuthor()->FirstName . ' ' . $post->getAuthor()->LastName; ?></span>
                 <span class="published"> &nbsp; <?php echo 'On ' . date('F j, Y', strtotime($post->Date));?></span>
-                <div class="socialmedia">
-                  <!-- Twitter share button -->
+                 <!-- <div class="socialmedia">
                     <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-show-count="false">Tweet</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-                  <!--// Twitter share button -->
-                </div>              
-              </div>              
-            </div>
+                </div>  -->
+              </div>     
+                       
+            </div> 
+            
             <div class="post-content clearfix">
               <?php echo html_entity_decode($post->Body); ?>
-          </div>            
+            </div>            
           </article>
-
         </section>
         <!-- Main content -->
       </div>
@@ -51,9 +49,7 @@
       <!-- Search section -->        
         
       <!-- Facebook page embed -->
-        <div class="section fb-page" data-href="https://www.facebook.com/Tech-Genie-101835751592250" data-tabs="" data-width=""
-          data-height="" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false"
-          data-show-facepile="true">
+        <div class="section fb-page" data-href="https://www.facebook.com/Tech-Genie-101835751592250" data-tabs="" data-width="" data-height="" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true">
           <blockquote cite="https://www.facebook.com/Tech-Genie-101835751592250" class="fb-xfbml-parse-ignore"><a
               href="https://www.facebook.com/Tech-Genie-101835751592250">Tech Genie</a></blockquote>
         </div>
