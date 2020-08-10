@@ -30,7 +30,6 @@
 </head>
 
 <body>
-
 <?php
 //HEADER FILE
 include ROOT_PATH . '/app/helpers/header.php';
@@ -42,7 +41,9 @@ include ROOT_PATH . '/app/helpers/header.php';
       <a href="<?php echo $key?>"><?php echo $value . '&raquo;'; ?></a>
     <?php endforeach;?>
   </div>
+  <i class="fas fa-arrow-up" id="scroll-arrow"></i>
   <?php echo $output; ?>
+
 </main>
 
 <?php
