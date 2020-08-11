@@ -20,43 +20,56 @@
 			$newPos = 0;
 			$length = strlen($indexes);
 			$i = 0;
-			
-			foreach($navigationLink as $key => $value)
+
 			{
-				if($i == 0)
+				foreach($navigationLink as $key => $value)
 				{
-					$pos = stripos($indexes, '/');
-					$newPos = $pos;
-					if($key === 'index.php' || '/index.php')
+					if($i == 0)
 					{
-						$key = '/'. substr($indexes, 0, $pos);
-					}
-					$value = 'Home';
-					$_GET['navigationLink'][$key] = ucfirst($value);
-				}else 
-				{
-					$length = $pos - strlen($indexes);
-					$newPos = stripos($indexes, '/', $pos + 1);
-					if($newPos === false)
-					{
-						break;
-					} else 
-					{
-						$key = substr($indexes, 0, stripos($indexes, '/', $newPos));
-						if(strstr($key, 'index.php/search?searchterm='))
+						$pos = stripos($indexes, '/');
+						$newPos = $pos;
+						if($key === 'index.php' || '/index.php')
 						{
-							$key = '/';
-							$value = 'Search';
-							$_GET['navigationLink'][$key] = ucfirst($value);
-						} else
+							$key = '/'. substr($indexes, 0, $pos);
+						}
+						$value = 'Home';
+						$_GET['navigationLink'][$key] = ucfirst($value);
+						$currentPage = $key;
+					}else 
+					{
+						$length = $pos - strlen($indexes);
+						$newPos = stripos($indexes, '/', $pos + 1);
+						if($newPos === false)
 						{
-							$key = '/' . $key;
-							$_GET['navigationLink'][$key] = ucfirst($value);
+							break;
+						} else 
+						{
+							$key = substr($indexes, 0, stripos($indexes, '/', $newPos));
+							if(strstr($key, 'index.php/search?searchterm='))
+							{
+								$key = '/';
+								$value = 'Search';
+								$_GET['navigationLink'][$key] = ucfirst($value);
+							} else
+							{
+								$key = '/' . $key;
+								if(stristr($value, 'Page=')) //REMOVE PAGINATION FROM NAVIGATION MENU
+								{
+									unset($key);
+									unset($value);
+								} else
+								{
+									$_GET['navigationLink'][$key] = ucfirst($value);
+									$currentPage = $key;
+								}
+							}
 						}
 					}
+					$i++;
+					$pos = $newPos;
 				}
-				$i++;
-				$pos = $newPos;
+				// display2($_GET['navigationLink']);
+				$_GET['currentPage'] = $currentPage;
 			}
 
 			// START THE CAR
@@ -72,6 +85,7 @@
 					$route = 'home';
 				}else 
 				{
+					// display2($routes);
 					if(count($routes) > 2)
 					{
 						$route = $routes[2];
@@ -84,6 +98,11 @@
 						if(isset($routes[4]))
 						{
 						 $_GET['specific'] = $routes[4]; 
+						}
+
+						if(isset($routes[5]))
+						{
+						 $_GET['page'] = $routes[5]; 
 						}
  
 					} else 

@@ -1,7 +1,7 @@
 <?php
 namespace Specific\Controllers
 {
-	//ARTICLES CONTROLLERS
+	//ARTICLES CONTROLLER
 	class Post
 	{
 		private $postsTable; // ARTICLES TABLE INSTANCE OF DATABASEHANDLER CLASS
@@ -19,7 +19,7 @@ namespace Specific\Controllers
 			$this->postsTable = $postsTable;
 			$this->usersTable = $usersTable;
 			$this->topicsTable = $topicsTable;
-			$this->topics = $this->topicsTable->findAll([], 'Name DESC');
+			$this->topics = $this->topicsTable->findAll([], 'Name ASC');
 			//RETURNS AN ARRAY OF \SPECIFC\ENTITY\JOKE OBJECTS 
 			$this->posts = $this->postsTable->findAll(['Published' => 1], 'Date ASC');
 			$this->authentication = $authentication;
@@ -27,7 +27,7 @@ namespace Specific\Controllers
 			$this->ROOT_PATH = ROOT_PATH;
 		}
 
-		// SELECT POPULAR POSTS => NOT IN USE THOUGH
+		// SELECT POPULAR POSTS
 		private function popularPosts(string $conditions = '')
 		{
 			$seealso = $this->postsTable->searchPosts($conditions);
@@ -37,76 +37,267 @@ namespace Specific\Controllers
 			return $popularPosts;
 		}
 
-		//SELECT ALL POSTS WITH ASSOC AUTHORS
+		//LISTS ARTICLES PER TOPIC
 		public function list():array
 		{
-			//display($this->posts);
-			$posts = [];
-
-			//SELECT POSTS BY TOPIC
-			foreach($this->topics as $topic)
-			{
-				$topicPosts = $topic->getPosts();
-				$posts[$topic->Name] = $topicPosts;
-			}
-
-			$title = self::TITLE;
-			$output = '';
-			$post2 = $this->postsTable->findAll(['Published' => 1], 'Date DESC');
-			shuffle($post2);
-			
-			$recentPosts = ['posts' => $posts, 'heading' => 'Recent Articles'];
-
-			$variables = ['title' => self::TITLE, 
-										'template' => 'home.html.php',
-										'variables' => [
-												'recentPosts' => $recentPosts,
-												'topics' => $this->topics,
-										]
-									];
-
-			return $variables;
-		}
-
-		//READING &times; An article
-		public function read()
-		{
+			// HANDLE ARTICLES AND PAGINATION IN TOPICS AND INDIVIDUAL TOPICS
 			if(isset($_GET['subfolder']))
 			{
-				$string = $_GET['subfolder'];
-				$post = $this->postsTable->findOne(['String' => strtolower($string)]);
-				$author = $post->getAuthor();
-				$authorName = $author->FirstName . ' ' . $author->LastName;
-				$description = $post->Description ?? 'A simple post';
-				$keywords = $post->Keywords ?? 'Keywords';
-				// display($authorName);
-				$variables = ['title' => $post->Title,
-											'authorName' => $authorName,
-											'description' => $description,
-											'keywords' => $keywords,
-											'template' => 'single.html.php',
-											'variables' => [ 
-													'post' => $post,
-													'popularPosts' => $this->popularPosts($post->Keywords),
-													'topics' => $this->topics,
-											]
-										];
-	
-			} else
+				return $this->postsPerTopic();
+			} else  // HANDLE THE PAGE 1 OF ARTICLES PER TOPIC PAGE {TOPICS.HTML.PHP}
 			{
-				$posts = $this->postsTable->findAll(['Published' => 1, 'Date DESC']);
+				$page = 1; // PAGE 1
+				$limit = '4'; // NUMBER TO SELECT
+				$offset = $page * 0; // OFFSET
+				$posts = []; //INITIALIZE EMPTY POSTS ARRAY
+
+				//SELECT POSTS BY TOPIC
+				foreach($this->topics as $topic)
+				{
+					$topicPosts = $topic->getPosts(); // GET ARTICLES ENCAPSULATED IN EACH TOPIC
+					$posts[$topic->Name] = $topicPosts; // CREATE AN ENTRY IN POSTS ARRAY WITH KEY BEING TOPIC NAME AND VALUE BEING THE TOPIC ARTICLES
+				}
+
+				$title = self::TITLE;
+				$output = '';
+
+				$recentPosts = ['posts' => $posts, 'heading' => 'Articles By Topic'];
+
+				if(empty($posts)) // CHECK IF THE POSTS ARRAY IS EMPTY
+				{
+					$variables = ['title' => self::TITLE,
+					'template' => 'home.html.php',
+					'variables' => [ 
+						'heading' => 'We are working to add posts to this topic. Check back soon.',
+						'popularPosts' =>$this->popularPosts(),
+						]
+					];
+				} else //NOT EMPTY
+				{
+					$variables = ['title' => self::TITLE, 
+					'template' => 'home.html.php',
+					'variables' => [
+							'recentPosts' => $recentPosts,
+							'topics' => $this->topics,
+						]
+					];
+				}
+					return $variables;
+			}
+		}
+
+		//DISPLAYING ARTICLES INSIDE TOPICS, ALSO ARTICLES INSIDE INDIVIDUAL TOPICS. HANDLES PAGINATION ALSO
+		private function postsPerTopic()
+		{
+			$string = $_GET['subfolder'];
+
+			if($present = (strstr($string, 'page='))) //CHECK IF A PAGE VARIABLE IS SET IN URL
+			{
+				// PAGINATION INSIDE /TOPICS/
+				$position = stripos($present, '=');
+				// PICK PAGE NUMBE FROM URL VARIABLE
+				$page = substr($present, ($position +1));
+				// TURN PAGE NUMBERS INTO OFFSETS
+				$limit = '4'; //NUMBER TO SELECT FROM DB
+				$offset = ($page-1) * 4;//OFFSET
+				$posts = $this->postsTable->findAll([], 'Date DESC', $limit, $offset); //SELECT THE POSTS
+
 				$variables = ['title' => self::TITLE,
-											'secondHeading' => 'Articles',
+				'template' => 'topicposts.html.php',
+				'variables' => [ 
+					'heading' => 'Articles Per Topic',
+					'popularPosts' =>$this->popularPosts(),
+					'topicPosts' => $posts,
+					'totalTopicPosts' => $this->postsTable->total(['Published' => 1]),
+					'currentPage' => $page,
+					]
+				];
+
+				return $variables; // RETURN FOR OB INTO TEMPLATE
+
+			} else //IF NO PAGE VARIABLE IS PRESENT IN URI, THEN THEY DEFINITELY WANT TO DO SMTH IN THE TOPICS FOLDER
+			{ 
+				$topic = $this->topicsTable->findOne(['Name' => str_replace('-', ' ', strtoupper($string))]);
+
+				if(is_object($topic))
+				{
+					$topicname = $topic->Name;
+
+					//THEY WANT TO VIEW ARTICLES INSIDE THAT PARTICULAR TOPIC
+					//WE NEED TO FIGURE OUT WHETHER THEY ARE VISITING THE FIRST PAGE OR THEY ARE MOVING PAGES - PAGINATION
+					if(isset($_GET['specific']) && ($_GET['specific'] !== '' || empty($_GET['specific'])))
+					{
+						//THEY ARE NAVIGATING INSIDE TOPICS FOLDE, PAGINATION
+						// PAGINATION INSIDE OF A TOPIC E.G TOPICS/CLOUD
+						if($present = (strstr($_GET['specific'], 'page=')))
+						{
+							$position = stripos($present, '=');
+							// FORM THE PAGE FROM THE URI VARIABLE
+							$page = substr($present, ($position +1));
+							// TURN PAGE NUMBERS INTO OFFSETS
+							$limit = '4';
+							$offset = ($page-1) * 4;
+							$topicPosts = $topic->getPosts([], null, $limit, $offset);
+	
+							$variables = ['title' => $topicname,
+							'template' => 'topicposts.html.php',
+							'variables' => [ 
+								'popularPosts' =>$this->popularPosts($topic->Name),
+								'heading' => $topicname,
+								'topicPosts' => $topicPosts,
+								'totalTopicPosts' => $topic->totalPosts(),
+								'currentPage' => $page,
+								]
+							];
+	
+							return $variables;
+							
+							// IF NOT VIEWING ARTICLES INSIDE  TOPICS FOLDER, THEY WANT TO VIEW A SPECIFIC ARTICLE THAT LIVES IN A PARTICULAR TOPIC
+						} else //FETCH A SINGLE POST INSIDE OF THE TOPIC E.G TOPICS/CLOUD/HOW-THE-CLOUD-WORKS
+						{
+							$post = $this->postsTable->findOne(['String' => $_GET['specific']]);
+							$author = $post->getAuthor();
+							$authorName = $author->FirstName . ' ' . $author->LastName;
+							$description = $post->Description ?? 'A simple post';
+							$keywords = $post->Keywords ?? 'Keywords';
+		
+							$variables = ['title' => $post->Title,
+														'authorName' => $authorName,
+														'description' => $description,
+														'keywords' => $keywords,					
+														'template' => 'single.html.php',
+														'variables' => [ 
+																'post' => $post,
+																'popularPosts' => $this->popularPosts($post->Keywords),
+																'topics' => $this->topics,
+														]
+													];
+							unset($_GET['specific']);
+			
+							return $variables;
+						}
+					} else // ARTICLES IN A PARTICULAR TOPIC
+					{
+						$page = 1;
+						$topicname = $topic->Name;
+						$limit = '4';
+						$offset = $page * 0;
+						$topicPosts = $topic->getPosts([], null, $limit, $offset);
+						// display($_GET['page']);
+	
+						if(empty($topicPosts))
+						{
+							$variables = ['title' => $topicname,
+							'template' => 'topicposts.html.php',
+							'variables' => [ 
+								'heading' => 'We are working to add posts to this topic. Check back soon.',
+								'popularPosts' =>$this->popularPosts(),
+							]
+						];
+						} else 
+						{
+							$variables = ['title' => $topicname,
+							'template' => 'topicposts.html.php',
+							'variables' => [ 
+								'popularPosts' =>$this->popularPosts($topic->Name),
+								'heading' => $topicname,
+								'topicPosts' => $topicPosts,
+								'totalTopicPosts' => $topic->totalPosts(),
+								'currentPage' => $page,
+								]
+							];
+						}
+							return $variables;
+					}					
+				} else //THEY WANTED TO SO SMTH IN TOPICS FOLDER BUT SMTH WENT WRONG FROM THEIR ENT, EITHER MANUAL TYPING INTO ADDRESS BAR
+					{
+						$_SESSION['message'] = 'An error occurred';
+						$_SESSION['type'] = 'error';
+						header('location:/');					
+					}
+				} 
+
+				unset($_GET['specific']); //REMOVE VARIABLE FORM MEMORY
+
+				return $variables;
+		}
+
+		//DISPLAY A SINGLE ARTICLE FOR READING OR HANDLE DISPLAYING ARTICLES IN ARTICLES FOLDER. ALSO DOES PAGINATION INSIDE OF ARTICLES FOLDER
+		public function read()
+		{
+			// IF A SUBFOLDER PARAMETER EXISTS IN THE URL
+			if(isset($_GET['subfolder']))
+			{
+				// CHECK IF PAGE VARIABLE IS SET IN THE URL => PAGINATION INSIDE ARTICLES FOLDER
+				if($present = (strstr($_GET['subfolder'], 'page=')))
+				{
+					$position = stripos($present, '=');
+					// FORM A PAGE NUMBER FROM IT
+					$page = substr($present, ($position +1));
+					$offset = ($page-1) * 4; // TURN PAGE NUMBER INTO AN OFFSET
+					$order = 'Date DESC'; //ORDER
+					$limit = '4'; //LIMIT
+
+					$posts = $this->postsTable->findAll(['Published' => 1], $order, $limit, $offset); //SELECT
+
+					$variables = ['title' => self::TITLE,
+												'template' => 'articles.html.php',
+												'variables' => [ 
+														'heading' => 'Recent Articles',
+														'posts' => $posts,
+														'totalArticles' => $this->postsTable->total(['Published' => 1]),
+														'popularPosts' => $this->popularPosts(),
+														'topics' => $this->topics,
+														'currentPage' => $page,
+												]
+											];		
+
+					return $variables;
+
+				} else // DISPLAY A SINGLE ARTICLE FOR READING
+				{
+					$string = $_GET['subfolder'];
+					$post = $this->postsTable->findOne(['String' => strtolower($string)]);
+					$author = $post->getAuthor();
+					$authorName = $author->FirstName . ' ' . $author->LastName;
+					$description = $post->Description ?? 'A simple post';
+					$keywords = $post->Keywords ?? 'Keywords';
+
+					$variables = ['title' => $post->Title,
+												'authorName' => $authorName,
+												'description' => $description,
+												'keywords' => $keywords,
+												'template' => 'single.html.php',
+												'variables' => [ 
+														'post' => $post,
+														'popularPosts' => $this->popularPosts($post->Keywords),
+														'topics' => $this->topics,
+												]
+											];
+						return $variables;
+				}
+			} else // IF NOT, DISPLAY PAGE  OF ARTICLES PAGE
+			{
+				$page = 1;
+				$order = 'Date DESC';
+				$limit = '4';
+				$offset = ($page-1) * 4;
+
+				$posts = $this->postsTable->findAll(['Published' => 1], $order, $limit, $offset);
+				$variables = ['title' => self::TITLE,
 											'template' => 'articles.html.php',
 											'variables' => [ 
+													'heading' => 'Recent Articles',
 													'posts' => $posts,
+													'totalArticles' => $this->postsTable->total(['Published' => 1]),
 													'popularPosts' => $this->popularPosts(),
 													'topics' => $this->topics,
+													'currentPage' => $page,
 											]
-										];				
-			}
+										];		
 
-			return $variables;
+				return $variables;				
+			}
 		}
 
 		//SEARCH FUNCTIONALITY
@@ -144,84 +335,6 @@ namespace Specific\Controllers
 
 			return $variables;	
 		}
-
-		//ON VISITING A TOPIC LINK
-		public function postsPerTopic()
-		{
-			if(isset($_GET['subfolder']))
-			{
-				$string = $_GET['subfolder'];
-				$topic = $this->topicsTable->findOne(['Name' => str_replace('-', ' ', strtoupper($string))]);
-				// display(str_replace('-', ' ', strtoupper($string)));
-				if(is_object($topic))
-				{
-					if(isset($_GET['specific']) && $_GET['specific'] !== '')
-					{
-						$post = $this->postsTable->findOne(['String' => $_GET['specific']]);
-	
-						$author = $post->getAuthor();
-						$authorName = $author->FirstName . ' ' . $author->LastName;
-						$description = $post->Description ?? 'A simple post';
-						$keywords = $post->Keywords ?? 'Keywords';
-	
-						$variables = ['title' => $post->Title,
-													'authorName' => $authorName,
-													'description' => $description,
-													'keywords' => $keywords,					
-													'template' => 'single.html.php',
-													'variables' => [ 
-															'post' => $post,
-															'popularPosts' => $this->popularPosts($post->Keywords),
-															'topics' => $this->topics,
-													]
-												];
-						unset($_GET['specific']);
-		
-						return $variables;
-		
-					} else 
-					{
-						$topicname = $topic->Name;
-						$topicPosts = $topic->getPosts();
-	
-						if(empty($topicPosts))
-						{
-							$variables = ['title' => $topicname,
-							'template' => 'topicposts.html.php',
-							'variables' => [ 
-								'heading' => 'We are working to add posts to this topic. Check back soon.',
-								'popularPosts' =>$this->popularPosts(),
-							]
-						];
-						} else 
-						{
-							$variables = ['title' => $topicname,
-							'template' => 'topicposts.html.php',
-							'variables' => [ 
-								'popularPosts' =>$this->popularPosts($topic->Name),
-								'heading' => $topicname,
-								'topicPosts' => $topicPosts,
-								]
-							];
-						}
-		
-						return $variables;
-					}
-				} else 
-				{
-					$_SESSION['message'] = 'An error occurred';
-					$_SESSION['type'] = 'error';
-					header('location:/');
-				}
-			} else 
-			{
-				// display('Not set');
-				header('location:/');
-				exit();
-			}
-
-		}
-
 
 		//CHECK WHETHER LOGGED IN USER IS ADMIN/SUPER => WORKS PERFECTLY
 		private function checkWhetherAdminOrSuperUser():bool //WORKS PERFECTLY
@@ -349,7 +462,7 @@ namespace Specific\Controllers
 						'title' => $title,
 						'template' => 'manageposts.html.php',
 						'variables' => [
-							'posts' => $author->getPosts(),
+							'posts' => $author->getPosts([], null, '4'),
 							'heading' => 'Manage Posts',
 						]
 					];
@@ -384,7 +497,7 @@ namespace Specific\Controllers
 						'title' => $title,
 						'template' => 'manageposts.html.php',
 						'variables' => [
-							'posts' => $author->getPosts(),
+							'posts' => $author->getPosts([], null, '4'),
 							'heading' => 'Manage Posts',
 						]
 					];
@@ -545,10 +658,13 @@ namespace Specific\Controllers
 					
 					if($postEntity)
 					{
-						//INSERT CATEGORY RECORD FOR POST
-						foreach($_POST['category'] as $categoryId)
+						//INSERT CATEGORY RECORD FOR POST IF NOT DRAFT => SAVES ME ALOT OF TROUBLE SOMEWHERE
+						if(!isset($_POST['draft']))
 						{
-							$postEntity->addCategory($categoryId);
+							foreach($_POST['category'] as $categoryId)
+							{
+								$postEntity->addCategory($categoryId);
+							}
 						}
 
 						if($postEntity)
@@ -610,7 +726,7 @@ namespace Specific\Controllers
 										'title' =>'Admin panel | Manage Posts',
 										'template' => 'manageposts.html.php',
 										'variables' => [
-											'posts' => $author->getPosts(),
+											'posts' => $author->getPosts([], null, '4'),
 											'heading' => 'Manage Posts',
 										]
 									];
@@ -694,7 +810,7 @@ namespace Specific\Controllers
 				} else
 				{
 					$author = $this->authentication->getUser();
-					$posts = $author->getPosts();
+					$posts = $author->getPosts([], null, '4');
 					$title = 'Author panel | Manage Posts';
 		
 					return [

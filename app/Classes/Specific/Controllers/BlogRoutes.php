@@ -41,14 +41,14 @@ namespace Specific\Controllers
 				'home' => [
 					'GET' => [
 						'controller' => $postController,
-						'action' => 'list'
+						'action' => 'read'
 					]
 				],
 
 				'post/list' => [
 					'GET' => [
 						'controller' => $postController,
-						'action' => 'list'
+						'action' => 'read'
 					]
 				],
 
@@ -62,7 +62,7 @@ namespace Specific\Controllers
 				'topics' => [
 					'GET' => [
 						'controller' => $postController,
-						'action' => 'postsPerTopic'
+						'action' => 'list'
 					]
 				],
 

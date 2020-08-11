@@ -23,7 +23,6 @@ h2{
   -webkit-text-fill-color: transparent; */
   color: #555;
   font-weight: bold;
-  padding: 10px;
   font-family: 'Roboto', sans-serif;
   /*text-transform: lowercase;*/
 }
@@ -170,6 +169,33 @@ div.navigation {
   #scroll-arrow:hover {
     background-color: #006669; /* Add a dark-grey background on hover */
   }
+
+  .pagination {
+    display: block;
+    background: white;
+    margin: 2px auto;
+    width: 100%;
+  }
+
+  .pagination a{
+    display: inline-block;
+    text-align: center;
+    padding: 8px 4px;
+    background: white;
+    color: black;
+    font-size: 1.15em;
+  }
+
+  a.active {
+    background-color: gray;
+    border-radius: 5px;
+    opacity: .75;
+  }
+
+  a.activeLink{
+    color: green;
+  }
+
 /* NAVBAR */
 header {
   position:fixed;
@@ -459,7 +485,7 @@ a:hover {
   display: block;
   text-align: left;
   font-size: 1.15em;
-  padding: 4px 8px;  
+  padding: 8px 10px;  
   color:#555;
 } 
 

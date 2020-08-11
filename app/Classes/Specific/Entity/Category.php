@@ -15,9 +15,11 @@ namespace Specific\Entity
 			$this->postCategoriesTable = $postCategoriesTable;
 		}
 
-		public function getPosts()
+		public function getPosts(array $conditions = [], $orderBy = null, $limit = null, $offset = null)
 		{
-			$postCategories = $this->postCategoriesTable->findAll(['TopicId' => $this->Id]);
+			$conditions = ['TopicId' => $this->Id];
+			// display($offset);
+			$postCategories = $this->postCategoriesTable->findAll($conditions, $orderBy, $limit, $offset);
 			// display($postCategories);
 			$posts = [];
 			foreach($postCategories as $postCategory)
@@ -29,9 +31,7 @@ namespace Specific\Entity
 				}
 			}
 
-			// usort($posts, [$this, 'sortPosts']);
-			return array_reverse($posts);
-			// display($posts);
+			usort($posts, [$this, 'sortPosts']);
 			return $posts;
 		}
 

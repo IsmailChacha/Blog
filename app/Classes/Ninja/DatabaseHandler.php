@@ -21,13 +21,6 @@ namespace Ninja
 			$this->className = $className;
 			$this->constructorArgs = $constructorArgs;
 		}
-		
-		// ORDER
-	private function orderBy($sql, $orderBy)
-		{
-			$sql .= ' ORDER BY ' . $orderBy;
-			return $sql;
-		}
 
 		//EXECUTE QUERY
 		private function executeQuery($sql, $data = [])
@@ -124,7 +117,7 @@ namespace Ninja
 		}
 
 		// FETCH ALL FROM TABLE WITH/OUT CONDITIONS
-		public function findAll (array $conditions = [], $orderBy = null, $limit = null):array
+		public function findAll (array $conditions = [], $orderBy = null, $limit = null, $offset = null):array
 		{
 			if(empty($conditions))
 			{
@@ -149,14 +142,19 @@ namespace Ninja
 			}
 
 			// DEFINE THE ORDER
-			if($orderBy != null)
+			if($orderBy !== null)
 			{
-				$sql = $this->orderBy($sql, $orderBy);
+				$sql .= ' ORDER BY ' . $orderBy;
 			}
 
-			if($limit != null)
+			if($limit !== null)
 			{
 				$sql .= ' LIMIT ' . $limit;
+			}
+
+			if($offset !== null)
+			{
+				$sql .= ' OFFSET ' .$offset;
 			}
 
 			$results = $this->executeQuery($sql, $conditions);
@@ -243,6 +241,7 @@ namespace Ninja
 					$i++;
 				}
 			}
+			
 			$results = $this->executeQuery($sql, $conditions);
 			$row = $results->fetch();
       return $row[0];

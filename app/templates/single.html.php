@@ -19,8 +19,8 @@
                 <h1 class="post-title"><?php echo $post->Title;?></h1>
                 <!-- far fa-user -->
                 <!-- far fa-calendar  -->
-                <span class="post-info"> &nbsp;<?php echo 'Written by ' . $post->getAuthor()->FirstName . ' ' . $post->getAuthor()->LastName; ?></span>
-                <span class="published"> &nbsp; <?php echo 'On ' . date('F j, Y', strtotime($post->Date));?></span>
+                <span class="post-info"><?php echo 'By ' . $post->getAuthor()->FirstName . ' ' . $post->getAuthor()->LastName; ?></span>
+                <span class="published"><?php echo 'Published on ' . date('F j, Y', strtotime($post->Date));?></span>
                  <!-- <div class="socialmedia">
                     <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-show-count="false">Tweet</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
                 </div>  -->
@@ -74,7 +74,7 @@
           <h3 class="section-title">Topics</h3>
           <ul>
             <?php foreach($topics as $topic): ?>
-              <li><a href="<?php echo '/index.php/topics/'.strtolower($topic->Name) . '/';?>"><?php echo $topic->Name; ?></a></li>
+              <li><a href="<?php echo '/index.php/topics/'.strtolower($topic->Name);?>"><?php echo $topic->Name; ?></a></li>
             <?php endforeach; ?>            
           </ul>
         </div>

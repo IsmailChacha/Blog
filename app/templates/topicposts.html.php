@@ -4,24 +4,42 @@
 		<?php include ROOT_PATH. "/app/helpers/formerrors.php"; ?>
 		<?php include ROOT_PATH. "/app/helpers/messages.php"; ?>
 			<?php if(isset($topicPosts)):?>
-			<h2 class="topics"><?php echo $heading ?? ''; ?></h2>
-				<?php foreach($topicPosts as $post):?>
-					<div class="post clearfix">
-						<div class="recent-post-image">
-							<a href="/index.php/topics/<?php echo str_replace(' ', '-', trim(strtolower($heading))) . '/' .  $post->String;?>" alt=""><img src="<?php echo BASE_URL . '/assets/images/' . $post->Image;?>" alt="" class="post-image"></a>
-						</div>
-							
-						<div class="post-preview">
-							<h3><a href="/index.php/topics/<?php echo str_replace(' ', '-', trim(strtolower($heading))) . '/' . $post->String;?>"><?php echo $post->Title;?></a></h3>
-							<a href="/index.php/topics/<?php echo str_replace(' ', '-', trim(strtolower($heading))) . '/' . $post->String;?>"><p class="preview-text"><?php //echo html_entity_decode(substr($post->body, 0, 160)) . '...';?></p></a>
-							<!--<i class="far fa-calendar"> &nbsp;<?php //echo 'Published: ' . date('F j, Y', strtotime($post->date));?></i>    -->
-							<!--<a href="index.php?route=read&id=<?php //echo $post->id;?>" class="btn read-more">Read more</a>-->
-						</div>
-					</div>  
-				<?php endforeach;?>
-			<?php else: ?>
-				<h2 class="recent-post-title"><?php echo $heading ?? ''; ?></h2>
+				<div class="topicPosts clearfix">
+					<h1 class="post-title"><?php echo $heading ?? ''; ?></h1>
+					<?php foreach($topicPosts as $post):?>
+						<div class="post clearfix">
+							<div class="recent-post-image">
+								<a href="/index.php/topics/<?php echo str_replace(' ', '-', trim(strtolower($heading))) . '/' .  $post->String;?>" alt=""><img src="<?php echo BASE_URL . '/assets/images/' . $post->Image;?>" alt="" class="post-image"></a>
+							</div>
+								
+							<div class="post-preview">
+								<h3><a href="/index.php/topics/<?php echo str_replace(' ', '-', trim(strtolower($heading))) . '/' . $post->String;?>"><?php echo $post->Title;?></a></h3>
+								<a href="/index.php/topics/<?php echo str_replace(' ', '-', trim(strtolower($heading))) . '/' . $post->String;?>"><p class="preview-text"><?php //echo html_entity_decode(substr($post->body, 0, 160)) . '...';?></p></a>
+								<!--<i class="far fa-calendar"> &nbsp;<?php //echo 'Published: ' . date('F j, Y', strtotime($post->date));?></i>    -->
+								<!--<a href="index.php?route=read&id=<?php //echo $post->id;?>" class="btn read-more">Read more</a>-->
+							</div>
+						</div>  
+					<?php endforeach;?>
+				</div>
+				<!-- Generate Pagination -->
+				<div class="pagination clearfix">
+					<?php 
+						// Calculate number of pages
+						$numPages = ceil($totalTopicPosts/3);
+						// Display a link for each page
+						for($i=1; $i<=$numPages;$i++):
+						if($i == $currentPage):
+							?>
+									<a href="<?php echo '/index.php/topics/'. str_replace(' ', '-', trim(strtolower($heading))) . '/page='. $i;?>" class="active"><?='Page ' .$i?></a>
+								<?php else:?>
+									<a href="<?php echo '/index.php/topics/'. str_replace(' ', '-', trim(strtolower($heading))) . '/page='. $i;?>"><?='Page ' .$i?></a>
+								<?php endif;?>
+							<?php endfor;?>
+					</div>						
+					<?php else: ?>
+						<h3 class="recent-post-title"><?php echo $heading ?? ''; ?></h3>
 			<?php endif ;?>
+
 	</div>
 	<!-- //Main Content -->
 		

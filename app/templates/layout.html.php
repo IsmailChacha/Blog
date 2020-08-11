@@ -37,11 +37,15 @@
 
   <div class="navigation">
     <?php foreach($_GET['navigationLink'] as $key => $value):?>
-      <a href="<?php echo $key?>"><?php echo $value . '&raquo;'; ?></a>
+      <?php if($key == $_GET['currentPage']):?>
+        <a class="activeLink" href="<?php echo $key?>"><?php echo $value . '&raquo;'; ?></a>
+      <?php else:?>
+        <a href="<?php echo $key?>"><?php echo $value . '&raquo;'; ?></a>
+      <?php endif;?>
     <?php endforeach;?>
   </div>
 
-  <i class="fas fa-arrow-up" id="scroll-arrow"></i>
+  <i class="fas fa-arrow-up" id="scroll-arrow" title="Go to the top"></i>
 
   <!-- GENERATED CONTENT -->
     <?php echo $output; ?>
