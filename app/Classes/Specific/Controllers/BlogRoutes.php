@@ -45,13 +45,6 @@ namespace Specific\Controllers
 					]
 				],
 
-				'post/list' => [
-					'GET' => [
-						'controller' => $postController,
-						'action' => 'read'
-					]
-				],
-
 				'search' => [
 					'GET' => [
 						'controller' => $postController,
@@ -298,7 +291,14 @@ namespace Specific\Controllers
 						'controller' => $userController,
 						'action' => 'newsLetter',
 					]
-				]
+				],
+
+				'loadmore' => [
+					'GET' => [
+						'controller' => $postController,
+						'action' => 'loadmore'
+					]
+				],
 			];
 
 			return $routes;

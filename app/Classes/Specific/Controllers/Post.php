@@ -28,9 +28,9 @@ namespace Specific\Controllers
 		}
 
 		// SELECT POPULAR POSTS
-		private function popularPosts(string $conditions = '')
+		private function popularPosts()
 		{
-			$seealso = $this->postsTable->searchPosts($conditions);
+			$seealso = $this->postsTable->findAll(['Published' => 1], 'Date DESC', 4, null);
 			// display($seealso);
 			shuffle($seealso);
 			$popularPosts = ['posts' => $seealso, 'heading' => 'Popular Articles'];
@@ -47,17 +47,21 @@ namespace Specific\Controllers
 			} else  // HANDLE THE PAGE 1 OF ARTICLES PER TOPIC PAGE {TOPICS.HTML.PHP}
 			{
 				$page = 1; // PAGE 1
-				$limit = '4'; // NUMBER TO SELECT
-				$offset = $page * 0; // OFFSET
+				$limit = 4; // NUMBER TO SELECT
+				$offset = ($page-1) * 4; // OFFSET
 				$posts = []; //INITIALIZE EMPTY POSTS ARRAY
 
 				//SELECT POSTS BY TOPIC
+				// CRITERIA FOR SELECTION
+				// INITIALIZIE CURENT PAGE TRACKER
+				$currentPage = [];
 				foreach($this->topics as $topic)
 				{
-					$topicPosts = $topic->getPosts(); // GET ARTICLES ENCAPSULATED IN EACH TOPIC
+					$currentPage[$topic->Name] = 1;
+					$topicPosts = $topic->getPosts($limit, $offset); // GET ARTICLES ENCAPSULATED IN EACH TOPIC
 					$posts[$topic->Name] = $topicPosts; // CREATE AN ENTRY IN POSTS ARRAY WITH KEY BEING TOPIC NAME AND VALUE BEING THE TOPIC ARTICLES
 				}
-
+				// display($currentPage);
 				$title = self::TITLE;
 				$output = '';
 
@@ -79,6 +83,8 @@ namespace Specific\Controllers
 					'variables' => [
 							'recentPosts' => $recentPosts,
 							'topics' => $this->topics,
+							'totalArticles' => $topic->totalPosts(),
+							'currentPage' => $currentPage,
 						]
 					];
 				}
@@ -98,8 +104,8 @@ namespace Specific\Controllers
 				// PICK PAGE NUMBE FROM URL VARIABLE
 				$page = substr($present, ($position +1));
 				// TURN PAGE NUMBERS INTO OFFSETS
-				$limit = '4'; //NUMBER TO SELECT FROM DB
-				$offset = ($page-1) * 4;//OFFSET
+				$limit = 15; //NUMBER TO SELECT FROM DB
+				$offset = ($page-1) * 15;//OFFSET
 				$posts = $this->postsTable->findAll([], 'Date DESC', $limit, $offset); //SELECT THE POSTS
 
 				$variables = ['title' => self::TITLE,
@@ -135,9 +141,9 @@ namespace Specific\Controllers
 							// FORM THE PAGE FROM THE URI VARIABLE
 							$page = substr($present, ($position +1));
 							// TURN PAGE NUMBERS INTO OFFSETS
-							$limit = '4';
-							$offset = ($page-1) * 4;
-							$topicPosts = $topic->getPosts([], null, $limit, $offset);
+							$limit = 15;
+							$offset = ($page-1) * 15;
+							$topicPosts = $topic->getPosts($limit, $offset);
 	
 							$variables = ['title' => $topicname,
 							'template' => 'topicposts.html.php',
@@ -152,6 +158,46 @@ namespace Specific\Controllers
 	
 							return $variables;
 							
+						// LOAD MORE
+						} elseif($present = (strstr($_GET['specific'], 'more=')))
+						{
+							// display($topic->Name);
+							$position = stripos($present, '=');
+							// FORM THE PAGE FROM THE URI VARIABLE
+							$page = substr($present, ($position +1));
+							// TURN PAGE NUMBERS INTO OFFSETS
+							$limit = ($page + 1) * 4;
+							$topicPosts = $topic->getPosts($limit);
+							// GENERATE CURRENT PAGES TRACKERS
+							$currentPage = [];
+							// OTHER TOPICS' ARTICLES
+							foreach($this->topics as $topic2)
+							{
+								$currentPage [$topic2->Name]  = 1;
+								$otherTopicsPosts[$topic2->Name] = $topic2->getPosts(4, 0); // GET ARTICLES ENCAPSULATED IN EACH TOPIC
+							}			
+
+							$otherTopicsPosts[$topic->Name] = $topicPosts; // CREATE AN ENTRY IN POSTS ARRAY WITH KEY BEING TOPIC NAME AND VALUE BEING THE TOPIC ARTICLES
+
+							$currentPage [$topic->Name]  = $page + 1;
+
+							// display($currentPage);
+							// display($otherTopicsPosts);
+							// UPDATE $otherTopicsPosts WITH UPDATED ARTICLES FOR LOADED BY LOAD MORE
+							$otherTopicsPosts[$topic->Name] = $topicPosts;
+							$topicPosts = $otherTopicsPosts;
+							$recentPosts = ['posts' => $topicPosts, 'heading' => 'Articles By Topic'];
+							// display($recentPosts);
+							$variables = ['title' => self::TITLE,
+							'template' => 'home.html.php',
+							'variables' => [ 
+								'popularPosts' =>$this->popularPosts($topic->Name),
+								'recentPosts' => $recentPosts,
+								'totalArticles' => $topic->totalPosts(),
+								'currentPage' => $currentPage,
+								]
+							];
+
 							// IF NOT VIEWING ARTICLES INSIDE  TOPICS FOLDER, THEY WANT TO VIEW A SPECIFIC ARTICLE THAT LIVES IN A PARTICULAR TOPIC
 						} else //FETCH A SINGLE POST INSIDE OF THE TOPIC E.G TOPICS/CLOUD/HOW-THE-CLOUD-WORKS
 						{
@@ -180,9 +226,9 @@ namespace Specific\Controllers
 					{
 						$page = 1;
 						$topicname = $topic->Name;
-						$limit = '4';
-						$offset = $page * 0;
-						$topicPosts = $topic->getPosts([], null, $limit, $offset);
+						$limit = 15;
+						$offset = ($page-1) * 15;
+						$topicPosts = $topic->getPosts($limit, $offset);
 						// display($_GET['page']);
 	
 						if(empty($topicPosts))
@@ -234,9 +280,9 @@ namespace Specific\Controllers
 					$position = stripos($present, '=');
 					// FORM A PAGE NUMBER FROM IT
 					$page = substr($present, ($position +1));
-					$offset = ($page-1) * 4; // TURN PAGE NUMBER INTO AN OFFSET
+					$offset = ($page-1) * 15; // TURN PAGE NUMBER INTO AN OFFSET
 					$order = 'Date DESC'; //ORDER
-					$limit = '4'; //LIMIT
+					$limit = 15; //LIMIT
 
 					$posts = $this->postsTable->findAll(['Published' => 1], $order, $limit, $offset); //SELECT
 
@@ -276,12 +322,12 @@ namespace Specific\Controllers
 											];
 						return $variables;
 				}
-			} else // IF NOT, DISPLAY PAGE  OF ARTICLES PAGE
+			} else // IF NOT, DISPLAY PAGE OF ARTICLES PAGE
 			{
 				$page = 1;
 				$order = 'Date DESC';
-				$limit = '4';
-				$offset = ($page-1) * 4;
+				$limit = 15;
+				$offset = ($page-1) * 15;
 
 				$posts = $this->postsTable->findAll(['Published' => 1], $order, $limit, $offset);
 				$variables = ['title' => self::TITLE,
@@ -462,7 +508,7 @@ namespace Specific\Controllers
 						'title' => $title,
 						'template' => 'manageposts.html.php',
 						'variables' => [
-							'posts' => $author->getPosts([], null, '4'),
+							'posts' => $author->getPosts(15),
 							'heading' => 'Manage Posts',
 						]
 					];
@@ -497,7 +543,7 @@ namespace Specific\Controllers
 						'title' => $title,
 						'template' => 'manageposts.html.php',
 						'variables' => [
-							'posts' => $author->getPosts([], null, '4'),
+							'posts' => $author->getPosts(15),
 							'heading' => 'Manage Posts',
 						]
 					];
@@ -726,7 +772,7 @@ namespace Specific\Controllers
 										'title' =>'Admin panel | Manage Posts',
 										'template' => 'manageposts.html.php',
 										'variables' => [
-											'posts' => $author->getPosts([], null, '4'),
+											'posts' => $author->getPosts(15),
 											'heading' => 'Manage Posts',
 										]
 									];
@@ -810,7 +856,7 @@ namespace Specific\Controllers
 				} else
 				{
 					$author = $this->authentication->getUser();
-					$posts = $author->getPosts([], null, '4');
+					$posts = $author->getPosts(15);
 					$title = 'Author panel | Manage Posts';
 		
 					return [

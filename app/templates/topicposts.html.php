@@ -25,7 +25,7 @@
 				<div class="pagination clearfix">
 					<?php 
 						// Calculate number of pages
-						$numPages = ceil($totalTopicPosts/3);
+						$numPages = ceil($totalTopicPosts/15);
 						// Display a link for each page
 						for($i=1; $i<=$numPages;$i++):
 						if($i == $currentPage):

@@ -204,13 +204,15 @@ namespace Ninja
 		public function searchPosts ($term):array
 		{
 			$match = '%' .$term. '%';
-			$sql = "SELECT 
-							A.*, U.FirstName 
-							FROM Articles as A
-							JOIN Users AS U 
-							ON A.AuthorId=U.Id 
-							WHERE A.Published=:Published
-							AND A.Title LIKE :Title OR A.Body LIKE :Body OR A.Description LIKE :Description OR A.Keywords LIKE :Keywords";
+			$sql = "SELECT * FROM $this->table WHERE Published = :Published AND Title LIKE :Title OR Body LIKE :Body OR Description LIKE :Description OR Keywords LIKE :Keywords";
+
+			// $sql = "SELECT 
+			// 				A.*, U.FirstName 
+			// 				FROM Articles as A
+			// 				JOIN Users AS U 
+			// 				ON A.AuthorId=U.Id 
+			// 				WHERE A.Published=:Published
+			// 				AND A.Title LIKE :Title OR A.Body LIKE :Body OR A.Description LIKE :Description OR A.Keywords LIKE :Keywords";
 
 			$conditions = ['Published' => 1, 'Title'=> $match, 'Body'=> $match, 'Description' => $match, 'Keywords' => $match];
 			// display($conditions);

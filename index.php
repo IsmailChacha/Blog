@@ -28,7 +28,7 @@
 					{
 						$pos = stripos($indexes, '/');
 						$newPos = $pos;
-						if($key === 'index.php' || '/index.php')
+						if($key === '/index.php' || '/index.php/articles')
 						{
 							$key = '/'. substr($indexes, 0, $pos);
 						}
@@ -53,7 +53,7 @@
 							} else
 							{
 								$key = '/' . $key;
-								if(stristr($value, 'Page=')) //REMOVE PAGINATION FROM NAVIGATION MENU
+								if(stristr($key, 'Page=') || stristr($key, '/index.php/articles=') || stristr($key, 'More=')) //REMOVE PAGINATION FROM NAVIGATION MENU
 								{
 									unset($key);
 									unset($value);

@@ -15,12 +15,10 @@ namespace Specific\Entity
 			$this->postCategoriesTable = $postCategoriesTable;
 		}
 
-		public function getPosts(array $conditions = [], $orderBy = null, $limit = null, $offset = null)
+		public function getPosts($limit = null, $offset = null)
 		{
 			$conditions = ['TopicId' => $this->Id];
-			// display($offset);
-			$postCategories = $this->postCategoriesTable->findAll($conditions, $orderBy, $limit, $offset);
-			// display($postCategories);
+			$postCategories = $this->postCategoriesTable->findAll($conditions, null, $limit, $offset);
 			$posts = [];
 			foreach($postCategories as $postCategory)
 			{
@@ -37,7 +35,7 @@ namespace Specific\Entity
 
 		public function totalPosts()
 		{
-			return $this->postCategoriesTable->total(['topicId' => $this->Id]);
+			return $this->postCategoriesTable->total(['TopicId' => $this->Id]);
 		}
 
 		private function sortPosts($a, $b)

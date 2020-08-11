@@ -23,7 +23,7 @@
 			<div class="pagination">
 				<?php 
 					// Calculate number of pages
-					$numPages = ceil($totalArticles/4);
+					$numPages = ceil($totalArticles/15);
 					// Display a link for each page
 					for($i=1; $i<=$numPages;$i++):
 					if($i == $currentPage):
@@ -33,7 +33,7 @@
 						<a href="<?php echo '/index.php/articles/page='. $i;?>"><?='Page ' .$i?></a>
 					<?php endif;?>
 				<?php endfor;?>
-		</div>						
+			</div>						
 		<?php else: ?>
 			<h3 class="recent-post-title"><?php echo $heading ?? ''; ?></h3>
 		<?php endif; ?>
@@ -79,7 +79,7 @@
 				<h3 class="section-title">Topics</h3>
 				<ul>
 					<?php foreach($topics as $topic): ?>
-						<li><a href="<?php echo '/index.php/topics/'.strtolower($topic->Name);?>"><?php echo $topic->Name; ?></a></li>
+						<li><a href="<?php echo '/index.php/topics/'. str_replace(' ', '-', trim(strtolower($topic->Name)));?>"><?php echo $topic->Name; ?></a></li>
 					<?php endforeach; ?>            
 				</ul>
 			</section>

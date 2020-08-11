@@ -53,7 +53,7 @@
 			<h3 class="section-title">Topics</h3>
 			<ul>
 				<?php foreach($topics as $topic): ?>
-					<li><a href="<?php echo '/index.php/topics/'.strtolower($topic->Name);?>"><?php echo $topic->Name; ?></a></li>
+					<li><a href="<?php echo '/index.php/topics/'. str_replace(' ', '-', trim(strtolower($topic->Name)));?>"><?php echo $topic->Name; ?></a></li>
 				<?php endforeach; ?>            
 			</ul>
 		</div>

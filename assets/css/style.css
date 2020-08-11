@@ -171,24 +171,26 @@ div.navigation {
   }
 
   .pagination {
-    display: block;
-    background: white;
-    margin: 2px auto;
-    width: 100%;
+    clear: both;
+    display: inline-block;
+    position: relative;
+    left: 46%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom:8px;
   }
 
   .pagination a{
     display: inline-block;
     text-align: center;
     padding: 8px 4px;
-    background: white;
+    background: azure;
     color: black;
     font-size: 1.15em;
   }
 
   a.active {
-    background-color: gray;
-    border-radius: 5px;
+    background-color: #a0a0a0;
     opacity: .75;
   }
 
@@ -468,6 +470,7 @@ a:hover {
 .image-and-moreinfo  {
   background-color: ghostwhite;
   border: 1px solid #ccc;
+  margin-bottom: 20px;
 } 
 
 .image-and-moreinfo .more-info {
