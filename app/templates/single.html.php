@@ -1,8 +1,3 @@
-<!-- JavaScript SDK For Facebook Page-->
-  <div id="fb-root"></div>
-  <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v7.0"
-    nonce="QCPHup8t"></script>
-
   <!-- Page wrapper -->
   <div class="page-wrapper">
     <!-- Content -->
@@ -14,7 +9,7 @@
           <article class="">
 
             <div class="image-and-moreinfo clearfix">
-              <img src="<?php echo BASE_URL . '/assets/images/' . $post->Image;?>" alt="" class="post-image" >             
+              <img src="<?php echo BASE_URL . '/assets/images/' . $post->Image;?>" alt="<?php echo $post->Description;?>" class="post-image" >             
               <div class="more-info">
                 <h1 class="post-title"><?php echo $post->Title;?></h1>
                 <!-- far fa-user -->

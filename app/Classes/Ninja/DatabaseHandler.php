@@ -204,7 +204,7 @@ namespace Ninja
 		public function searchPosts ($term):array
 		{
 			$match = '%' .$term. '%';
-			$sql = "SELECT * FROM $this->table WHERE Published = :Published AND Title LIKE :Title OR Body LIKE :Body OR Description LIKE :Description OR Keywords LIKE :Keywords";
+			$sql = "SELECT * FROM $this->table WHERE /*Title LIKE :Title OR Description LIKE :Description AND */Published = :Published AND Description LIKE :Description";
 
 			// $sql = "SELECT 
 			// 				A.*, U.FirstName 
@@ -214,7 +214,7 @@ namespace Ninja
 			// 				WHERE A.Published=:Published
 			// 				AND A.Title LIKE :Title OR A.Body LIKE :Body OR A.Description LIKE :Description OR A.Keywords LIKE :Keywords";
 
-			$conditions = ['Published' => 1, 'Title'=> $match, 'Body'=> $match, 'Description' => $match, 'Keywords' => $match];
+		$conditions = ['Published' => 1, 'Description' => $match/*, 'Title' => $match, 'Title' => $match*/];
 			// display($conditions);
 			$stmt = $this->executeQuery($sql, $conditions);
 			$results = $stmt->fetchAll(\PDO::FETCH_CLASS, $this->className, $this->constructorArgs);

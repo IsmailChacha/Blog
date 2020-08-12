@@ -16,7 +16,7 @@
             <?php endif; ?>
             <?php foreach($postsArray as $post): ?>
                 <div class="post clearfix">
-                  <a href="/index.php/topics/<?php echo str_replace(' ', '-', trim(strtolower($topic))) . '/' .  $post->String;?>" alt=""><img src="<?php echo BASE_URL . '/assets/images/' . $post->Image;?>" alt="" class="post-image"></a>
+                  <a href="/index.php/topics/<?php echo str_replace(' ', '-', trim(strtolower($topic))) . '/' .  $post->String;?>" alt=""><img src="<?php echo BASE_URL . '/assets/images/' . $post->Image;?>" alt="<?php echo $post->Description;?>" class="post-image"></a>
                     
                   <div class="post-preview clearfix">
                     <a href="/index.php/topics/<?php echo str_replace(' ', '-', trim(strtolower($topic))) . '/' .  $post->String;?>"><h4><?php echo $post->Title;?></h4></a>
@@ -59,6 +59,27 @@
           </form>
         </div>
         <!-- Search section -->
+        
+        <!-- Facebook page embed -->
+        <div class="section fb-page" data-href="https://www.facebook.com/Tech-Genie-101835751592250" data-tabs="" data-width="" data-height="" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true">
+            <blockquote cite="https://www.facebook.com/Tech-Genie-101835751592250" class="fb-xfbml-parse-ignore"><a
+                href="https://www.facebook.com/Tech-Genie-101835751592250">Tech Genie</a></blockquote>
+          </div>
+        <!-- Facebook page embed -->
+
+        <!-- Popular posts -->
+        <section class="section popular">
+          <h3 class="section-title"><?php echo $popularPosts['heading'] ?? 'Popular Articles' ;?></h3>
+          <!-- Single popular post -->
+          <?php foreach($popularPosts['posts'] as $p):?>
+            <div class="post clearfix">
+              <a href="/index.php/articles/<?php echo $p->String;?>"><img src="<?php echo BASE_URL . '/assets/images/' . $p->Image;?>" alt="<?php echo $p->Description;?>"></a>
+              <a href="/index.php/articles/<?php echo $p->String;?>" class="title"><h4><?php echo $p->Title;?></h4></a>
+            </div>
+          <?php endforeach;?>
+          <!-- //Single popular post -->
+        </section>
+        <!-- //Popular posts -->           
         <!-- Topics section -->
         <div class="section topics">
           <h3 class="section-title">Topics</h3>

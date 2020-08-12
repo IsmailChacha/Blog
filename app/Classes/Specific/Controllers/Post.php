@@ -30,9 +30,7 @@ namespace Specific\Controllers
 		// SELECT POPULAR POSTS
 		private function popularPosts()
 		{
-			$seealso = $this->postsTable->findAll(['Published' => 1], 'Date DESC', 4, null);
-			// display($seealso);
-			shuffle($seealso);
+			$seealso = $this->postsTable->findAll(['Published' => 1], 'RAND()', 4, null); //SELECT 4 RANDOM ARTICLES FOR THE POPULAR ARTICLES SECTION
 			$popularPosts = ['posts' => $seealso, 'heading' => 'Popular Articles'];
 			return $popularPosts;
 		}
@@ -47,8 +45,8 @@ namespace Specific\Controllers
 			} else  // HANDLE THE PAGE 1 OF ARTICLES PER TOPIC PAGE {TOPICS.HTML.PHP}
 			{
 				$page = 1; // PAGE 1
-				$limit = 4; // NUMBER TO SELECT
-				$offset = ($page-1) * 4; // OFFSET
+				$limit = 5; // NUMBER TO SELECT
+				$offset = ($page-1) * 5; // OFFSET
 				$posts = []; //INITIALIZE EMPTY POSTS ARRAY
 
 				//SELECT POSTS BY TOPIC
@@ -84,6 +82,7 @@ namespace Specific\Controllers
 							'recentPosts' => $recentPosts,
 							'topics' => $this->topics,
 							'totalArticles' => $topic->totalPosts(),
+							'popularPosts' =>$this->popularPosts(),
 							'currentPage' => $currentPage,
 						]
 					];
@@ -166,7 +165,7 @@ namespace Specific\Controllers
 							// FORM THE PAGE FROM THE URI VARIABLE
 							$page = substr($present, ($position +1));
 							// TURN PAGE NUMBERS INTO OFFSETS
-							$limit = ($page + 1) * 4;
+							$limit = ($page + 1) * 5;
 							$topicPosts = $topic->getPosts($limit);
 							// GENERATE CURRENT PAGES TRACKERS
 							$currentPage = [];
@@ -174,7 +173,7 @@ namespace Specific\Controllers
 							foreach($this->topics as $topic2)
 							{
 								$currentPage [$topic2->Name]  = 1;
-								$otherTopicsPosts[$topic2->Name] = $topic2->getPosts(4, 0); // GET ARTICLES ENCAPSULATED IN EACH TOPIC
+								$otherTopicsPosts[$topic2->Name] = $topic2->getPosts(5, 0); // GET ARTICLES ENCAPSULATED IN EACH TOPIC
 							}			
 
 							$otherTopicsPosts[$topic->Name] = $topicPosts; // CREATE AN ENTRY IN POSTS ARRAY WITH KEY BEING TOPIC NAME AND VALUE BEING THE TOPIC ARTICLES

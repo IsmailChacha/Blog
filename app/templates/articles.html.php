@@ -10,7 +10,7 @@
 					<?php foreach($posts as $post):?>
 						<article class="post clearfix">
 							<div class="recent-post-image">
-								<a href="/index.php/articles/<?php echo $post->String;?>" title="<?php echo $post->Description;?>"><img src="<?php echo BASE_URL . '/assets/images/' . $post->Image;?>" alt="<?php echo $post->Description;?>" class="post-image"></a>
+								<a href="/index.php/articles/<?php echo $post->String;?>"><img src="<?php echo BASE_URL . '/assets/images/' . $post->Image;?>" alt="<?php echo $post->Description;?>" class="post-image"></a>
 							</div>
 								
 							<div class="post-preview">
@@ -25,18 +25,22 @@
 					// Calculate number of pages
 					$numPages = ceil($totalArticles/15);
 					// Display a link for each page
-					for($i=1; $i<=$numPages;$i++):
-					if($i == $currentPage):
+					if($numPages < 2):
+						// DO NOTHING
+					else:
+						for($i=1; $i<=$numPages;$i++):
+							if($i == $currentPage):
 				?>
-						<a href="<?php echo '/index.php/articles/page='. $i;?>" class="active"><?='Page ' .$i?></a>
-					<?php else:?>
-						<a href="<?php echo '/index.php/articles/page='. $i;?>"><?='Page ' .$i?></a>
-					<?php endif;?>
-				<?php endfor;?>
-			</div>						
-		<?php else: ?>
-			<h3 class="recent-post-title"><?php echo $heading ?? ''; ?></h3>
-		<?php endif; ?>
+								<a href="<?php echo '/index.php/articles/page='. $i;?>" class="active"><?='Page ' .$i?></a>
+							<?php else:?>
+								<a href="<?php echo '/index.php/articles/page='. $i;?>"><?='Page ' .$i?></a>
+							<?php endif;?>
+						<?php endfor;?>
+					<?php endif ;?>
+				</div>						
+			<?php else: ?>
+				<h3 class="recent-post-title"><?php echo $heading ?? ''; ?></h3>
+			<?php endif; ?>
 	</section>
 
 	<!-- //Main Content -->
@@ -66,7 +70,7 @@
 				<!-- Single popular post -->
 				<?php foreach($popularPosts['posts'] as $p):?>
 					<div class="post clearfix">
-						<a href="/index.php/articles/<?php echo $p->String;?>"><img src="<?php echo BASE_URL . '/assets/images/' . $p->Image;?>" alt=""></a>
+						<a href="/index.php/articles/<?php echo $p->String;?>"><img src="<?php echo BASE_URL . '/assets/images/' . $p->Image;?>" alt="<?php echo $p->Description;?>"></a>
 						<a href="/index.php/articles/<?php echo $p->String;?>" class="title"><h4><?php echo $p->Title;?></h4></a>
 					</div>
 				<?php endforeach;?>

@@ -27,18 +27,22 @@
 						// Calculate number of pages
 						$numPages = ceil($totalTopicPosts/15);
 						// Display a link for each page
-						for($i=1; $i<=$numPages;$i++):
-						if($i == $currentPage):
-							?>
-									<a href="<?php echo '/index.php/topics/'. str_replace(' ', '-', trim(strtolower($heading))) . '/page='. $i;?>" class="active"><?='Page ' .$i?></a>
-								<?php else:?>
-									<a href="<?php echo '/index.php/topics/'. str_replace(' ', '-', trim(strtolower($heading))) . '/page='. $i;?>"><?='Page ' .$i?></a>
-								<?php endif;?>
-							<?php endfor;?>
-					</div>						
-					<?php else: ?>
-						<h3 class="recent-post-title"><?php echo $heading ?? ''; ?></h3>
-			<?php endif ;?>
+							if($numPages < 2):
+								// DO NOTHING
+							else:
+								for($i=1; $i<=$numPages;$i++):
+									if($i == $currentPage):
+					?>
+											<a href="<?php echo '/index.php/topics/'. str_replace(' ', '-', trim(strtolower($heading))) . '/page='. $i;?>" class="active"><?='Page ' .$i?></a>
+									<?php else:?>
+											<a href="<?php echo '/index.php/topics/'. str_replace(' ', '-', trim(strtolower($heading))) . '/page='. $i;?>"><?='Page ' .$i?></a>
+									<?php endif;?>
+								<?php endfor;?>
+							<?php endif ;?>
+				</div>						
+						<?php else: ?>
+							<h3 class="recent-post-title"><?php echo $heading ?? ''; ?></h3>
+						<?php endif ;?>
 
 	</div>
 	<!-- //Main Content -->
@@ -53,7 +57,14 @@
 			</form>
 		</div>
 	<!-- Search section -->        
-
+        
+	<!-- Facebook page embed -->
+	<div class="section fb-page" data-href="https://www.facebook.com/Tech-Genie-101835751592250" data-tabs="" data-width="" data-height="" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true">
+			<blockquote cite="https://www.facebook.com/Tech-Genie-101835751592250" class="fb-xfbml-parse-ignore"><a
+					href="https://www.facebook.com/Tech-Genie-101835751592250">Tech Genie</a></blockquote>
+		</div>
+	<!-- Facebook page embed -->
+	
 	<!-- Popular posts -->
 		<div class="section popular">
 			<h3 class="section-title"><?php echo $popularPosts['heading'] ?? 'Popular Articles' ;?></h3>
