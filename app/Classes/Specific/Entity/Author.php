@@ -66,12 +66,12 @@ namespace Specific\Entity
 
 		public function getPublishedByAuthor()
 		{
-			return $this->postsTable->total(['Published' => 1, 'authorid' => $this->Id]);
+			return $this->postsTable->total(['Published' => 1, 'AuthorId' => $this->Id]);
 		}
 
 		public function getUnpublishedByAuthor()
 		{
-			return $this->postsTable->total(['Published' => 0, 'authorid' => $this->Id]);
+			return $this->postsTable->total(['Published' => 0, 'AuthorId' => $this->Id]);
 		}
 	}
 }

@@ -37,7 +37,7 @@
 
       <!-- Search section -->
         <div class="section search">
-          <form action="index.php/search" method="get">
+          <form action="/index.php/search" method="get">
             <input type="text" name="searchterm" class="text-input" placeholder="Search entire site">
           </form>
         </div>

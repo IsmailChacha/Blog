@@ -1,6 +1,7 @@
 <?php
 namespace Ninja
 {
+	// DOES ALL DATABASE TRANSACTIONS
 	class DatabaseHandler
 	{
 		//CLASS VARIABLES
@@ -30,10 +31,11 @@ namespace Ninja
 			return $stmt;
 		}
 
-		// INSERT INTO DATABASE
+		// INSERT RECORD
 		public function insert(array $data)
 		{
 			$sql = "INSERT INTO $this->table SET ";
+			// CONSTRUCT THE QUERY
 			$i = 0;
 			foreach($data as $key => $value)
 			{
@@ -50,7 +52,7 @@ namespace Ninja
       return $this->pdo->lastInsertId();
 		}
 
-		// UPDATE DATABASE
+		// UPDATE RECORD
 		public function update(array $data)
 		{
 			//CONSTRUCT THE QUERY
@@ -73,11 +75,11 @@ namespace Ninja
       return $this->pdo->lastInsertId();
 		}
 
-		// DELETE FROM DATABASE
+		// DELETE RECORD
 		public function delete(array $conditions)
 		{
-			//CONSTRUCT THE QUERY
 			$sql = "DELETE FROM $this->table";
+			//CONSTRUCT THE QUERY
 			$i = 0;
 			foreach($conditions as $key => $value)
 			{
@@ -97,8 +99,8 @@ namespace Ninja
 
 		public function deleteWhere(array $conditions)
 		{
-			//CONSTRUCT THE QUERY
 			$sql = "DELETE FROM $this->table";
+			//CONSTRUCT THE QUERY
 			$i = 0;
 			foreach($conditions as $key => $value)
 			{
@@ -116,7 +118,8 @@ namespace Ninja
 			return $affected_rows;
 		}
 
-		// FETCH ALL FROM TABLE WITH/OUT CONDITIONS
+		// FETCH RECORDS 
+		// TAKES OPTIONAL PARAMS: $CONDITIONS, $ORDER, $LIMIT, & $OFFSET
 		public function findAll (array $conditions = [], $orderBy = null, $limit = null, $offset = null):array
 		{
 			if(empty($conditions))
@@ -124,8 +127,8 @@ namespace Ninja
 				$sql = "SELECT * FROM $this->table";
 			} else 
 			{
-				//CONSTRUCT THE QUERY
 				$sql = "SELECT * FROM $this->table";
+				//CONSTRUCT THE QUERY
 
 				$i = 0;
 				foreach($conditions as $key => $value)
@@ -147,11 +150,13 @@ namespace Ninja
 				$sql .= ' ORDER BY ' . $orderBy;
 			}
 
+			// DEFINE THE LIMIT
 			if($limit !== null)
 			{
 				$sql .= ' LIMIT ' . $limit;
 			}
 
+			// DEFINE THE OFFSET
 			if($offset !== null)
 			{
 				$sql .= ' OFFSET ' .$offset;
@@ -161,7 +166,7 @@ namespace Ninja
 			return $results->fetchAll(\PDO::FETCH_CLASS, $this->className, $this->constructorArgs);
 		}
 
-		//FETCH RECORDS BY PRIMARY KEY
+		//FETCH RECORDS BY ID
 		public function findById($id)
     {
       $sql = "SELECT * FROM $this->table WHERE $this->primarykey = :$this->primarykey";
@@ -170,11 +175,12 @@ namespace Ninja
 			return $results->fetchObject($this->className, $this->constructorArgs);
 		}
 		
+		// SAVE RECORD. CALLS EITHER INSERT() OR UPDATE()
     public function  save(array $record)
     {
       try
       {
-				//RETURN ENTITY OBJECT REPRESENTING THE DATE THAT'S BEEN INSERTED /UPDATED
+				//RETURN ENTITY OBJECT REPRESENTING THE RECORD THAT'S JUST BEEN INSERTED /UPDATED
 				$entity = new $this->className(...$this->constructorArgs);
 				if($record[$this->primarykey] == '')
         {
@@ -189,7 +195,7 @@ namespace Ninja
       }
 
 			$entity->{$this->primarykey} = $insertId;
-			//WRITE DATA INTO THE OBJECT REPRESENTING RECORD
+			//COPY DATA INTO THE OBJECT REPRESENTING RECORD
 			foreach($record as $key => $value)
 			{
 				if(!empty($value))
@@ -204,24 +210,15 @@ namespace Ninja
 		public function searchPosts ($term):array
 		{
 			$match = '%' .$term. '%';
-			$sql = "SELECT * FROM $this->table WHERE /*Title LIKE :Title OR Description LIKE :Description AND */Published = :Published AND Description LIKE :Description";
+			$sql = "SELECT * FROM $this->table WHERE Published = :Published AND Description LIKE :Description";
 
-			// $sql = "SELECT 
-			// 				A.*, U.FirstName 
-			// 				FROM Articles as A
-			// 				JOIN Users AS U 
-			// 				ON A.AuthorId=U.Id 
-			// 				WHERE A.Published=:Published
-			// 				AND A.Title LIKE :Title OR A.Body LIKE :Body OR A.Description LIKE :Description OR A.Keywords LIKE :Keywords";
-
-		$conditions = ['Published' => 1, 'Description' => $match/*, 'Title' => $match, 'Title' => $match*/];
-			// display($conditions);
+			$conditions = ['Published' => 1, 'Description' => $match];
 			$stmt = $this->executeQuery($sql, $conditions);
 			$results = $stmt->fetchAll(\PDO::FETCH_CLASS, $this->className, $this->constructorArgs);
 			return $results;
 		}
 
-		// TOTAL
+		// FIND TOTAL RECORDS 
 		public function total(array $conditions = []):int
     {
 			if(empty($conditions))
@@ -230,6 +227,7 @@ namespace Ninja
 			} else 
 			{
 				$sql = "SELECT COUNT(*) FROM $this->table WHERE";
+				// CONSTRUCT THE QUERY
 				$i=0;
 				foreach($conditions as $key => $value)
 				{
@@ -249,10 +247,11 @@ namespace Ninja
       return $row[0];
 		}
 		
-		// SELECT ONE FUNCTION
+		// FIND ONE RECORD
 		public function findOne (array $conditions = [])
 		{
 			$sql = "SELECT * FROM $this->table";
+			// CONSTRUCT THE QUERY
 			$i = 0;
 			foreach($conditions as $key => $value)
 			{

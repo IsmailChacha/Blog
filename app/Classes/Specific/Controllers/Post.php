@@ -172,21 +172,20 @@ namespace Specific\Controllers
 							// OTHER TOPICS' ARTICLES
 							foreach($this->topics as $topic2)
 							{
-								$currentPage [$topic2->Name]  = 1;
+								$currentPage [$topic2->Name]  = 1; //RESET THE REST IF THE TOPICS' ARTICLES
 								$otherTopicsPosts[$topic2->Name] = $topic2->getPosts(5, 0); // GET ARTICLES ENCAPSULATED IN EACH TOPIC
 							}			
 
 							$otherTopicsPosts[$topic->Name] = $topicPosts; // CREATE AN ENTRY IN POSTS ARRAY WITH KEY BEING TOPIC NAME AND VALUE BEING THE TOPIC ARTICLES
 
+							// UPDATE THE PAGE OF THE TOPIC FOR WHICH WE'VE LOADED MORE. TO KEEP TRACK
 							$currentPage [$topic->Name]  = $page + 1;
 
-							// display($currentPage);
-							// display($otherTopicsPosts);
-							// UPDATE $otherTopicsPosts WITH UPDATED ARTICLES FOR LOADED BY LOAD MORE
+							// UPDATE $otherTopicsPosts WITH UPDATED ARTICLES FOR LOADED 
 							$otherTopicsPosts[$topic->Name] = $topicPosts;
 							$topicPosts = $otherTopicsPosts;
 							$recentPosts = ['posts' => $topicPosts, 'heading' => 'Articles By Topic'];
-							// display($recentPosts);
+
 							$variables = ['title' => self::TITLE,
 							'template' => 'home.html.php',
 							'variables' => [ 
@@ -256,7 +255,7 @@ namespace Specific\Controllers
 					}					
 				} else //THEY WANTED TO SO SMTH IN TOPICS FOLDER BUT SMTH WENT WRONG FROM THEIR ENT, EITHER MANUAL TYPING INTO ADDRESS BAR
 					{
-						$_SESSION['message'] = 'An error occurred';
+						$_SESSION['message'] = 'That is not a topic we currently support';
 						$_SESSION['type'] = 'error';
 						header('location:/');					
 					}
@@ -391,8 +390,6 @@ namespace Specific\Controllers
 			} else if($user->Admin)//ADMIN
 			{
 				return true;
-			} else{
-				return false;
 			}
 		}
 
@@ -403,12 +400,10 @@ namespace Specific\Controllers
 			if($user->Superuser)
 			{
 				return true;
-			}else 
+			}else
 			{
 				$this->authentication->logout();
-				$_SESSION['message'] = 'You are not authorized!';
-				$_SESSION['type'] = 'error';
-				return false;
+				return false;				
 			}
 		}
 
@@ -450,104 +445,105 @@ namespace Specific\Controllers
 				}	
 			} else 
 			{
-				return false;
+				header('location:/index.php/signin');
 			}
 		}
 
 		//CHANGE POST VISIBILITY
 		public function togglePublish()
 		{
-			if(!$this->checkWhetherAdminOrSuperUser())
+			if($this->checkWhetherAdminOrSuperUser())
 			{
-				return false;
-			}
-
-			if($_GET['subfolder'] === 'publish')
-			{
-				$state = 1; 
-				$draft = 0;
-			} elseif($_GET['subfolder'] === 'unpublish')
-			{
-				$state = 0;
-				$draft = 1;
-			}
-			
-			$condition = ['Id' => $_GET['specificId'], 'Published' => $state, 'Draft' => $draft];
-
-			$affected_rows = $this->postsTable->save($condition);
-			$title = $_SESSION['Superuser'] ? 'SuperUser Panel | Manage Posts' : 'Admin Panel | Manage Posts';
-			
-			if($affected_rows)
-			{
-				$_SESSION['message'] = 'Post visibility changed';
-				$_SESSION['type'] = 'success';
-
-				if($_SESSION['Superuser'])
+				if($_GET['subfolder'] === 'publish')
 				{
-					$title = 'SuperUser Panel | Manage Posts';
-
-					return [
-						'title' => $title,
-						'template' => 'manageposts.html.php',
-						'variables' => [
-							'posts' => $this->postsTable->findAll([], 'Date DESC'),
-							'heading' => 'Manage Posts',
-						]
-					];
-				} else 
+					$state = 1; 
+					$draft = 0;
+				} elseif($_GET['subfolder'] === 'unpublish')
+				{
+					$state = 0;
+					$draft = 1;
+				}
+				
+				$condition = ['Id' => $_GET['specificId'], 'Published' => $state, 'Draft' => $draft];
+	
+				$affected_rows = $this->postsTable->save($condition);
+				$title = $_SESSION['Superuser'] ? 'SuperUser Panel | Manage Posts' : 'Admin Panel | Manage Posts';
+				
+				if($affected_rows)
 				{
 					$_SESSION['message'] = 'Post visibility changed';
 					$_SESSION['type'] = 'success';
-
-					$title = 'Admin Panel | Manage Posts';
-
-					$author = $this->authentication->getUser();
-
-					return [
-						'title' => $title,
-						'template' => 'manageposts.html.php',
-						'variables' => [
-							'posts' => $author->getPosts(15),
-							'heading' => 'Manage Posts',
-						]
-					];
-				}
-			} else 
-			{
-				if($_SESSION['Superuser'])
-				{
-					$_SESSION['message'] = 'An error occurred processing your request.Sorry about that.';
-					$_SESSION['type'] = 'error';
-
-					$title = 'SuperUser Panel | Manage Posts';
-
-					return [
-						'title' => $title,
-						'template' => 'manageposts.html.php',
-						'variables' => [
-							'posts' => $this->postsTable->findAll([], 'Date DESC'),
-							'heading' => 'Manage Posts',
-						]
-					];
+	
+					if($_SESSION['Superuser'])
+					{
+						$title = 'SuperUser Panel | Manage Posts';
+	
+						return [
+							'title' => $title,
+							'template' => 'manageposts.html.php',
+							'variables' => [
+								'posts' => $this->postsTable->findAll([], 'Date DESC'),
+								'heading' => 'Manage Posts',
+							]
+						];
+					} else 
+					{
+						$_SESSION['message'] = 'Post visibility changed';
+						$_SESSION['type'] = 'success';
+	
+						$title = 'Admin Panel | Manage Posts';
+	
+						$author = $this->authentication->getUser();
+	
+						return [
+							'title' => $title,
+							'template' => 'manageposts.html.php',
+							'variables' => [
+								'posts' => $author->getPosts(15),
+								'heading' => 'Manage Posts',
+							]
+						];
+					}
 				} else 
 				{
-					$_SESSION['message'] = 'An error occurred processing your request.Sorry about that.';
-					$_SESSION['type'] = 'error';
-
-					$title = 'Admin Panel | Manage Posts';
-
-					$author = $this->authentication->getUser();
-
-					return [
-						'title' => $title,
-						'template' => 'manageposts.html.php',
-						'variables' => [
-							'posts' => $author->getPosts(15),
-							'heading' => 'Manage Posts',
-						]
-					];
-				}
-			}	
+					if($_SESSION['Superuser'])
+					{
+						$_SESSION['message'] = 'An error occurred processing your request.Sorry about that.';
+						$_SESSION['type'] = 'error';
+	
+						$title = 'SuperUser Panel | Manage Posts';
+	
+						return [
+							'title' => $title,
+							'template' => 'manageposts.html.php',
+							'variables' => [
+								'posts' => $this->postsTable->findAll([], 'Date DESC'),
+								'heading' => 'Manage Posts',
+							]
+						];
+					} else 
+					{
+						$_SESSION['message'] = 'An error occurred processing your request.Sorry about that.';
+						$_SESSION['type'] = 'error';
+	
+						$title = 'Admin Panel | Manage Posts';
+	
+						$author = $this->authentication->getUser();
+	
+						return [
+							'title' => $title,
+							'template' => 'manageposts.html.php',
+							'variables' => [
+								'posts' => $author->getPosts(15),
+								'heading' => 'Manage Posts',
+							]
+						];
+					}
+				}	
+			} else 
+			{
+				header('location:/index.php/signin');
+			}
 		}
 
 		//METHODS FOR HANDLING POST UPLOADS
@@ -574,7 +570,7 @@ namespace Specific\Controllers
 				} else
 				{
 					$valid = false;
-					array_push($errors, "Post image required!");
+					array_push($errors, "Image is required!");
 				}				
 			} else 
 			{
@@ -647,195 +643,197 @@ namespace Specific\Controllers
 			return ['errors' => $errors, 'valid' => $valid];
 		}
 
-		//SAVE POST => ADD & UPDATE 
+		//SAVE ARTICLE => ADD || UPDATE 
 		public function save()
 		{
-			if(!$this->checkWhetherAdminOrSuperUser())
+			if($this->checkWhetherAdminOrSuperUser())
 			{
-				return false;
-			}
-			$post = $_POST['post'];
-			if(isset($_POST['add']))
-			{
-				$post['Id'] = '';
-			}
-
-			$files = $_FILES;
-			//PROCESS POST
-			extract($this->validatePost($post)); //CREATE VARIABLES $errors and $valid in this scope
-
-			//PROCESS IMAGE
-			extract($this->handleFiles($post, $files, $errors, $valid));  //CREATE VARIABLES $post, $errors and $valid IN THIS SCOPE
-			//CHECK FOR ANY ERRORS
-			if($valid)
-			{
-				//FETCH THE AUTHOR OBJECT
-				$authorObject = $this->authentication->getUser();
-				// Generate string identifier
-				if(isset($_POST['add']) || isset($_POST['edit']))
+				$post = $_POST['post'];
+				if(isset($_POST['add']))
 				{
-					if(isset($_POST['add']))
-					{
-						$post['Date'] = $this->generateDate();
-					}
-
-					$string = trim(str_replace(' ', '-', strtolower($post['Title'])));
-					$post['String'] = $string;
-					$post['Published'] = 1;
-					$post['Draft'] = 0;
-
-				} elseif(isset($_POST['draft']))
-				{
-					$post['Published'] = 0;
-					$post['Draft'] = 1;
+					$post['Id'] = '';
 				}
-
-				$post['Body'] = htmlentities($post['Body']);
-
-				//SAVE POST
-				$postEntity = $authorObject->addPost($post);
-
-				//INSERT CATEGORY RECORDS
-				if($postEntity)
+	
+				$files = $_FILES;
+				//PROCESS POST
+				extract($this->validatePost($post)); //CREATE VARIABLES $errors and $valid in this scope
+	
+				//PROCESS IMAGE
+				extract($this->handleFiles($post, $files, $errors, $valid));  //CREATE VARIABLES $post, $errors and $valid IN THIS SCOPE
+				//CHECK FOR ANY ERRORS
+				if($valid)
 				{
-					//CLEAR CATEGORY RECORDS
-					$postEntity->clearCategories();
-					
+					//FETCH THE AUTHOR OBJECT
+					$authorObject = $this->authentication->getUser();
+					// Generate string identifier
+					if(isset($_POST['add']) || isset($_POST['edit']))
+					{
+						if(isset($_POST['add']))
+						{
+							$post['Date'] = $this->generateDate();
+						}
+	
+						$string = trim(str_replace(' ', '-', strtolower($post['Title'])));
+						// REMOVE ANY UNWANTED CHARACTERS FROM THE STRING
+						$string = preg_replace('/--([^--]+)/', '-', $string);
+	
+						$post['String'] = $string;
+						$post['Published'] = 1;
+						$post['Draft'] = 0;
+	
+					} elseif(isset($_POST['draft']))
+					{
+						$post['Published'] = 0;
+						$post['Draft'] = 1;
+					}
+	
+					$post['Body'] = htmlentities($post['Body']);
+	
+					//SAVE POST
+					$postEntity = $authorObject->addPost($post);
+	
+					//INSERT CATEGORY RECORDS
 					if($postEntity)
 					{
-						//INSERT CATEGORY RECORD FOR POST IF NOT DRAFT => SAVES ME ALOT OF TROUBLE SOMEWHERE
-						if(!isset($_POST['draft']))
-						{
-							foreach($_POST['category'] as $categoryId)
-							{
-								$postEntity->addCategory($categoryId);
-							}
-						}
-
+						//CLEAR CATEGORY RECORDS
+						$postEntity->clearCategories();
+						
 						if($postEntity)
 						{
-							// PREVIEW ARTICLE BEFORE PUBLISHING OR WHATEVER
-							if(isset($_POST['preview']))
+							//INSERT CATEGORY RECORD FOR POST IF NOT DRAFT => SAVES ME ALOT OF TROUBLE SOMEWHERE
+							if(!isset($_POST['draft']))
 							{
-								$postString = strtolower($postEntity->String);
-								echo "<script>window.open(\"/index.php/articles/$postString\")</script>";
-
-								return [
-									'title' => $_SESSION['Superuser'] ? 'SuperUser panel | Add post' : 'Admin panel | Add post',
-									'template' => 'editpost.html.php',
-									'variables' => [
-										'heading' => 'Edit post',
-										'post' => $postEntity,
-										'id' => $postEntity->Id,
-										'string' => $postEntity->String,
-										'title' => $postEntity->Title,
-										'body' => $postEntity->Body,
-										'description' => $postEntity->Description,
-										'keywords' => $postEntity->Keywords,
-										'published' => $postEntity->Published,
-										'categories' => $this->topics,
-									]
-								];
-							} else 
-							{
-								if($_SESSION['Superuser'])
+								foreach($_POST['category'] as $categoryId)
 								{
-									if(isset($_POST['edit']))
-									{
-										$_SESSION['message'] = 'Article updated successfully';
-									} elseif(isset($_POST['add']))
-									{
-										$_SESSION['message'] = 'Article added successfully';
-									}elseif(isset($_POST['draft']))
-									{
-										$_SESSION['message'] = 'Draft saved successfully';
-									}
-									
-									$_SESSION['type'] = 'success';
+									$postEntity->addCategory($categoryId);
+								}
+							}
+	
+							if($postEntity)
+							{
+								// PREVIEW ARTICLE BEFORE PUBLISHING OR WHATEVER
+								if(isset($_POST['preview']))
+								{
+									$postString = strtolower($postEntity->String);
+									echo "<script>window.open(\"/index.php/articles/$postString\")</script>";
 	
 									return [
-										'title' => 'SuperUser panel | Manage Posts',
-										'template' => 'manageposts.html.php',
+										'title' => $_SESSION['Superuser'] ? 'SuperUser panel | Add post' : 'Admin panel | Add post',
+										'template' => 'editpost.html.php',
 										'variables' => [
-											'heading' => 'Manage Posts',
-											'posts' => $this->postsTable->findAll(['Published' => 1], 'Date DESC'),
+											'heading' => 'Edit post',
+											'post' => $postEntity,
+											'id' => $postEntity->Id,
+											'string' => $postEntity->String,
+											'title' => $postEntity->Title,
+											'body' => $postEntity->Body,
+											'description' => $postEntity->Description,
+											'keywords' => $postEntity->Keywords,
+											'published' => $postEntity->Published,
+											'categories' => $this->topics,
 										]
 									];
 								} else 
 								{
-									$_SESSION['message'] = $_POST['edit'] ? 'Article updated successfully' : 'Article added successfully';
-									$_SESSION['type'] = 'success';
-	
-									$author = $this->authentication->getUser();
-									return [
-										'title' =>'Admin panel | Manage Posts',
-										'template' => 'manageposts.html.php',
-										'variables' => [
-											'posts' => $author->getPosts(15),
-											'heading' => 'Manage Posts',
-										]
-									];
+									if($_SESSION['Superuser'])
+									{
+										if(isset($_POST['edit']))
+										{
+											$_SESSION['message'] = 'Article updated successfully';
+										} elseif(isset($_POST['add']))
+										{
+											$_SESSION['message'] = 'Article added successfully';
+										}elseif(isset($_POST['draft']))
+										{
+											$_SESSION['message'] = 'Draft saved successfully';
+										}
+										
+										$_SESSION['type'] = 'success';
+		
+										return [
+											'title' => 'SuperUser panel | Manage Posts',
+											'template' => 'manageposts.html.php',
+											'variables' => [
+												'heading' => 'Manage Posts',
+												'posts' => $this->postsTable->findAll(['Published' => 1], 'Date DESC'),
+											]
+										];
+									} else 
+									{
+										$_SESSION['message'] = $_POST['edit'] ? 'Article updated successfully' : 'Article added successfully';
+										$_SESSION['type'] = 'success';
+		
+										$author = $this->authentication->getUser();
+										return [
+											'title' =>'Admin panel | Manage Posts',
+											'template' => 'manageposts.html.php',
+											'variables' => [
+												'posts' => $author->getPosts(15),
+												'heading' => 'Manage Posts',
+											]
+										];
+									}
 								}
-							}
-						} else 
-						{
-							$_SESSION['message'] = 'An error occurred processing your request';
-							$_SESSION['type'] = 'error';
-
-							return [
-								'title' => $_SESSION['Superuser'] ? 'SuperUser panel | Manage Posts' : 'Admin panel | Manage Posts',
-								'template' => 'addpost.html.php',
-								'variables' => [
-									'posts' => $this->postsTable->findAll(),
-									'heading' => 'Add Post',
-								]
-							];
-						}								
-					}
+							} else 
+							{
+								$_SESSION['message'] = 'An error occurred processing your request';
+								$_SESSION['type'] = 'error';
+	
+								return [
+									'title' => $_SESSION['Superuser'] ? 'SuperUser panel | Manage Posts' : 'Admin panel | Manage Posts',
+									'template' => 'addpost.html.php',
+									'variables' => [
+										'posts' => $this->postsTable->findAll(),
+										'heading' => 'Add Post',
+									]
+								];
+							}								
+						}
+					} else 
+					{
+						$_SESSION['message'] = 'An error occurred processing your request';
+						$_SESSION['type'] = 'error';
+	
+						return [
+							'title' => $title,
+							'template' => 'addpost.html.php',
+							'variables' => [
+								'posts' => $this->postsTable->findAll(),
+								'heading' => 'Add Post',
+							]
+						];
+					}					
 				} else 
 				{
-					$_SESSION['message'] = 'An error occurred processing your request';
-					$_SESSION['type'] = 'error';
-
+					//INCASE ANY OF THE REQUIRED FIELDS IS EMPTY OR INVALID, RETURN AND PREFILL THE POST UPLOAD FORM
+					$title = $post['Title'];
+					$body = $post['Body'];
+					$published = isset($post['Published']) ? 1 : 0;
+					
 					return [
-						'title' => $title,
-						'template' => 'addpost.html.php',
+						'title' => $_SESSION['Superuser'] ? 'SuperUser panel | Add post' : 'Admin panel | Add post',
+						'template' => 'editpost.html.php',
 						'variables' => [
-							'posts' => $this->postsTable->findAll(),
-							'heading' => 'Add Post',
+							'heading' => 'Review post',
+							'title' => $title,
+							'body' => $body,
+							'published' => $published,
+							'categories' => $this->topics,
+							'errors' => $errors,
+							'type' =>'error'
 						]
 					];
-				}					
+				} 
 			} else 
 			{
-				//INCASE ANY OF THE REQUIRED FIELDS IS EMPTY OR INVALID, RETURN AND PREFILL THE POST UPLOAD FORM
-				$title = $post['Title'];
-				$body = $post['Body'];
-				$published = isset($post['Published']) ? 1 : 0;
-				
-				return [
-					'title' => $_SESSION['Superuser'] ? 'SuperUser panel | Add post' : 'Admin panel | Add post',
-					'template' => 'editpost.html.php',
-					'variables' => [
-						'heading' => 'Review post',
-						'title' => $title,
-						'body' => $body,
-						'published' => $published,
-						'categories' => $this->topics,
-						'errors' => $errors,
-						'type' =>'error'
-					]
-				];
-			} 
+				header('location:/index.php/signin');
+			}
 		}
 
 		//MANAGE
 		public function manageposts() 
 		{
-			if(!$this->checkWhetherAdminOrSuperUser())
-			{
-				return false;
-			} else 
+			if($this->checkWhetherAdminOrSuperUser())
 			{
 				if($_SESSION['Superuser'])
 				{
@@ -867,16 +865,16 @@ namespace Specific\Controllers
 							]
 					];
 				}
+			} else 
+			{
+				header('location:/index.php/signin');
 			}
 		}
 
 		//SERVE ADD POST FORM
 		public function addpost() 
 		{
-			if(!$this->checkWhetherAdminOrSuperUser())
-			{
-				return false;
-			} else 
+			if($this->checkWhetherAdminOrSuperUser())
 			{
 				if($_SESSION['Superuser'])
 				{
@@ -907,51 +905,61 @@ namespace Specific\Controllers
 						];
 					}
 				}
+			} else 
+			{
+				header('location:/index.php/signin');
 			}
 		}
 		
 		//SERVE EDIT POST FORM
 		public function editpost()
 		{
-			if(!$this->checkWhetherAdminOrSuperUser())
+			if($this->checkWhetherAdminOrSuperUser())
 			{
-				return false;
+				$idOfPostToEdit = $_POST['post']['id'];
+				$post = $this->postsTable->findOne(['id' => $idOfPostToEdit]);
+	
+				return [
+					'title' => $_SESSION['Superuser'] ? 'SuperUser panel | Add post' : 'Admin panel | Add post',
+					'template' => 'editpost.html.php',
+					'variables' => [
+						'heading' => 'Edit post',
+						'post' => $post,
+						'id' => $post->Id,
+						'string' => $post->String,
+						'title' => $post->Title,
+						'body' => $post->Body,
+						'description' => $post->Description,
+						'keywords' => $post->Keywords,
+						'published' => $post->Published,
+						'categories' => $this->topics,
+					]
+				];
+			} else 
+			{
+				header('location:/index.php/signin');
 			}
-			
-			$idOfPostToEdit = $_POST['post']['id'];
-			$post = $this->postsTable->findOne(['id' => $idOfPostToEdit]);
-
-			return [
-				'title' => $_SESSION['Superuser'] ? 'SuperUser panel | Add post' : 'Admin panel | Add post',
-				'template' => 'editpost.html.php',
-				'variables' => [
-					'heading' => 'Edit post',
-					'post' => $post,
-					'id' => $post->Id,
-					'string' => $post->String,
-					'title' => $post->Title,
-					'body' => $post->Body,
-					'description' => $post->Description,
-					'keywords' => $post->Keywords,
-					'published' => $post->Published,
-					'categories' => $this->topics,
-				]
-			];
 		}
 
 		public function drafts()
 		{
-			$conditions = ['Draft' => 1];
-			$drafts = $this->postsTable->findAll($conditions, 'Date DESC');
-
-			return [
-				'title' => $_SESSION['Superuser'] ? 'SuperUser panel | Add post' : 'Admin panel | Add post',
-				'template' => 'drafts.html.php',
-				'variables' => [
-					'heading' => 'Drafts',
-					'posts' => $drafts,
-				]
-			];			
+			if($this->checkWhetherAdminOrSuperUser())
+			{
+				$conditions = ['Draft' => 1];
+				$drafts = $this->postsTable->findAll($conditions, 'Date DESC');
+	
+				return [
+					'title' => $_SESSION['Superuser'] ? 'SuperUser panel | Add post' : 'Admin panel | Add post',
+					'template' => 'drafts.html.php',
+					'variables' => [
+						'heading' => 'Drafts',
+						'posts' => $drafts,
+					]
+				];
+			} else 
+			{
+				header('location:/index.php/signin');
+			}
 		}
 	}
 }

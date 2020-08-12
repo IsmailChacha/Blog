@@ -12,8 +12,8 @@
       <li><a href="<?php echo BASE_URL.'/private/index.php/profile';?>">Profile</a></li>
       <li><a href="<?php echo BASE_URL.'/private/index.php/manageposts';?>">Manage Posts</a></li>
     <?php else:?>
-      <li><a href="<?php echo BASE_URL.'/user/index.php/dashboard';?>">Dashboard</a></li>
-      <li><a href="<?php echo BASE_URL.'/user/index.php/profile';?>">Profile</a></li>
+      <li><a href="<?php echo BASE_URL.'/user/index.php/dashboard2';?>">Dashboard</a></li>
+      <li><a href="<?php echo BASE_URL.'/user/index.php/profile2';?>">Profile</a></li>
     <?php endif;?>
   </ul>
 </div>

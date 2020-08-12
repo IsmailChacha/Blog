@@ -20,12 +20,10 @@ namespace Specific\Controllers
 			if($user->Superuser)
 			{
 				return true;
-			}else 
+			}else
 			{
 				$this->authentication->logout();
-				$_SESSION['message'] = 'You are not authorized!';
-				$_SESSION['type'] = 'error';
-				return false;
+				return false;				
 			}
 		}
 		
@@ -33,7 +31,6 @@ namespace Specific\Controllers
 		{
 			if($this->superUserOnly())
 			{
-				//display($topics);
 				$title = 'SuperUser Panel | Manage Topics';
 				
 				return [
@@ -43,7 +40,10 @@ namespace Specific\Controllers
 						'topics' => $this->topicsTable->findAll([], 'Name ASC'),
 						'heading' => 'Manage Topics']
 				];
-			}
+			} else
+			{
+				header('location:/index.php/signin');
+			}			
 		}
 		
 		//SERVE ADDTOPIC FORM
@@ -60,9 +60,10 @@ namespace Specific\Controllers
 						'btn' => 'Add topic'
 					]
 				];
+			} else
+			{
+				header('location:/index.php/signin');
 			}
-			
-
 		}
 
 		public function addtopic() 
@@ -121,6 +122,9 @@ namespace Specific\Controllers
 						];
 					}
 				}
+			} else
+			{
+				header('location:/index.php/signin');
 			}
 		}
 
@@ -144,6 +148,9 @@ namespace Specific\Controllers
 						'id' => $topic->Id,
 						'heading' => 'Edit Topic']
 				];
+			} else
+			{
+				header('location:/index.php/signin');
 			}
 		}
 
@@ -171,6 +178,9 @@ namespace Specific\Controllers
 						'topics' => $this->topicsTable->findAll([], 'Name ASC'),
 					]
 				];
+			} else
+			{
+				header('location:/index.php/signin');
 			}
 		}
 
@@ -195,6 +205,9 @@ namespace Specific\Controllers
 						'topics' => $this->topicsTable->findAll([], 'Name ASC'),
 						'heading' => 'Manage Topics'],
 				];
+			} else
+			{
+				header('location:/index.php/signin');
 			}
 		}		
 	}

@@ -1,7 +1,7 @@
 <?php
 namespace Specific\Controllers
 {
-	//SPECIFIES THE CONTROLLERS AND ACTIONS FOR EVERY REQUEST AND REQUEST METHOD AND RETURNS THAT TO ENTRYPOINT
+	//SPECIFIES THE CONTROLLERS AND ACTIONS FOR EVERY REQUEST AND REQUEST METHOD AND RETURNS THAT TO ENTRYPOINT CLASS
 	class BlogRoutes implements \Ninja\Routes
 	{
 		private $usersTable; //USERS TABLE INSTANCE OF DATABASEHANDLER CLASS
@@ -36,6 +36,7 @@ namespace Specific\Controllers
 			$loginController = new \Specific\Controllers\Login($this->authentication);
 
 			//SPECIFIES THE VARIOUS CONTROLLERS AND ACTIONS TO PERFORM FOR EVERY SINGLE REQUEST
+			// THESE CORRESPOND TO PAGES
 			$routes = [
 				//GENERAL 
 				'home' => [
@@ -114,7 +115,23 @@ namespace Specific\Controllers
 					'login' => true,
 				],
 
-				//POSTS
+				'dashboard2' => [
+					'GET' => [
+						'controller' => $userController,
+						'action' => 'dashboard2'
+					],
+					'login' => true,
+				],
+
+				'profile2' => [
+					'GET' => [
+						'controller' => $userController,
+						'action' => 'profile'
+					],
+					'login' => true,
+				],
+
+				//ARTICLES => CONTENT MANAGEMENT SYSTEM
 				'manageposts' => [
 					'GET' => [
 							'controller' => $postController,
@@ -279,6 +296,7 @@ namespace Specific\Controllers
 					'superuser' => true,
 				],
 
+				// OTHERS
 				'contactus' => [
 					'POST' => [
 						'controller' => $userController,
@@ -290,13 +308,6 @@ namespace Specific\Controllers
 					'POST' => [
 						'controller' => $userController,
 						'action' => 'newsLetter',
-					]
-				],
-
-				'loadmore' => [
-					'GET' => [
-						'controller' => $postController,
-						'action' => 'loadmore'
 					]
 				],
 			];

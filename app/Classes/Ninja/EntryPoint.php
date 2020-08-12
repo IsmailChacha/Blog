@@ -51,7 +51,7 @@ namespace Ninja
 			}
 		}
 
-		//ENGINE AND STEERING OF THE APP
+		//ENGINE AND STEERING OF THE WHOLE APP
 		public function run ()
 		{
 			$routes = $this->routes->getRoutes();
@@ -65,51 +65,55 @@ namespace Ninja
 			//IF THE REQUESTED PAGE REQUIRES A LOGGED IN USER => 
 				if(isset($routes[$this->route]['login']) && $routes[$this->route]['login'])
 				{
+					// GET THE USER
 					$user = $authentication->getUser();
 					//WE NEED TO KNOW WHETHER THEY ARE LOGGED IN OR NOT
 					if(isset($routes[$this->route]['login']) && $routes[$this->route]['login'] && $authentication->isLoggedIn())
 					{
-						if((isset($routes[$this->route]['Superuser']) && !$user->Superuser) || (isset($routes[$this->route]['Admin']) && !$user->Admin))
+						if((time() - $_SESSION['Time Of Last LogIn']) > 10)
 						{
-							$_SESSION['message'] = 'Restricted area!';
+							$authentication->logout();
+							$_SESSION['message'] = 'You\'ve been logged out due to inactivity';
 							$_SESSION['type'] = 'error';
-							header('location:' . BASE_URL . '/');
-							exit();
-						} else 
+							header('location: /index.php/signin');
+						}else
 						{
-							if((time() - $_SESSION['Time Of Last LogIn']) > 10)
-							{
-								$authentication->logout();
-								$_SESSION['message'] = 'You\'ve been logged out due to inactivity';
-								$_SESSION['type'] = 'error';
-								header('location: /index.php');
-							}else
-							{
-								$controller = $routes[$this->route][$this->method]['controller'];
-								$action = $routes[$this->route][$this->method]['action'];
-								$page = $controller->$action();
+							$controller = $routes[$this->route][$this->method]['controller'];
+							$action = $routes[$this->route][$this->method]['action'];
 
-								$title = $page['title'];
-								$output = $this->outputBuffer($page);
-								//SERVE THE PAGE
-								echo $this->loadTemplate('layout-two.html.php', 
-											[
-												'output' => $output,
-												'title' => $title,
-											]);			
-							}
+							$page = $controller->$action();
+
+							$title = $page['title'];
+							$output = $this->outputBuffer($page);
+							//SERVE THE PAGE
+							echo $this->loadTemplate('layout-two.html.php', 
+										[
+											'output' => $output,
+											'title' => $title,
+										]);			
 						}
 						//IF THEY ARE NOT LOGGED IN, REDIRECT THEM AND DISPLAY AN ERROR
 					} else if(isset($routes[$this->route]['login']) && $routes[$this->route]['login'] && !$authentication->isLoggedIn())
 					{
 						$_SESSION['message'] = 'You need to login to access your account';
 						$_SESSION['type'] = 'error';
-						header('location:/index.php/signin');
+						header('location:/');
 						exit();
 					}				
 					//REQUESTED PAGE DOESN'T REQUIRE A LOGGED IN USER => GUEST USERS
 				} else 
 				{
+					// BUT THEY COULD STILL BE LOGGED IN:
+					if(isset($_SESSION['Time of Last Login']))
+					{
+						if((time() - $_SESSION['Time Of Last LogIn']) > 10)
+						{
+							$authentication->logout();
+							$_SESSION['message'] = 'You\'ve been logged out due to inactivity';
+							$_SESSION['type'] = 'error';
+							return;
+						}
+					}
 
 					$controller = $routes[$this->route][$this->method]['controller'];
 					$action = $routes[$this->route][$this->method]['action'];

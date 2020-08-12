@@ -4,7 +4,7 @@
 
   try
     {
-      $route = $_GET['route'] ?? 'dashboard';
+      $route = $_GET['route'] ?? 'dashboard2';
       //echo $route;
       $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
       //$route = ltrim(strtok($_SERVER['REQUEST_URI'], '?'), '/');

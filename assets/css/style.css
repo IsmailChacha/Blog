@@ -112,7 +112,7 @@ a {
 }
 
 .text-input:focus {
-  background-color:#ccc;
+  border: 1px solid green;
   color: black;
 }
 
@@ -475,7 +475,7 @@ a:hover {
 }
 
 .image-and-moreinfo  {
-  background-color: ghostwhite;
+  background-color: gainsboro;
   border: 1px solid #ccc;
   margin-bottom: 20px;
 } 
@@ -523,11 +523,6 @@ a:hover {
   transition: all .4s;
 }
 
-.content .main-content .post .post-image:hover {
-  /* transform:scale(1.05);
-  transition: all .4s; */
-}
-
 .content .main-content .post-preview {
   /*width: 100%;*/
   padding: 4px 14px;
@@ -562,15 +557,11 @@ a:hover {
   float: left;
   padding: 0px 2px 2px 8px;
   margin-bottom: 20px;
-  /* border: 1px solid #ccc; */
   border-radius: 5px;
-  /* background: ghostwhite; */
-  /* box-shadow: -.5rem 1rem 1rem -.5rem #a0a0a0; */
 }
 
 .content .sidebar.single {
   padding: 0px 10px 100px;
-  /* border: 1px solid #ccc; */
 }
 
 .content .main-content.single .post-image {
@@ -622,31 +613,15 @@ a:hover {
   display: block;
   padding: 15px 0px;
   border-bottom: 1px solid #e0e0e0;
-  transition: all 0.3s;
 }
 
 .content .sidebar .section.topics ul li a:hover{
   padding-left: 10px;
-  transition: all 0.3s;
 }
 
 
 .content .sidebar .section.contactus .contact-input {
   margin-bottom: 10px;
-}
-
-.content .sidebar .section.contactus .contact-input:focus {
-  color:#ccc;
-}
-
-.content .sidebar .section.contactus .contact-form-wrapper {
-  font-family: "Lora" sans-serif;
-  margin-left: 5px;
-}
-
-.content .sidebar .section.contactus .contact-input:focus {
-  background: #ccc;
-  color:black;
 }
 
 .content .sidebar .section.contactus .contact-btn {
@@ -663,7 +638,6 @@ a:hover {
   min-height: 100%;
   margin: 20px auto 250px;
   background: ghostwhite;
-  border: 1px solid #ccc;
   border-radius: 5px;
 }
 
@@ -924,9 +898,10 @@ header ul li ul li a{
 
 .auth-content {
   margin: 30px auto 290px;
-  width: 100%;
+  width: 90%;
   background: ghostwhite;
   padding: 2px 16px;
+  border: none
 } 
 
 .content .main-content .post  {

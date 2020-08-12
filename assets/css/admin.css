@@ -55,6 +55,19 @@ header {
 .admin-content .page-title {
   text-align: center;
   margin: 1.5rem;
+  background: #06d3d5 !important;
+  background: -moz-linear-gradient(-68deg,#b22f2f 30%,#e8a319 80%) !important;
+  background: -webkit-linear-gradient(-68deg,#b22f2f 30%,#e8a319 80%) !important;
+  background: linear-gradient(156deg,#b22f2f 30%,#e8a319 80%) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: bold;
+  font-size: 30px;
+  padding: 10px;
+  text-align: center;
+  margin-bottom: 10px; 
+  font-family: 'Roboto', sans-serif;  
 }
 
 table {

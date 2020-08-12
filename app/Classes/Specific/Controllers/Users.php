@@ -24,20 +24,19 @@ namespace Specific\Controllers
 			} else if($user->Admin)//ADMIN
 			{
 				return true;
-			} else{
-				return false;
 			}
 		}
 
 		private function superUserOnly()
 		{
 			$user = $this->authentication->getUser();
-			if(!$user->Superuser)
+			if($user->Superuser)
+			{
+				return true;
+			}else
 			{
 				$this->authentication->logout();
-				$_SESSION['message'] = 'You are not authorized!';
-				$_SESSION['type'] = 'error';
-				return false;
+				return false;				
 			}
 		}
 
@@ -58,16 +57,21 @@ namespace Specific\Controllers
 				];
 			} else 
 			{
-				$title = 'My account';
-
-				return [
-					'title' => $title,
-					'template' => 'userdashboard.html.php',
-					'variables' => [
-							'title' => 'Dashboard',
-					],
-				];
+				header('location:/index.php/signin');
 			}
+		}
+
+		public function dashboard2()
+		{
+			$title = 'My account';
+
+			return [
+				'title' => $title,
+				'template' => 'userdashboard.html.php',
+				'variables' => [
+						'title' => 'Dashboard',
+				],
+			];
 		}
 
 		public function profile()
@@ -88,19 +92,24 @@ namespace Specific\Controllers
 				];
 			} else 
 			{
-				//FETCH INFORMATION ABOUT USER
-				$user = $this->authentication->getUser();
-				$title = 'Profile';
-
-				return [
-					'title' => $title,
-					'template' => 'userprofile.html.php',
-					'variables' => [
-						'title' => 'Profile Information',
-						'user' => $user,
-					]
-				];
+				header('location:/index.php/signin');
 			}
+		}
+
+		public function profile2()
+		{
+			//FETCH INFORMATION ABOUT USER
+			$user = $this->authentication->getUser();
+			$title = 'Profile';
+
+			return [
+				'title' => $title,
+				'template' => 'userprofile.html.php',
+				'variables' => [
+					'title' => 'Profile Information',
+					'user' => $user,
+				]
+			];
 		}
 
 		//SERVE REGISTRATION FORM
@@ -119,19 +128,19 @@ namespace Specific\Controllers
 			if (empty($user['FirstName'])) 
 			{
 				$valid = false;
-				$errors [] = 'First name cannot be blank';
+				$errors [] = 'First name cannot be empty';
 			}
 
 			if (empty($user['LastName'])) 
 			{
 				$valid = false;
-				$errors [] = 'Last name cannot be blank';
+				$errors [] = 'Last name cannot be empty';
 			}
 
 			if (empty($user['Email'])) 
 			{
 				$valid = false;
-				$errors [] = 'Email cannot be blank';
+				$errors [] = 'Email cannot be empty';
 
 			}else if (filter_var($user['Email'], FILTER_VALIDATE_EMAIL) === false)
 			{
@@ -155,7 +164,7 @@ namespace Specific\Controllers
 			if (empty($user['Password'])) 
 			{
 				$valid = false;
-				$errors [] = 'Password cannot be blank';
+				$errors [] = 'Password cannot be empty';
 			}
 
 			return ['errors' => $errors, 'valid' => $valid];			
@@ -229,22 +238,23 @@ namespace Specific\Controllers
 		{
 			if($this->superUserOnly())
 			{
-				return false;
+				$conditions = ['Admin' => 1];
+				$authors = $this->usersTable->findAll($conditions);
+	
+				$title = 'SuperUser Panel | Manage Users';
+	
+				return [
+					'title' => $title,
+					'template' => 'manageauthors.html.php',
+					'variables' => [
+						'heading' => 'Manage authors',
+						'authors' => $authors,
+					]
+				];
+			} else
+			{
+				header('location:/index.php/signin');
 			}
-			
-			$conditions = ['Admin' => 1];
-			$authors = $this->usersTable->findAll($conditions);
-
-			$title = 'SuperUser Panel | Manage Users';
-
-			return [
-				'title' => $title,
-				'template' => 'manageauthors.html.php',
-				'variables' => [
-					'heading' => 'Manage authors',
-					'authors' => $authors,
-				]
-			];
 		}
 
 		//PROMOTE USER 
@@ -252,34 +262,6 @@ namespace Specific\Controllers
 		{
 			if($this->superUserOnly())
 			{
-				return false;
-			}
-
-			$title = 'SuperUser Panel | Create author';
-
-			return [
-				'title' => $title,
-				'template' => 'createauthor.html.php',
-				'variables' => [
-					'heading' => 'Enter user\'s validated email',
-				]
-			];
-		}
-
-		public function searchUserToPromote() 
-		{
-			if($this->superUserOnly())
-			{
-				return false;
-			}	
-
-			$conditions = ['Email' => filter_var(strtolower($_POST['email']), FILTER_VALIDATE_EMAIL)];
-			$users = $this->usersTable->findAll($conditions);
-
-			if(count($users) === 0)
-			{
-				$_SESSION['message'] = 'User with that email is not yet registered.';
-				$_SESSION['type'] = 'error';
 
 				$title = 'SuperUser Panel | Create author';
 
@@ -289,44 +271,75 @@ namespace Specific\Controllers
 					'variables' => [
 						'heading' => 'Enter user\'s validated email',
 					]
-				];				
-			} else 
+				];
+			} else
 			{
-				$user = $users[0];
-			
-				if($user->Admin)
+				header('location:/index.php/signin');
+			}
+		}
+
+		public function searchUserToPromote() 
+		{
+			if($this->superUserOnly())
+			{
+				$conditions = ['Email' => filter_var(strtolower($_POST['email']), FILTER_VALIDATE_EMAIL)];
+				$users = $this->usersTable->findAll($conditions);
+	
+				if(count($users) === 0)
 				{
-					$_SESSION['message'] = 'User is already an author. Do you want to demote them?';
+					$_SESSION['message'] = 'User with that email is not yet registered.';
 					$_SESSION['type'] = 'error';
-
-					$title = 'SuperUser Panel | Demote user';
-
+	
+					$title = 'SuperUser Panel | Create author';
+	
 					return [
 						'title' => $title,
-						'template' => 'promoteauthor.html.php',
+						'template' => 'createauthor.html.php',
 						'variables' => [
-							'heading' => 'Demote author',
-							'user' => $user,
-							'btn' => 'Demote author'
+							'heading' => 'Enter user\'s validated email',
 						]
-					];	
+					];				
 				} else 
 				{
-					$_SESSION['message'] = 'User found. Proceed.';
-					$_SESSION['type'] = 'success';
-
-					$title = 'SuperUser Panel | Promote user';
-
-					return [
-						'title' => $title,
-						'template' => 'promoteauthor.html.php',
-						'variables' => [
-							'heading' => 'Promote user',
-							'user' => $user,
-							'errors' => ['User found. Proceed.'],
-						]
-					];	
+					$user = $users[0];
+				
+					if($user->Admin)
+					{
+						$_SESSION['message'] = 'User is already an author. Do you want to demote them?';
+						$_SESSION['type'] = 'error';
+	
+						$title = 'SuperUser Panel | Demote user';
+	
+						return [
+							'title' => $title,
+							'template' => 'promoteauthor.html.php',
+							'variables' => [
+								'heading' => 'Demote author',
+								'user' => $user,
+								'btn' => 'Demote author'
+							]
+						];	
+					} else 
+					{
+						$_SESSION['message'] = 'User found. Proceed.';
+						$_SESSION['type'] = 'success';
+	
+						$title = 'SuperUser Panel | Promote user';
+	
+						return [
+							'title' => $title,
+							'template' => 'promoteauthor.html.php',
+							'variables' => [
+								'heading' => 'Promote user',
+								'user' => $user,
+								'errors' => ['User found. Proceed.'],
+							]
+						];	
+					}
 				}
+			} else
+			{
+				header('location:/index.php/signin');
 			}
 		}
 
@@ -334,92 +347,93 @@ namespace Specific\Controllers
 		{
 			if($this->superUserOnly())
 			{
-				return false;
-			}		
-
-			if(!isset($_POST['admin']))
-			{
-				$_POST['admin'] = 0;
-				
-				$record = ['Admin' => $_POST['admin'], 'Id' => $_POST['id']];
-				$affected_rows = $this->usersTable->save($record);
-				$title = 'SuperUser Panel | Manage Users';
-
-				$conditions = ['Admin' => 1];
-				$authors = $this->usersTable->findAll($conditions);
-	
-				foreach($authors as $author)
+				if(!isset($_POST['admin']))
 				{
-					$totalposts = $author->getTotalByAuthor();
-				}
+					$_POST['admin'] = 0;
+					
+					$record = ['Admin' => $_POST['admin'], 'Id' => $_POST['id']];
+					$affected_rows = $this->usersTable->save($record);
+					$title = 'SuperUser Panel | Manage Users';
 	
-				if($affected_rows)
-				{
-					$_SESSION['message'] = 'User striped of author role';
-					$_SESSION['type'] = 'success';
-
-					return [
-						'title' => $title,
-						'template' => 'manageauthors.html.php',
-						'variables' => [
-							'heading' => 'Manage authors',
-							'authors' => $authors,
-							'total' => $totalposts ?? 0,
-						]
-					];	
+					$conditions = ['Admin' => 1];
+					$authors = $this->usersTable->findAll($conditions);
+		
+					foreach($authors as $author)
+					{
+						$totalposts = $author->getTotalByAuthor();
+					}
+		
+					if($affected_rows)
+					{
+						$_SESSION['message'] = 'User striped of author role';
+						$_SESSION['type'] = 'success';
+	
+						return [
+							'title' => $title,
+							'template' => 'manageauthors.html.php',
+							'variables' => [
+								'heading' => 'Manage authors',
+								'authors' => $authors,
+								'total' => $totalposts ?? 0,
+							]
+						];	
+					} else 
+					{
+						$_SESSION['message'] = 'An error occurred';
+						$_SESSION['type'] = 'error';
+	
+						return [
+							'title' => $title,
+							'template' => 'createauthor.html.php',
+							'variables' => [
+								'heading' => 'Manage authors',
+							]
+						];	
+					}			
 				} else 
 				{
-					$_SESSION['message'] = 'An error occurred';
-					$_SESSION['type'] = 'error';
-
-					return [
-						'title' => $title,
-						'template' => 'createauthor.html.php',
-						'variables' => [
-							'heading' => 'Manage authors',
-						]
-					];	
-				}			
-			} else 
-			{
-				$record = ['Admin' => $_POST['admin'], 'Id' => $_POST['id']];
-				$affected_rows = $this->usersTable->save($record);
-				$conditions = ['Admin' => 1];
-				$authors = $this->usersTable->findAll($conditions);
-				$title = 'SuperUser Panel | Manage Users';
+					$record = ['Admin' => $_POST['admin'], 'Id' => $_POST['id']];
+					$affected_rows = $this->usersTable->save($record);
+					$conditions = ['Admin' => 1];
+					$authors = $this->usersTable->findAll($conditions);
+					$title = 'SuperUser Panel | Manage Users';
+		
+					foreach($authors as $author)
+					{
+						$totalposts = $author->getTotalByAuthor();
+					}
+		
+					if($affected_rows)
+					{
+						$_SESSION['message'] = 'User promoted to an author';
+						$_SESSION['type'] = 'success';
 	
-				foreach($authors as $author)
-				{
-					$totalposts = $author->getTotalByAuthor();
+						return [
+							'title' => $title,
+							'template' => 'manageauthors.html.php',
+							'variables' => [
+								'heading' => 'Manage authors',
+								'authors' => $authors,
+								'total' => $totalposts ?? 0,
+							]
+						];
+					} else 
+					{
+						$_SESSION['message'] = 'An error occurred';
+						$_SESSION['type'] = 'error';
+	
+						return [
+							'title' => $title,
+							'template' => 'createauthor.html.php',
+							'variables' => [
+								'heading' => 'Manage authors',
+							]
+						];	
+					}		
 				}
-	
-				if($affected_rows)
-				{
-					$_SESSION['message'] = 'User promoted to an author';
-					$_SESSION['type'] = 'success';
-
-					return [
-						'title' => $title,
-						'template' => 'manageauthors.html.php',
-						'variables' => [
-							'heading' => 'Manage authors',
-							'authors' => $authors,
-							'total' => $totalposts ?? 0,
-						]
-					];
-				} else 
-				{
-					$_SESSION['message'] = 'An error occurred';
-					$_SESSION['type'] = 'error';
-
-					return [
-						'title' => $title,
-						'template' => 'createauthor.html.php',
-						'variables' => [
-							'heading' => 'Manage authors',
-						]
-					];	
-				}		
+			} else
+			{
+				header('location:/index.php/signin');
 			}
 		}
 

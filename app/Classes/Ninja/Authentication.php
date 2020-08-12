@@ -1,7 +1,8 @@
 <?php
 namespace Ninja
 {
-	class Authentication
+	// AUTH CLASS
+	class Authentication 
 	{
 		private $usersTable;
 		private $user;
@@ -16,7 +17,7 @@ namespace Ninja
 			$this->passwordColumn = $passwordColumn;
 		}
 
-		//LOGIN USERS
+		//LOGIN 
 		public function login($username, $password) 
 		{
 			$username = strtolower($username);
@@ -33,7 +34,7 @@ namespace Ninja
 			if(!empty($users) && password_verify($password, $users[0]->{$this->passwordColumn}))
 			{
 				$user = $users[0];
-				session_regenerate_id();
+				session_regenerate_id(); //REGENERATE SESSION ID
 
 				//SET SESSION VARIABLES
 				$_SESSION['Time Of Last LogIn'] = time();

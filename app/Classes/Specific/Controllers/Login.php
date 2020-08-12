@@ -1,7 +1,7 @@
 <?php
 namespace Specific\Controllers
 {
-	//HADNLE LOGINS
+	//HANDLES LOGINS
 	class Login
 	{
 		private $authentication; //AUTHENTICATION CLASS INSTANCE

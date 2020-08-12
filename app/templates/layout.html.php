@@ -50,7 +50,7 @@
     <?php endforeach;?>
   </div>
 
-  <i class="fas fa-arrow-up" id="scroll-arrow" title="Go to the top"></i>
+  <i class="fa fa-chevron-up chevron-up" id="scroll-arrow" title="Go to the top"></i>
 
   <!-- GENERATED CONTENT -->
     <?php echo $output; ?>
