@@ -27,10 +27,7 @@
               </form>
             </td>
             <td>
-              <form action="<?php echo BASE_URL . '/private/index.php/deletetopic';?>" method="post">
-                <input type="hidden" name="post[id]" value="<?php echo $topic->Id;?>">
-                <input type="submit" name="submit" value="Delete">
-              </form>
+              <a href="javascript:deleteTopic('<?php echo $topic->Name;?>', '<?php echo $topic->Id;?>')" class="publish">Delete</a></td>
             </td>
           </tr>
         <?php endforeach;?>          

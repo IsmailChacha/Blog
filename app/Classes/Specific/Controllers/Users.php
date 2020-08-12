@@ -174,7 +174,7 @@ namespace Specific\Controllers
 		private function generateDate() 
 		{
 			$date = new \DateTime(); 
-			$formatedDate = $date->format('Y-m-d');
+			$formatedDate = $date->format('Y-m-d H:i:s');
 			return $formatedDate;
 		}
 

@@ -88,3 +88,21 @@
     tinycomments_mode: 'embedded',
     tinycomments_author: 'Author name',
   });
+
+  // ASK FOR CONFIRMATION TO DELETE 
+  function deleteArticle(Title, String)
+  {
+    if(confirm("Are you to delete the article '" + Title + "'?"))
+    {
+      window.location.href = '/private/index.php/delete/article/' + String;
+    }
+  }
+
+  // ASK FOR CONFIRMATION TO DELETE 
+  function deleteTopic(Name, Id)
+  {
+    if(confirm("Are you sure to delete the topic '" + Name + "'?"))
+    {
+      window.location.href = '/private/index.php/deletetopic/topic/' + Id;
+    }
+  }

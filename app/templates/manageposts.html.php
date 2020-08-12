@@ -35,17 +35,20 @@
                   </td>
                     <?php if($_SESSION['Superuser']): ?>
                       <td>
-                        <form action="<?php echo BASE_URL . '/private/index.php/deletepost';?>" method="post">
+                        <!-- <form action="<?php echo BASE_URL . '/private/index.php/deletepost';?>" method="post">
                           <input type="hidden" name="post[id]" value="<?php echo $post->Id;?>">
                           <input type="submit" name="submit" value="Delete">
-                        </form>
+                        </form> -->
+
+                        <!-- TRYING OUT A NEW APROACH TO DELETING ATICLES -->
+                        <a href="javascript:deleteArticle('<?php echo $post->Title;?>', '<?php echo $post->String;?>')" class="publish">Delete</a></td>
                       </td>
                     <?php endif ;?>
                     <?php if($post->Published):?>
                       <td>
-                      <a href="<?php echo BASE_URL . '/private/index.php/visibility/unpublish/'.$post->Id;?>" class="publish">Unpublish</a></td>
+                      <a href="<?php echo BASE_URL . '/private/index.php/visibility/unpublish/'.$post->Id;?>" class="publish" rel="nofollow">Unpublish</a></td>
                     <?php else:?>
-                      <td><a href="<?php echo BASE_URL . '/private/index.php/visibility/publish/'.$post->Id;?>" class="publish">Publish</a></td>
+                      <td><a href="<?php echo BASE_URL . '/private/index.php/visibility/publish/'.$post->Id;?>" class="publish" rel="nofollow">Publish</a></td>
                     <?php endif; ?>
                 </tr>
               </tbody>

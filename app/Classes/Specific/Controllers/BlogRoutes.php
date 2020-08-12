@@ -170,8 +170,12 @@ namespace Specific\Controllers
 					'admin' => true,
 				],
 				
-				'deletepost' => [
+				'delete' => [
 					'POST' => [
+						'controller' => $postController,
+						'action' => 'delete'
+					],
+					'GET' => [
 						'controller' => $postController,
 						'action' => 'delete'
 					],
@@ -219,7 +223,7 @@ namespace Specific\Controllers
 				],
 
 				'deletetopic' => [
-					'POST' => [
+					'GET' => [
 						'controller' => $topicsController,
 						'action' => 'deletetopic'
 					],

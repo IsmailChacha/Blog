@@ -189,8 +189,8 @@ namespace Specific\Controllers
 		{
 			if($this->superUserOnly())
 			{
-				$topic = $_POST['post']['id'];
-				$condition = ['id' => $topic];
+				$condition = ['Id' => $_GET['specificId']];
+
 				$post = $this->topicsTable->delete($condition);
 	
 				$_SESSION['message'] = 'Topic deleted successfully';

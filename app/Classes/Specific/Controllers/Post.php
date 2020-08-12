@@ -412,37 +412,41 @@ namespace Specific\Controllers
 		{
 			if($this->superUserOnly())
 			{
-				$post = $_POST['post'];
-				$condition = ['id' => $post['id']];
-				$affected_rows = $this->postsTable->delete($condition);
-				$title = 'SuperUser Panel | Manage Posts';
-				if($affected_rows)
+				if($this->checkWhetherAdminOrSuperUser())
 				{
-					$_SESSION['message'] = 'Deleted successfully';
-					$_SESSION['type'] = 'success';
-	
-					return [
-						'title' => $title,
-						'template' => 'manageposts.html.php',
-						'variables' => [
-										'posts' => $this->postsTable->findAll([], 'Date DESC'),
-										'heading' => 'Manage Posts',
-						]
-					];
-				} else 
-				{
-					$_SESSION['message'] = 'An error occurred processing your request';
-					$_SESSION['type'] = 'error';
-	
-					return [
-						'title' => $title,
-						'template' => 'manageposts.html.php',
-						'variables' => [
-										'posts' => $this->posts,
-										'heading' => 'Manage Posts',
-						]
-					];
-				}	
+					$condition = ['String' => $_GET['specificId']];
+					$affected_rows = $this->postsTable->delete($condition);
+					$title = 'SuperUser Panel | Manage Posts';
+
+					if(is_object($affected_rows))
+					{
+						$_SESSION['message'] = 'Deleted successfully';
+						$_SESSION['type'] = 'success';
+		
+						return [
+							'title' => $title,
+							'template' => 'manageposts.html.php',
+							'variables' => [
+											'posts' => $this->postsTable->findAll([], 'Date DESC'),
+											'heading' => 'Manage Posts',
+							]
+						];
+					}
+					} else 
+					{
+						$title = 'SuperUser Panel | Manage Posts';
+						$_SESSION['message'] = 'An error occurred processing your request';
+						$_SESSION['type'] = 'error';
+		
+						return [
+							'title' => $title,
+							'template' => 'manageposts.html.php',
+							'variables' => [
+											'posts' => $this->posts,
+											'heading' => 'Manage Posts',
+							]
+						];
+					}	
 			} else 
 			{
 				header('location:/index.php/signin');
@@ -594,7 +598,7 @@ namespace Specific\Controllers
 		private function generateDate() 
 		{
 			$date = new \DateTime(); 
-			$formatedDate = $date->format('Y-m-d');
+			$formatedDate = $date->format('Y-m-d H:i:s');
 			return $formatedDate;
 		}
 
