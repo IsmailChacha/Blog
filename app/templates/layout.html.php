@@ -40,6 +40,24 @@
       nonce="QCPHup8t"></script>
   <!-- //JavaScript SDK For Facebook Page-->
 
+  <!-- mPopup box -->
+  <div id="mpopupBox" class="mpopup">
+      <!-- mPopup content -->
+    <div class="mpopup-content">
+        <div class="mpopup-head">
+            <span class="close">×</span>
+            <h2>Subscibe Our Newsletter</h2>
+        </div>
+        <div class="mpopup-main">
+            <p><input type="text" id="email" placeholder="Enter your email"/></p>
+            <p><input type="submit" value="SUBSCRIBE"/></p>
+        </div>
+        <div class="mpopup-foot">
+            <p>created by CodexWorld</p>
+        </div>
+    </div>
+  </div>
+
   <div class="navigation">
     <?php foreach($_GET['navigationLink'] as $key => $value):?>
       <?php if($key == $_GET['currentPage']):?>
@@ -66,13 +84,15 @@
   <!-- jQuery-->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
     integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+  <!-- jQuery || To be removed during deployment-->
+  <script src="<?php echo BASE_URL . '/assets/libraries/jquery-3.5.1.js';?>"></script>
+    
+  <!-- jQuery Cookie Plugin -->
+  <!-- <script src="<?php echo BASE_URL . '/assets/jquery/jquerycookie/jquery.cookie.js'?>"></script> -->
 
   <!-- Custom scripts -->
   <script src="<?php echo BASE_URL . '/assets/js/scripts.js'; ?>"></script>
 
-  <!-- jQuery || To be removed during deployment-->
-  <script src="<?php echo BASE_URL . '/assets/libraries/jquery-3.5.1.js';?>"></script>
-    
   <!--  PRISM-->
   <script src="<?php echo BASE_URL . '/assets/prism/prism.js';?>"></script>
   <!-- <script src="https://myCDN.com/prism@v1.x/components/prism-okaidia.min.js"></script>

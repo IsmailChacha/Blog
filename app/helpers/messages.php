@@ -1,8 +1,8 @@
 <?php if(isset($_SESSION['message'])):?>
-  <div class="msg <?php echo $_SESSION['type'];?>">
+  <div class="msg <?php echo $_SESSION['type'];?>" id="msg" >
     <?php echo $_SESSION['message']?>
-
-    <?php  
+    <span id="closeNotification">X</span>
+    <?php
       unset($_SESSION['message']);
       unset($_SESSION['type']);
     ?>

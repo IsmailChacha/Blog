@@ -157,6 +157,10 @@ namespace Specific\Controllers
 					],
 
 				'editarticle' => [
+					'POST' => [
+						'controller' => $postController,
+						'action' => 'save'
+					],
 					'GET' => [
 						'controller' => $postController,
 						'action' => 'editpost'

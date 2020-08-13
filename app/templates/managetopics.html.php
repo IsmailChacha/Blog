@@ -14,12 +14,14 @@
       <thead>
         <th>SN</th>
         <th>Name</th>
+        <th>Articles</th>
         <th colspan="2">Action</th>
       <tbody>
         <?php foreach ($topics as $key => $topic):?>
           <tr>
             <td><?php echo $key + 1; ?></td>
             <td><?php echo $topic->Name; ?></td>
+            <td><?php echo $topic->totalPosts(); ?></td>
             <td>
               <a href="<?php echo BASE_URL . '/private/index.php/edittopic/topic/'.$topic->Id;?>" class="publish" rel="nofollow">Edit</a>
             </td>

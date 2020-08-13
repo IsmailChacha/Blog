@@ -18,6 +18,7 @@ namespace Specific\Entity
 		public function getPosts($limit = null, $offset = null)
 		{
 			$conditions = ['TopicId' => $this->Id];
+			
 			$postCategories = $this->postCategoriesTable->findAll($conditions, null, $limit, $offset);
 			$posts = [];
 			foreach($postCategories as $postCategory)
@@ -29,8 +30,8 @@ namespace Specific\Entity
 				}
 			}
 
-			usort($posts, [$this, 'sortPosts']);
-			return $posts;
+			// usort($posts, [$this, 'sortPosts']);
+			return array_reverse($posts);
 		}
 
 		public function totalPosts()
@@ -42,14 +43,14 @@ namespace Specific\Entity
 		{
 			$aDate = new \DateTime($a->Date);
 			$bDate = new \DateTime($b->Date);
-			$atimestamp =  $aDate->getTimestamp();
-			$btimestamp =  $bDate->getTimestamp(); 
-			if($atimestamp == $btimestamp)
+			// $atimestamp =  $aDate->getTimestamp();
+			// $btimestamp =  $bDate->getTimestamp(); 
+			if($aDate == $bDate)
 			{
 				return 0;
 			}
 
-			return $atimestamp > $btimestamp ? -1 : 1;
+			return $aDate > $bDate ? -1 : 1;
 		}
 	}
 }

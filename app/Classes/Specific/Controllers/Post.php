@@ -42,11 +42,11 @@ namespace Specific\Controllers
 			if(isset($_GET['subfolder']))
 			{
 				return $this->postsPerTopic();
-			} else  // HANDLE THE PAGE 1 OF ARTICLES PER TOPIC PAGE {TOPICS.HTML.PHP}
+			} else  // HANDLE THE PAGE 1 OF ARTICLES PER TOPIC PAGE {TOPICPOSTS.HTML.PHP}
 			{
 				$page = 1; // PAGE 1
-				$limit = 5; // NUMBER TO SELECT
-				$offset = ($page-1) * 5; // OFFSET
+				$limit = 8; // NUMBER TO SELECT
+				$offset = 0; // OFFSET
 				$posts = []; //INITIALIZE EMPTY POSTS ARRAY
 
 				//SELECT POSTS BY TOPIC
@@ -59,7 +59,7 @@ namespace Specific\Controllers
 					$topicPosts = $topic->getPosts($limit, $offset); // GET ARTICLES ENCAPSULATED IN EACH TOPIC
 					$posts[$topic->Name] = $topicPosts; // CREATE AN ENTRY IN POSTS ARRAY WITH KEY BEING TOPIC NAME AND VALUE BEING THE TOPIC ARTICLES
 				}
-				// display($currentPage);
+				// display(count($posts['PYTHON']));
 				$title = self::TITLE;
 				$output = '';
 
@@ -95,171 +95,144 @@ namespace Specific\Controllers
 		private function postsPerTopic()
 		{
 			$string = $_GET['subfolder'];
-
-			if($present = (strstr($string, 'page='))) //CHECK IF A PAGE VARIABLE IS SET IN URL
+			$topic = $this->topicsTable->findOne(['Name' => str_replace('-', ' ', strtoupper($string))]);
+			if(is_object($topic))
 			{
-				// PAGINATION INSIDE /TOPICS/
-				$position = stripos($present, '=');
-				// PICK PAGE NUMBE FROM URL VARIABLE
-				$page = substr($present, ($position +1));
-				// TURN PAGE NUMBERS INTO OFFSETS
-				$limit = 15; //NUMBER TO SELECT FROM DB
-				$offset = ($page-1) * 15;//OFFSET
-				$posts = $this->postsTable->findAll([], 'Date DESC', $limit, $offset); //SELECT THE POSTS
+				$topicname = $topic->Name;
 
-				$variables = ['title' => self::TITLE,
-				'template' => 'topicposts.html.php',
-				'variables' => [ 
-					'heading' => 'Articles Per Topic',
-					'popularPosts' =>$this->popularPosts(),
-					'topicPosts' => $posts,
-					'totalTopicPosts' => $this->postsTable->total(['Published' => 1]),
-					'currentPage' => $page,
-					]
-				];
-
-				return $variables; // RETURN FOR OB INTO TEMPLATE
-
-			} else //IF NO PAGE VARIABLE IS PRESENT IN URI, THEN THEY DEFINITELY WANT TO DO SMTH IN THE TOPICS FOLDER
-			{ 
-				$topic = $this->topicsTable->findOne(['Name' => str_replace('-', ' ', strtoupper($string))]);
-
-				if(is_object($topic))
+				//THEY WANT TO VIEW ARTICLES INSIDE THAT PARTICULAR TOPIC
+				//WE NEED TO FIGURE OUT WHETHER THEY ARE VISITING THE FIRST PAGE OR THEY ARE MOVING PAGES - PAGINATION
+				if(isset($_GET['specific']) && ($_GET['specific'] !== '' || empty($_GET['specific'])))
 				{
-					$topicname = $topic->Name;
 
-					//THEY WANT TO VIEW ARTICLES INSIDE THAT PARTICULAR TOPIC
-					//WE NEED TO FIGURE OUT WHETHER THEY ARE VISITING THE FIRST PAGE OR THEY ARE MOVING PAGES - PAGINATION
-					if(isset($_GET['specific']) && ($_GET['specific'] !== '' || empty($_GET['specific'])))
+					//THEY ARE NAVIGATING INSIDE TOPICS FOLDE, PAGINATION
+					// PAGINATION INSIDE OF A TOPIC E.G TOPICS/CLOUD
+					if($present = (strstr($_GET['specific'], 'page=')))
 					{
-						//THEY ARE NAVIGATING INSIDE TOPICS FOLDE, PAGINATION
-						// PAGINATION INSIDE OF A TOPIC E.G TOPICS/CLOUD
-						if($present = (strstr($_GET['specific'], 'page=')))
-						{
-							$position = stripos($present, '=');
-							// FORM THE PAGE FROM THE URI VARIABLE
-							$page = substr($present, ($position +1));
-							// TURN PAGE NUMBERS INTO OFFSETS
-							$limit = 15;
-							$offset = ($page-1) * 15;
-							$topicPosts = $topic->getPosts($limit, $offset);
-	
-							$variables = ['title' => $topicname,
-							'template' => 'topicposts.html.php',
-							'variables' => [ 
-								'popularPosts' =>$this->popularPosts($topic->Name),
-								'heading' => $topicname,
-								'topicPosts' => $topicPosts,
-								'totalTopicPosts' => $topic->totalPosts(),
-								'currentPage' => $page,
-								]
-							];
-	
-							return $variables;
-							
-						// LOAD MORE
-						} elseif($present = (strstr($_GET['specific'], 'more=')))
-						{
-							// display($topic->Name);
-							$position = stripos($present, '=');
-							// FORM THE PAGE FROM THE URI VARIABLE
-							$page = substr($present, ($position +1));
-							// TURN PAGE NUMBERS INTO OFFSETS
-							$limit = ($page + 1) * 5;
-							$topicPosts = $topic->getPosts($limit);
-							// GENERATE CURRENT PAGES TRACKERS
-							$currentPage = [];
-							// OTHER TOPICS' ARTICLES
-							foreach($this->topics as $topic2)
-							{
-								$currentPage [$topic2->Name]  = 1; //RESET THE REST IF THE TOPICS' ARTICLES
-								$otherTopicsPosts[$topic2->Name] = $topic2->getPosts(5, 0); // GET ARTICLES ENCAPSULATED IN EACH TOPIC
-							}			
-
-							$otherTopicsPosts[$topic->Name] = $topicPosts; // CREATE AN ENTRY IN POSTS ARRAY WITH KEY BEING TOPIC NAME AND VALUE BEING THE TOPIC ARTICLES
-
-							// UPDATE THE PAGE OF THE TOPIC FOR WHICH WE'VE LOADED MORE. TO KEEP TRACK
-							$currentPage [$topic->Name]  = $page + 1;
-
-							// UPDATE $otherTopicsPosts WITH UPDATED ARTICLES FOR LOADED 
-							$otherTopicsPosts[$topic->Name] = $topicPosts;
-							$topicPosts = $otherTopicsPosts;
-							$recentPosts = ['posts' => $topicPosts, 'heading' => 'Articles By Topic'];
-
-							$variables = ['title' => self::TITLE,
-							'template' => 'home.html.php',
-							'variables' => [ 
-								'popularPosts' =>$this->popularPosts($topic->Name),
-								'recentPosts' => $recentPosts,
-								'totalArticles' => $topic->totalPosts(),
-								'currentPage' => $currentPage,
-								]
-							];
-
-							// IF NOT VIEWING ARTICLES INSIDE  TOPICS FOLDER, THEY WANT TO VIEW A SPECIFIC ARTICLE THAT LIVES IN A PARTICULAR TOPIC
-						} else //FETCH A SINGLE POST INSIDE OF THE TOPIC E.G TOPICS/CLOUD/HOW-THE-CLOUD-WORKS
-						{
-							$post = $this->postsTable->findOne(['String' => $_GET['specific']]);
-							$author = $post->getAuthor();
-							$authorName = $author->FirstName . ' ' . $author->LastName;
-							$description = $post->Description ?? 'A simple post';
-							$keywords = $post->Keywords ?? 'Keywords';
-		
-							$variables = ['title' => $post->Title,
-														'authorName' => $authorName,
-														'description' => $description,
-														'keywords' => $keywords,					
-														'template' => 'single.html.php',
-														'variables' => [ 
-																'post' => $post,
-																'popularPosts' => $this->popularPosts($post->Keywords),
-																'topics' => $this->topics,
-														]
-													];
-							unset($_GET['specific']);
-			
-							return $variables;
-						}
-					} else // ARTICLES IN A PARTICULAR TOPIC
-					{
-						$page = 1;
-						$topicname = $topic->Name;
-						$limit = 15;
-						$offset = ($page-1) * 15;
+						$position = stripos($present, '=');
+						// FORM THE PAGE FROM THE URI VARIABLE
+						$page = substr($present, ($position +1));
+						// TURN PAGE NUMBERS INTO OFFSETS
+						$limit = 12;
+						$offset = ($page-1) * $limit;
 						$topicPosts = $topic->getPosts($limit, $offset);
-						// display($_GET['page']);
-	
-						if(empty($topicPosts))
-						{
-							$variables = ['title' => $topicname,
-							'template' => 'topicposts.html.php',
-							'variables' => [ 
-								'heading' => 'We are working to add posts to this topic. Check back soon.',
-								'popularPosts' =>$this->popularPosts(),
+
+						$variables = ['title' => $topicname,
+						'template' => 'topicposts.html.php',
+						'variables' => [ 
+							'popularPosts' =>$this->popularPosts($topic->Name),
+							'heading' => $topicname,
+							'topicPosts' => $topicPosts,
+							'totalTopicPosts' => $topic->totalPosts(),
+							'currentPage' => $page,
 							]
 						];
-						} else 
-						{
-							$variables = ['title' => $topicname,
-							'template' => 'topicposts.html.php',
-							'variables' => [ 
-								'popularPosts' =>$this->popularPosts($topic->Name),
-								'heading' => $topicname,
-								'topicPosts' => $topicPosts,
-								'totalTopicPosts' => $topic->totalPosts(),
-								'currentPage' => $page,
-								]
-							];
-						}
-							return $variables;
-					}					
-				} else //THEY WANTED TO SO SMTH IN TOPICS FOLDER BUT SMTH WENT WRONG FROM THEIR ENT, EITHER MANUAL TYPING INTO ADDRESS BAR
+
+						return $variables;
+						
+					// LOAD MORE
+					} elseif($present = (strstr($_GET['specific'], 'more=')))
 					{
-						$_SESSION['message'] = 'That is not a topic we currently support';
-						$_SESSION['type'] = 'error';
-						header('location:/');					
+						// display($topic->Name);
+						$position = stripos($present, '=');
+						// FORM THE PAGE FROM THE URI VARIABLE
+						$page = substr($present, ($position +1));
+						// TURN PAGE NUMBERS INTO OFFSETS
+						$limit = ($page + 1) * 8;
+						$topicPosts = $topic->getPosts($limit);
+						// GENERATE CURRENT PAGES TRACKERS
+						$currentPage = [];
+						// OTHER TOPICS' ARTICLES
+						foreach($this->topics as $topic2)
+						{
+							$currentPage [$topic2->Name]  = 1; //RESET THE REST IF THE TOPICS' ARTICLES
+							$otherTopicsPosts[$topic2->Name] = $topic2->getPosts(8, 0); // GET ARTICLES ENCAPSULATED IN EACH TOPIC
+						}			
+
+						$otherTopicsPosts[$topic->Name] = $topicPosts; // CREATE AN ENTRY IN POSTS ARRAY WITH KEY BEING TOPIC NAME AND VALUE BEING THE TOPIC ARTICLES
+
+						// UPDATE THE PAGE OF THE TOPIC FOR WHICH WE'VE LOADED MORE. TO KEEP TRACK
+						$currentPage [$topic->Name]  = $page + 1;
+
+						// UPDATE $otherTopicsPosts WITH UPDATED ARTICLES FOR LOADED 
+						$otherTopicsPosts[$topic->Name] = $topicPosts;
+						$topicPosts = $otherTopicsPosts;
+						$recentPosts = ['posts' => $topicPosts, 'heading' => 'Articles By Topic'];
+
+						$variables = ['title' => self::TITLE,
+						'template' => 'home.html.php',
+						'variables' => [ 
+							'popularPosts' =>$this->popularPosts($topic->Name),
+							'recentPosts' => $recentPosts,
+							'totalArticles' => $topic->totalPosts(),
+							'currentPage' => $currentPage,
+							]
+						];
+
+						// IF NOT VIEWING ARTICLES INSIDE  TOPICS FOLDER, THEY WANT TO VIEW A SPECIFIC ARTICLE THAT LIVES IN A PARTICULAR TOPIC
+					} else //FETCH A SINGLE POST INSIDE OF THE TOPIC E.G TOPICS/CLOUD/HOW-THE-CLOUD-WORKS
+					{
+						$post = $this->postsTable->findOne(['String' => $_GET['specific']]);
+						$author = $post->getAuthor();
+						$authorName = $author->FirstName . ' ' . $author->LastName;
+						$description = $post->Description ?? 'A simple post';
+						$keywords = $post->Keywords ?? 'Keywords';
+	
+						$variables = ['title' => $post->Title,
+													'authorName' => $authorName,
+													'description' => $description,
+													'keywords' => $keywords,					
+													'template' => 'single.html.php',
+													'variables' => [ 
+															'post' => $post,
+															'popularPosts' => $this->popularPosts($post->Keywords),
+															'topics' => $this->topics,
+													]
+												];
+						unset($_GET['specific']);
+						unset($_GET['subfolder']);
+		
+						return $variables;
 					}
-				} 
+				} else // ARTICLES IN A PARTICULAR TOPIC
+				{
+					$page = 1;
+					$topicname = $topic->Name;
+					$limit = 12;
+					$offset = 0;
+					$topicPosts = $topic->getPosts($limit, $offset);
+					// display($_GET['page']);
+
+					if(empty($topicPosts))
+					{
+						$variables = ['title' => $topicname,
+						'template' => 'topicposts.html.php',
+						'variables' => [ 
+							'heading' => 'We are working to add posts to this topic. Check back soon.',
+							'popularPosts' =>$this->popularPosts(),
+						]
+					];
+					} else 
+					{
+						$variables = ['title' => $topicname,
+						'template' => 'topicposts.html.php',
+						'variables' => [ 
+							'popularPosts' =>$this->popularPosts($topic->Name),
+							'heading' => $topicname,
+							'topicPosts' => $topicPosts,
+							'totalTopicPosts' => $topic->totalPosts(),
+							'currentPage' => $page,
+							]
+						];
+					}
+						return $variables;
+				}					
+			} else //THEY WANTED TO SO SMTH IN TOPICS FOLDER BUT SMTH WENT WRONG FROM THEIR ENT, EITHER MANUAL TYPING INTO ADDRESS BAR
+			{
+				$_SESSION['message'] = 'That is not a topic we currently support';
+				$_SESSION['type'] = 'error';
+				header('location:/');					
+			}
 
 				unset($_GET['specific']); //REMOVE VARIABLE FORM MEMORY
 
@@ -278,9 +251,9 @@ namespace Specific\Controllers
 					$position = stripos($present, '=');
 					// FORM A PAGE NUMBER FROM IT
 					$page = substr($present, ($position +1));
-					$offset = ($page-1) * 15; // TURN PAGE NUMBER INTO AN OFFSET
+					$limit = 12; //LIMIT
+					$offset = ($page-1) * $limit; // TURN PAGE NUMBER INTO AN OFFSET
 					$order = 'Date DESC'; //ORDER
-					$limit = 15; //LIMIT
 
 					$posts = $this->postsTable->findAll(['Published' => 1], $order, $limit, $offset); //SELECT
 
@@ -301,31 +274,41 @@ namespace Specific\Controllers
 				} else // DISPLAY A SINGLE ARTICLE FOR READING
 				{
 					$string = $_GET['subfolder'];
+					// display($string);
 					$post = $this->postsTable->findOne(['String' => strtolower($string)]);
-					$author = $post->getAuthor();
-					$authorName = $author->FirstName . ' ' . $author->LastName;
-					$description = $post->Description ?? 'A simple post';
-					$keywords = $post->Keywords ?? 'Keywords';
 
-					$variables = ['title' => $post->Title,
-												'authorName' => $authorName,
-												'description' => $description,
-												'keywords' => $keywords,
-												'template' => 'single.html.php',
-												'variables' => [ 
-														'post' => $post,
-														'popularPosts' => $this->popularPosts($post->Keywords),
-														'topics' => $this->topics,
-												]
-											];
-						return $variables;
+					if(is_object($post))
+					{
+						$author = $post->getAuthor();
+						$authorName = $author->FirstName . ' ' . $author->LastName;
+						$description = $post->Description ?? 'A simple post';
+						$keywords = $post->Keywords ?? 'Keywords';
+	
+						$variables = ['title' => $post->Title,
+													'authorName' => $authorName,
+													'description' => $description,
+													'keywords' => $keywords,
+													'template' => 'single.html.php',
+													'variables' => [ 
+															'post' => $post,
+															'popularPosts' => $this->popularPosts($post->Keywords),
+															'topics' => $this->topics,
+													]
+												];
+							return $variables;
+					} else 
+					{
+						$_SESSION['message'] = 'Article not found';
+						$_SESSION['type'] = 'error';
+						header('location:/');
+					}
 				}
 			} else // IF NOT, DISPLAY PAGE OF ARTICLES PAGE
 			{
 				$page = 1;
 				$order = 'Date DESC';
 				$limit = 15;
-				$offset = ($page-1) * 15;
+				$offset = ($page-1) * $limit;
 
 				$posts = $this->postsTable->findAll(['Published' => 1], $order, $limit, $offset);
 				$variables = ['title' => self::TITLE,
@@ -682,9 +665,11 @@ namespace Specific\Controllers
 
 			//remove words, if not helpful to seo
 			//i like my defaults list in remove_words(), so I wont pass that array
-			$words_array = array('a','and','the','an','it','is','can','of','why','not', 'be', 'google', 'fuck', 'on', 'get', 'famous');
 
-			if($remove_words) { $return = $this->remove_words($return, $replace, $words_array); }
+			if($remove_words)
+			{ 
+				$return = $this->remove_words($return, $replace, $words_array); 
+			}
 
 			//convert the spaces to whatever the user wants
 			//usually a dash or underscore..
@@ -693,7 +678,7 @@ namespace Specific\Controllers
 		}
 
 		/* takes an input, scrubs unnecessary words */
-		private function remove_words($input,$replace, $words_array = array(), $unique_words = true)
+		private function remove_words($input, $replace, $words_array = array(), $unique_words = true)
 		{
 			//separate all words based on spaces
 			$input_array = explode(' ',$input);
@@ -715,6 +700,17 @@ namespace Specific\Controllers
 			return implode($replace,$return);
 		}
 
+		// GENERATE A GOOD TITLE
+		/* takes the input, scrubs bad characters */
+		private function generateTitle($input, $replace = ' ') 
+		{
+			//remove punctuation, remove multiple/leading/ending spaces
+			$title = trim(preg_replace('/ +/', ' ', preg_replace('/[^a-zA-Z0-9\s]/', ' ', $input)));
+			// replace any double whitespace with a single whitespace
+			$title = preg_replace('/  [^  ]+?/', ' ', $title);
+			return $title;
+		}
+		
 		//SAVE ARTICLE => ADD || UPDATE 
 		public function save()
 		{
@@ -745,11 +741,12 @@ namespace Specific\Controllers
 						}
 
 						// GENERATE TITLE
-						$post['Title'] = $_POST['post']['Title'];
-						// GENERATE SEO-FRIENDLY URL'S
-						$string = $this->generateSEOLink($post['Title']);
-	
-						$post['String'] = $string;
+						$post['Title'] = $this->generateTitle($_POST['post']['Title']);
+						// WORDS TO REMOVE FROM LINK IF PRESENT
+						$words_array = array('a','and','the','an','it','is','can','of','why','not', 'be', 'google', 'fuck', 'on', 'get', 'famous', 'how', 'to');
+						
+						// GENERATE SEO-FRIENDLY URL
+						$post['String'] = $this->generateSEOLink($post['Title'], '-', true, $words_array); // GENERATE SEO SLUG
 						$post['Published'] = 1;
 						$post['Draft'] = 0;
 	

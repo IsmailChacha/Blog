@@ -9,14 +9,12 @@
 					<?php foreach($topicPosts as $post):?>
 						<div class="post clearfix">
 							<div class="recent-post-image">
-								<a href="/index.php/topics/<?php echo str_replace(' ', '-', trim(strtolower($heading))) . '/' .  $post->String;?>" alt=""><img src="<?php echo BASE_URL . '/assets/images/' . $post->Image;?>" alt="" class="post-image"></a>
+								<a href="/index.php/<?php echo $post->String;?>" alt=""><img src="<?php echo BASE_URL . '/assets/images/' . $post->Image;?>" alt="" class="post-image"></a>
 							</div>
 								
 							<div class="post-preview">
-								<h3><a href="/index.php/topics/<?php echo str_replace(' ', '-', trim(strtolower($heading))) . '/' . $post->String;?>"><?php echo $post->Title;?></a></h3>
-								<a href="/index.php/topics/<?php echo str_replace(' ', '-', trim(strtolower($heading))) . '/' . $post->String;?>"><p class="preview-text"><?php //echo html_entity_decode(substr($post->body, 0, 160)) . '...';?></p></a>
-								<!--<i class="far fa-calendar"> &nbsp;<?php //echo 'Published: ' . date('F j, Y', strtotime($post->date));?></i>    -->
-								<!--<a href="index.php?route=read&id=<?php //echo $post->id;?>" class="btn read-more">Read more</a>-->
+								<h3><a href="/index.php/<?php echo $post->String;?>"><?php echo $post->Title;?></a></h3>
+								<a href="/index.php/<?php echo $post->String;?>"><p class="preview-text">
 							</div>
 						</div>  
 					<?php endforeach;?>
@@ -71,8 +69,8 @@
 			<!-- Single popular post -->
 			<?php foreach($popularPosts['posts'] as $p):?>
 				<div class="post clearfix">
-					<a href="/index.php/articles/<?php echo $p->String;?>"><img src="<?php echo BASE_URL . '/assets/images/' . $p->Image;?>" alt=""></a>
-					<a href="/index.php/articles/<?php echo $p->String;?>" class="title"><h4><?php echo $p->Title;?></h4></a>
+					<a href="/index.php/<?php echo $p->String;?>"><img src="<?php echo BASE_URL . '/assets/images/' . $p->Image;?>" alt=""></a>
+					<a href="/index.php/<?php echo $p->String;?>" class="title"><h4><?php echo $p->Title;?></h4></a>
 				</div>
 			<?php endforeach;?>
 			<!-- //Single popular post -->

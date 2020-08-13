@@ -16,10 +16,10 @@
             <?php endif; ?>
             <?php foreach($postsArray as $post): ?>
                 <div class="post clearfix">
-                  <a href="/index.php/topics/<?php echo str_replace(' ', '-', trim(strtolower($topic))) . '/' .  $post->String;?>" alt=""><img src="<?php echo BASE_URL . '/assets/images/' . $post->Image;?>" alt="<?php echo $post->Description;?>" class="post-image"></a>
+                  <a href="/index.php/<?php echo $post->String;?>" alt=""><img src="<?php echo BASE_URL . '/assets/images/' . $post->Image;?>" alt="<?php echo $post->Description;?>" class="post-image"></a>
                     
                   <div class="post-preview clearfix">
-                    <a href="/index.php/topics/<?php echo str_replace(' ', '-', trim(strtolower($topic))) . '/' .  $post->String;?>"><h4><?php echo $post->Title;?></h4></a>
+                    <a href="/index.php/<?php echo $post->String;?>"><h4><?php echo $post->Title;?></h4></a>
                   </div>
                 </div>  
             <?php endforeach; ?>
@@ -29,14 +29,16 @@
                 // Calculate number of pages
                 $numPages = ceil($totalArticles/15);
                 // Display a link for each page
-                for($i=1; $i<=$numPages;$i++):
-                  foreach($currentPage as $key => $page):
-                    if($topic === $key):
+                if($numPages >= 2):
+                  for($i=1; $i<=$numPages;$i++):
+                    foreach($currentPage as $key => $page):
+                      if($topic === $key):
               ?>
-                  <a href="<?php echo '/index.php/topics/' . str_replace(' ', '-', trim(strtolower($topic))) . '/more='. $page;?>" class="active"><?='Load More';?></a>
-                    <?php endif;?>
-                  <?php endforeach;?>
-                <?php endfor;?>
+                    <a href="<?php echo '/index.php/topics/' . str_replace(' ', '-', trim(strtolower($topic))) . '/more='. $page;?>" class="active"><?='Load More';?></a>
+                      <?php endif;?>
+                    <?php endforeach;?>
+                  <?php endfor;?>
+                <?php endif; ?>
             </div>			               
           </section>
         <?php endforeach;?>     
@@ -73,8 +75,8 @@
           <!-- Single popular post -->
           <?php foreach($popularPosts['posts'] as $p):?>
             <div class="post clearfix">
-              <a href="/index.php/articles/<?php echo $p->String;?>"><img src="<?php echo BASE_URL . '/assets/images/' . $p->Image;?>" alt="<?php echo $p->Description;?>"></a>
-              <a href="/index.php/articles/<?php echo $p->String;?>" class="title"><h4><?php echo $p->Title;?></h4></a>
+              <a href="/index.php/<?php echo $p->String;?>"><img src="<?php echo BASE_URL . '/assets/images/' . $p->Image;?>" alt="<?php echo $p->Description;?>"></a>
+              <a href="/index.php/<?php echo $p->String;?>" class="title"><h4><?php echo $p->Title;?></h4></a>
             </div>
           <?php endforeach;?>
           <!-- //Single popular post -->

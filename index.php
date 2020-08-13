@@ -78,38 +78,57 @@
         $route = 'search';
 			} else 
 			{
-				$routes = explode('/', $_SERVER['REQUEST_URI']);
 
+				$route = 'home'; //SET THE DEFAULT ROUTE INCASE SOMETHING GOES WRONG
+				$routes = explode('/', $_SERVER['REQUEST_URI']);
+				// display2($routes);
 				if($routes == strtok($_SERVER['REQUEST_URI'], '/'))
 				{
 					$route = 'home';
 				}else 
 				{
-					// display2($routes);
 					if(count($routes) > 2)
 					{
-						$route = $routes[2];
- 
-						if(isset($routes[3]))
+						if(count($routes) == 2)
 						{
-						 $_GET['subfolder'] = $routes[3]; 
-						}
-						
-						if(isset($routes[4]))
+							$route = 'home';
+						} elseif(count($routes) == 3)
 						{
-						 $_GET['specific'] = $routes[4]; 
-						}
+							$pages = ['topics', 'mailinglist', 'contactus', 'signup', 'signin', 'signout', 'aboutus'];
+							
+							if(in_array($routes[2], $pages))
+							{
+								$route = $routes[2];
+							} else 
+							{
+								// ROUTE FOR VIEWING ARTICLES
+								$route = 'home';
+								$_GET['subfolder'] = $routes[2];
+							}
 
-						if(isset($routes[5]))
+						} elseif(count($routes) == 4)
 						{
-						 $_GET['page'] = $routes[5]; 
+							if($routes[2] == 'topics')
+							{
+								$route = $routes[2];
+								$_GET['subfolder'] = $routes[3];
+
+							} else 
+							{
+								$route = 'home';
+							}
+						} elseif(count($routes) == 5)
+						{
+							$route = $routes[2];
+							$_GET['subfolder'] = $routes[3];
+							$_GET['specific'] = $routes[4];
 						}
  
 					} else 
 					{
 						$route = 'home';
 					}
-				 }
+				}
 			}
 
 			$method = $_SERVER['REQUEST_METHOD'] ?? 'GET';

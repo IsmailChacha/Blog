@@ -162,7 +162,7 @@ namespace Specific\Controllers
 				$idOfTopicToEdit = $_POST['topic']['id'];
 				$name = strtoupper($_POST['topic']['name']);
 				$description = $_POST['topic']['description'];
-				$topic = ['name' => $name, 'description' => $description, 'id' => $idOfTopicToEdit];
+				$topic = ['Name' => $name, 'Description' => $description, 'Id' => $idOfTopicToEdit];
 				$this->topicsTable->save($topic);
 	
 				$_SESSION['message'] = 'Topic updated successfully';

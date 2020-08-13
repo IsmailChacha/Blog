@@ -9,10 +9,11 @@
       <?php include ROOT_PATH. "/app/helpers/formerrors.php"; ?>
       <?php include ROOT_PATH. "/app/helpers/messages.php"; ?>
       
-      <form action="<?php echo BASE_URL . '/index.php/addpost';?>" method="post" enctype="multipart/form-data">
+      <form action="<?php echo BASE_URL . '/private/index.php/addpost';?>" method="post" enctype="multipart/form-data">
         <div>
-          <label for="title">Title</label><br /><br />
-          <input type="text" name="post[Title]" id="" class="text-input" value="<?php echo $title  ?? '' ;?>">
+          <label for="title">Title</label><br />
+          <p id="statusMessage"></p>
+          <input type="text" name="post[Title]" id="title" class="text-input" value="<?php echo $title  ?? '';?>" maxlength="50">
         </div>
         <div>
           <label for="body">Body</label><br />

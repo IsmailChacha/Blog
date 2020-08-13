@@ -195,14 +195,8 @@ namespace Specific\Controllers
 					$_SESSION['message'] = 'Registration successful. Want to check out your account?';
 					$_SESSION['type'] = 'success';
 					
-					return  [
-						'template' => 'login.html.php', 
-						'title' => 'Login', 
-						'variables' => 
-								[
-								'email' => $user['Email']
-						]
-					];
+					header('location:/index.php/signin');
+					exit();
 				} else 
 				{
 					$_SESSION['message'] = 'An error occurred on our end. Sorry about that.';
@@ -310,15 +304,15 @@ namespace Specific\Controllers
 	
 						$title = 'SuperUser Panel | Demote user';
 	
-						return [
-							'title' => $title,
-							'template' => 'promoteauthor.html.php',
-							'variables' => [
-								'heading' => 'Demote author',
-								'user' => $user,
-								'btn' => 'Demote author'
-							]
-						];	
+							return [
+								'title' => $title,
+								'template' => 'promoteauthor.html.php',
+								'variables' => [
+									'heading' => 'Demote author',
+									'btn' => 'Demote author',
+									'user' => $user
+								]
+							];	
 					} else 
 					{
 						$_SESSION['message'] = 'User found. Proceed.';
@@ -392,7 +386,7 @@ namespace Specific\Controllers
 					}			
 				} else 
 				{
-					$record = ['Admin' => $_POST['admin'], 'Id' => $_POST['id']];
+					$record = ['Admin' => 1, 'Id' => $_POST['id']];
 					$affected_rows = $this->usersTable->save($record);
 					$conditions = ['Admin' => 1];
 					$authors = $this->usersTable->findAll($conditions);

@@ -10,11 +10,11 @@
 					<?php foreach($posts as $post):?>
 						<article class="post clearfix">
 							<div class="recent-post-image">
-								<a href="/index.php/articles/<?php echo $post->String;?>"><img src="<?php echo BASE_URL . '/assets/images/' . $post->Image;?>" alt="<?php echo $post->Description;?>" class="post-image"></a>
+								<a href="/index.php/<?php echo $post->String;?>"><img src="<?php echo BASE_URL . '/assets/images/' . $post->Image;?>" alt="<?php echo $post->Description;?>" class="post-image"></a>
 							</div>
 								
 							<div class="post-preview">
-								<h3><a href="/index.php/articles/<?php echo $post->String;?>"><?php echo $post->Title;?></a></h3>
+								<h3><a href="/index.php/<?php echo $post->String;?>"><?php echo $post->Title;?></a></h3>
 							</div>
 						</article>  
 					<?php endforeach;?>			
@@ -31,9 +31,9 @@
 						for($i=1; $i<=$numPages;$i++):
 							if($i == $currentPage):
 				?>
-								<a href="<?php echo '/index.php/articles/page='. $i;?>" class="active"><?='Page ' .$i?></a>
+								<a href="<?php echo '/index.php/page='. $i;?>" class="active"><?='Page ' .$i?></a>
 							<?php else:?>
-								<a href="<?php echo '/index.php/articles/page='. $i;?>"><?='Page ' .$i?></a>
+								<a href="<?php echo '/index.php/page='. $i;?>"><?='Page ' .$i?></a>
 							<?php endif;?>
 						<?php endfor;?>
 					<?php endif ;?>
@@ -70,8 +70,8 @@
 				<!-- Single popular post -->
 				<?php foreach($popularPosts['posts'] as $p):?>
 					<div class="post clearfix">
-						<a href="/index.php/articles/<?php echo $p->String;?>"><img src="<?php echo BASE_URL . '/assets/images/' . $p->Image;?>" alt="<?php echo $p->Description;?>"></a>
-						<a href="/index.php/articles/<?php echo $p->String;?>" class="title"><h4><?php echo $p->Title;?></h4></a>
+						<a href="/index.php/<?php echo $p->String;?>"><img src="<?php echo BASE_URL . '/assets/images/' . $p->Image;?>" alt="<?php echo $p->Description;?>"></a>
+						<a href="/index.php/<?php echo $p->String;?>" class="title"><h4><?php echo $p->Title;?></h4></a>
 					</div>
 				<?php endforeach;?>
 				<!-- //Single popular post -->

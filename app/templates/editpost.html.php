@@ -10,12 +10,13 @@
       <?php include ROOT_PATH. "/app/helpers/formerrors.php"; ?>
       <?php include ROOT_PATH. "/app/helpers/messages.php"; ?>
       
-      <form action="<?php echo BASE_URL . '/index.php/addpost';?>" method="post" enctype="multipart/form-data">
+      <form action="<?php echo BASE_URL . '/private/index.php/editarticle';?>" method="post" enctype="multipart/form-data">
         <input type="hidden" name="post[Id]" value="<?php echo $id ?? '' ?>">
         <input type="hidden" name="post[String]" value="<?php echo $string ?? '' ?>">
         <div>
           <label for="title">Title</label><br />
-          <input type="text" name="post[Title]" id="" class="text-input" value="<?php echo $title  ?? '' ;?>">
+          <p id="statusMessage"></p>
+          <input type="text" name="post[Title]" id="title" class="text-input" value="<?php echo $title  ?? '' ;?>" maxlength="50">
         </div>
         <div>
           <label for="body">Body</label><br />

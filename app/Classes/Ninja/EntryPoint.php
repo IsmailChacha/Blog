@@ -54,6 +54,7 @@ namespace Ninja
 		//ENGINE AND STEERING OF THE WHOLE APP
 		public function run ()
 		{
+			
 			$routes = $this->routes->getRoutes();
 			$authentication = $this->routes->getAuthentication();
 			$topicsTable = $this->routes->getTopicsTable();

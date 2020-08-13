@@ -56,8 +56,8 @@
           <!-- Single popular post -->
           <?php foreach($popularPosts['posts'] as $p):?>
             <div class="post clearfix">
-              <a href="/index.php/articles/<?php echo $p->String;?>"><img src="<?php echo BASE_URL . '/assets/images/' . $p->Image;?>" alt=""></a>
-              <a href="/index.php/articles/<?php echo $p->String;?>" class="title"><h4><?php echo $p->Title;?></h4></a>
+              <a href="/index.php/<?php echo $p->String;?>"><img src="<?php echo BASE_URL . '/assets/images/' . $p->Image;?>" alt=""></a>
+              <a href="/index.php/<?php echo $p->String;?>" class="title"><h4><?php echo $p->Title;?></h4></a>
             </div>
           <?php endforeach;?>
           <!-- //Single popular post -->
@@ -69,7 +69,7 @@
           <h3 class="section-title">Topics</h3>
           <ul>
             <?php foreach($topics as $topic): ?>
-              <li><a href="<?php echo '/index.php/topics/'.strtolower($topic->Name);?>"><?php echo $topic->Name; ?></a></li>
+              <li><a href="<?php echo '/index.php/topics/'. str_replace(' ', '-', trim(strtolower($topic->Name)));?>"><?php echo $topic->Name; ?></a></li>
             <?php endforeach; ?>            
           </ul>
         </div>
