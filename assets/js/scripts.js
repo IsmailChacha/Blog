@@ -82,8 +82,8 @@
       table: { title: 'Table', items: 'inserttable | cell row column | tableprops deletetable' },
       help: { title: 'Help', items: 'help' }
     },
-    plugins: 'a11ychecker advcode codesample casechange formatpainter linkchecker autolink lists checklist media mediaembed pageembed permanentpen powerpaste table advtable tinycomments tinymcespellchecker',
-    toolbar: 'a11ycheck addcomment codesample showcomments casechange checklist code formatpainter pageembed permanentpen table',
+    plugins: 'a11ychecker advcode codesample casechange formatpainter linkchecker autolink lists checklist media mediaembed pageembed permanentpen powerpaste table advtable tinycomments tinymcespellchecker advlist autolink lists link image charmap print preview anchor searchreplace visualblocks fullscreen insertdatetime media table contextmenu paste',
+    toolbar: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | codesample code showcomments casechange checklist  formatpainter permanentpen addcomment a11ycheck',
     toolbar_mode: 'floating',
     tinycomments_mode: 'embedded',
     tinycomments_author: 'Author name',

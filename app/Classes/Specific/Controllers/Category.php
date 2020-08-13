@@ -133,7 +133,7 @@ namespace Specific\Controllers
 		{
 			if($this->superUserOnly())
 			{
-				$topic = $_POST['post']['id'];
+				$topic = $_GET['specificId'];
 				$condition = ['Id' => $topic];
 				$topic = $this->topicsTable->findOne($condition);
 	

@@ -156,14 +156,10 @@ namespace Specific\Controllers
 					'admin' => true,
 					],
 
-				'editpost' => [
-					'POST' => [
-						'controller' => $postController,
-						'action' => 'editpost'
-					],
+				'editarticle' => [
 					'GET' => [
 						'controller' => $postController,
-						'action' => 'addpost'
+						'action' => 'editpost'
 					],
 					'login' => true,
 					'superuser' => true,
@@ -205,7 +201,7 @@ namespace Specific\Controllers
 
 				//TOPICS
 				'edittopic' => [
-					'POST' => [
+					'GET' => [
 						'controller' => $topicsController,
 						'action' => 'displayedittopicform'
 					],

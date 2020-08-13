@@ -565,9 +565,11 @@ namespace Specific\Controllers
 
 					$result = move_uploaded_file($files['Image']['tmp_name'], $destination);
 
-					if ($result) {
+					if ($result) 
+					{
 						$post['Image'] = $image_name;
-					} else {
+					} else 
+					{
 						$valid = false;
 						array_push($errors, "An error occurred uploading image");
 					}
@@ -578,17 +580,21 @@ namespace Specific\Controllers
 				}				
 			} else 
 			{
-				$image_name = time() .'_'. $files['image_name']['name'];
-				$destination = ROOT_PATH.'/assets/images/' . $image_name;
-
-				$result = move_uploaded_file($files['image_name']['tmp_name'], $destination);
-
-				if ($result) {
-					$post['Image'] = $image_name;
-				} else {
-					$valid = false;
-					array_push($errors, "An error occurred uploading image");
-				}				
+				if(!empty($files['image_name']['name']))
+				{
+					$image_name = time() .'_'. $files['image_name']['name'];
+					$destination = ROOT_PATH.'/assets/images/' . $image_name;
+	
+					$result = move_uploaded_file($files['image_name']['tmp_name'], $destination);
+	
+					if ($result) 
+					{
+						$post['Image'] = $image_name;
+					} else {
+						$valid = false;
+						array_push($errors, "An error occurred uploading image");
+					}				
+				}
 			}
 
 			return ['post' => $post, 'errors' => $errors, 'valid' => $valid];
@@ -647,6 +653,68 @@ namespace Specific\Controllers
 			return ['errors' => $errors, 'valid' => $valid];
 		}
 
+		// GENERATE FRIENDLY TITLE
+		public function title($text){ 
+			// trim
+			$text = trim($text, '-');
+		
+			// transliterate
+			$text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
+		
+			// lowercase
+			$text = ucfirst($text);
+		
+			if (empty($text))
+			{
+				return 'n-a';
+			}
+		
+			return $text;
+		}
+
+		// GENERATE SEO-FRIENDLY URL'S
+
+		/* takes the input, scrubs bad characters */
+		private function generateSEOLink($input, $replace = '-', $remove_words = true, $words_array = array()) 
+		{
+			//make it lowercase, remove punctuation, remove multiple/leading/ending spaces
+			$return = trim(preg_replace('/ +/', ' ', preg_replace('/[^a-zA-Z0-9\s]/', '', strtolower($input))));
+
+			//remove words, if not helpful to seo
+			//i like my defaults list in remove_words(), so I wont pass that array
+			$words_array = array('a','and','the','an','it','is','can','of','why','not', 'be', 'google', 'fuck', 'on', 'get', 'famous');
+
+			if($remove_words) { $return = $this->remove_words($return, $replace, $words_array); }
+
+			//convert the spaces to whatever the user wants
+			//usually a dash or underscore..
+			//...then return the value.
+			return str_replace(' ', $replace, $return);
+		}
+
+		/* takes an input, scrubs unnecessary words */
+		private function remove_words($input,$replace, $words_array = array(), $unique_words = true)
+		{
+			//separate all words based on spaces
+			$input_array = explode(' ',$input);
+
+			//create the return array
+			$return = array();
+
+			//loops through words, remove bad words, keep good ones
+			foreach($input_array as $word)
+			{
+				//if it's a word we should add...
+				if(!in_array($word,$words_array) && ($unique_words ? !in_array($word,$return) : true))
+				{
+					$return[] = $word;
+				}
+			}
+
+			//return good words separated by dashes
+			return implode($replace,$return);
+		}
+
 		//SAVE ARTICLE => ADD || UPDATE 
 		public function save()
 		{
@@ -669,17 +737,17 @@ namespace Specific\Controllers
 				{
 					//FETCH THE AUTHOR OBJECT
 					$authorObject = $this->authentication->getUser();
-					// Generate string identifier
 					if(isset($_POST['add']) || isset($_POST['edit']))
 					{
 						if(isset($_POST['add']))
 						{
 							$post['Date'] = $this->generateDate();
 						}
-	
-						$string = trim(str_replace(' ', '-', strtolower($post['Title'])));
-						// REMOVE ANY UNWANTED CHARACTERS FROM THE STRING
-						$string = preg_replace('/--([^--]+)/', '-', $string);
+
+						// GENERATE TITLE
+						$post['Title'] = $_POST['post']['Title'];
+						// GENERATE SEO-FRIENDLY URL'S
+						$string = $this->generateSEOLink($post['Title']);
 	
 						$post['String'] = $string;
 						$post['Published'] = 1;
@@ -920,8 +988,9 @@ namespace Specific\Controllers
 		{
 			if($this->checkWhetherAdminOrSuperUser())
 			{
-				$idOfPostToEdit = $_POST['post']['id'];
-				$post = $this->postsTable->findOne(['id' => $idOfPostToEdit]);
+				$idOfPostToEdit = $_GET['specificId'];
+
+				$post = $this->postsTable->findOne(['Id' => $idOfPostToEdit]);
 	
 				return [
 					'title' => $_SESSION['Superuser'] ? 'SuperUser panel | Add post' : 'Admin panel | Add post',

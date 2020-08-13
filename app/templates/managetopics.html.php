@@ -21,10 +21,7 @@
             <td><?php echo $key + 1; ?></td>
             <td><?php echo $topic->Name; ?></td>
             <td>
-              <form action="<?php echo BASE_URL . '/private/index.php/edittopic';?>" method="post">
-                <input type="hidden" name="post[id]" value="<?php echo $topic->Id;?>">
-                <input type="submit" name="submit" value="Edit">
-              </form>
+              <a href="<?php echo BASE_URL . '/private/index.php/edittopic/topic/'.$topic->Id;?>" class="publish" rel="nofollow">Edit</a>
             </td>
             <td>
               <a href="javascript:deleteTopic('<?php echo $topic->Name;?>', '<?php echo $topic->Id;?>')" class="publish">Delete</a></td>

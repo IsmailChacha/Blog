@@ -21,7 +21,7 @@
             CKEDITOR.replace( 'body' );
           </script>-->
           <label for="description">Description</label>
-          <input type="text" name="post[Description]" class="text-input" value="<?php echo $Description ?? '' ;?>"/><br />
+          <textarea name="post[Description]" id="body" class="text-input"><?php echo $description ?? ''; ?></textarea>
 
           <label for="keywords">Keywords</label>
           <input type="text" name="post[Keywords]" class="text-input"value="<?php echo $Keywords ?? '' ;?>"/>
