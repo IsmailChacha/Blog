@@ -3,6 +3,7 @@
     <div class="content2">
       <div class="button-group">
         <a href="<?php echo BASE_URL . '/index.php/manageposts';?>" class="btn btn-big">Manage Articles</a>
+        <a href="<?php echo BASE_URL . '/private/index.php/drafts';?>" class="btn btn-big">Drafts</a>
       </div>
 
       <h2 class="page-title"><?php echo $heading; ?></h2>
@@ -11,21 +12,21 @@
       
       <form action="<?php echo BASE_URL . '/private/index.php/addpost';?>" method="post" enctype="multipart/form-data">
         <div>
-          <label for="title">Title</label><br />
+          <label for="title">Title</label><br /><br />
           <p id="statusMessage"></p>
-          <input type="text" name="post[Title]" id="title" class="text-input" value="<?php echo $title  ?? '';?>" maxlength="50">
+          <input type="text" name="post[Title]" id="title" class="text-input" value="<?php echo $title  ?? '';?>" maxlength="70">
         </div>
         <div>
-          <label for="body">Body</label><br />
-          <textarea name="post[Body]" id="body"><?php echo $body ?? '' ;?></textarea> <br /><br />
+          <label for="body">Body</label><br /><br />
+          <textarea name="post[Body]" id="body" class="text-input"><?php echo $body ?? '' ;?></textarea> <br /><br />
           <!--<script>
             CKEDITOR.replace( 'body' );
           </script>-->
-          <label for="description">Description</label>
-          <textarea name="post[Description]" id="body" class="text-input"><?php echo $description ?? ''; ?></textarea>
+          <label for="description">Description</label><br /><br />
+          <textarea name="post[Description]" class="text-input"><?php echo $description ?? ''; ?></textarea><br /><br />
 
-          <label for="keywords">Keywords</label>
-          <input type="text" name="post[Keywords]" class="text-input"value="<?php echo $Keywords ?? '' ;?>"/>
+          <label for="keywords">Keywords</label><br /><br />
+          <textarea name="post[Keywords]" class="text-input"><?php echo $keywords ?? '' ;?></textarea>
         </div>
         <div>
           <label for="image">Image</label><br /><br />

@@ -92,17 +92,6 @@
           </ul>
         </div>
         <!-- Topics section -->
-        <!-- Join Our News Letter -->
-        <div class="section contactus">
-          <h3 class="section-title">Subscribe to our newsletter</h3>
-          <br />
-            <form action="/index.php/mailinglist" method="post">
-              <input type="text" name="newsletter[name]" class="text-input contact-input" placeholder="Name">
-              <input type="email" name="newsletter[email]" class="text-input contact-input" placeholder="Email">
-              <button type="submit" class="btn btn-big contact-btn"> Subscribe </button>
-            </form>
-        </div>
-        <!-- Join Our News Letter -->        
         <!-- Contact us -->
         <div class="section contactus">
           <h3 class="section-title">Contact us</h3>

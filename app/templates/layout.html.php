@@ -45,16 +45,22 @@
       <!-- mPopup content -->
     <div class="mpopup-content">
         <div class="mpopup-head">
-            <span class="close">×</span>
-            <h2>Subscibe Our Newsletter</h2>
+            <span class="close">X</span>
+            <h3 class="">Subscribe to our newsletter</h3>
         </div>
         <div class="mpopup-main">
-            <p><input type="text" id="email" placeholder="Enter your email"/></p>
-            <p><input type="submit" value="SUBSCRIBE"/></p>
+          <!-- Join Our News Letter -->
+          <div class="">
+            <br />
+              <form action="/index.php/mailinglist" method="post">
+                <input type="text" name="newsletter[name]" class="text-input contact-input" placeholder="Name">
+                <input type="email" name="newsletter[email]" class="text-input contact-input" placeholder="Email">
+                <button type="submit" class="btn btn-big contact-btn"> Subscribe </button>
+              </form>
+          </div>
         </div>
-        <div class="mpopup-foot">
-            <p>created by CodexWorld</p>
-        </div>
+        <!-- <div class="mpopup-foot">
+        </div> -->
     </div>
   </div>
 
@@ -82,13 +88,14 @@
 
   <!-- SCRIPTS -->
   <!-- jQuery-->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
-    integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
+    integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script> -->
+
   <!-- jQuery || To be removed during deployment-->
   <script src="<?php echo BASE_URL . '/assets/libraries/jquery-3.5.1.js';?>"></script>
     
   <!-- jQuery Cookie Plugin -->
-  <!-- <script src="<?php echo BASE_URL . '/assets/jquery/jquerycookie/jquery.cookie.js'?>"></script> -->
+  <script src="<?php echo BASE_URL . '/assets/jquery/jquerycookie/jquery.cookie.js'?>"></script>
 
   <!-- Custom scripts -->
   <script src="<?php echo BASE_URL . '/assets/js/scripts.js'; ?>"></script>
@@ -96,6 +103,13 @@
   <!--  PRISM-->
   <script src="<?php echo BASE_URL . '/assets/prism/prism.js';?>"></script>
   <!-- <script src="https://myCDN.com/prism@v1.x/components/prism-okaidia.min.js"></script>
-	<script src="https://myCDN.com/prism@v1.x/plugins/autoloader/prism-autoloader.min.js"></script> -->
+  <script src="https://myCDN.com/prism@v1.x/plugins/autoloader/prism-autoloader.min.js"></script> -->
+  
+  <!-- SMOOTH SCROLL -->
+  <script src="<?php echo BASE_URL . '/assets/js/smoothscroll.js'; ?>"></script>
+
+  <!-- EMAIL LIST -->
+  <script src="<?php echo BASE_URL . '/assets/js/emaillist.js'; ?>"></script>
+
 </body>
 </html>

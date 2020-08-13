@@ -14,7 +14,7 @@
 
   <!-- Custom styles -->
   <link rel="stylesheet" href="<?php echo BASE_URL . '/assets/css/style.css'; ?>">
-
+  
   <!-- Admin styles -->
   <link rel="stylesheet" href="<?php echo BASE_URL . '/assets/css/admin.css'; ?>">
 
@@ -30,7 +30,6 @@
 
 </head>
 <body>
-
   <!-- Admin Header -->
     <?php require_once(ROOT_PATH. '/app/helpers/admin-header.php');?>
   <!-- //Admin Header -->
@@ -53,9 +52,9 @@
   </div>
   <!-- //Admin page wrapper -->
 
-  <!-- Dont forget to add jQuery cdn link when you deploy -->
+  <!-- Dont forget to add jQuery cdn link when you deploy
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
-    integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+    integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script> -->
 
   <!-- jQuery || To be removed during deployment-->
   <script src="<?php echo BASE_URL . '/assets/libraries/jquery-3.5.1.js'; ?>"></script>
@@ -65,5 +64,7 @@
 
   <!-- PRISM  -->
   <script src="<?php echo BASE_URL . '/assets/prism/prism.js';?>"></script>
+  <!-- TINYMCE -->
+  <script src="<?php echo BASE_URL . '/assets/js/tinymce.js';?>"></script>
 </body>
 </html>
