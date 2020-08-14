@@ -97,9 +97,6 @@
   <!-- jQuery Cookie Plugin -->
   <script src="<?php echo BASE_URL . '/assets/jquery/jquerycookie/jquery.cookie.js'?>"></script>
 
-  <!-- Custom scripts -->
-  <script src="<?php echo BASE_URL . '/assets/js/scripts.js'; ?>"></script>
-
   <!--  PRISM-->
   <script src="<?php echo BASE_URL . '/assets/prism/prism.js';?>"></script>
   <!-- <script src="https://myCDN.com/prism@v1.x/components/prism-okaidia.min.js"></script>
@@ -111,5 +108,14 @@
   <!-- EMAIL LIST -->
   <script src="<?php echo BASE_URL . '/assets/js/emaillist.js'; ?>"></script>
 
+  <!-- OPEN AND CLOSE SUBSCRIPTION POPUP -->
+  <script src="<?php echo BASE_URL . '/assets/js/openclosesidenav.js'; ?>"></script>
+ 
+  <!-- CLOSE NOTIFICATION MESSAGES -->
+  <script src="<?php echo BASE_URL . '/assets/js/closeNotifications.js'; ?>"></script>
+ 
+  <!-- Custom scripts -->
+  <!-- <script src="<?php echo BASE_URL . '/assets/js/scripts.js'; ?>"></script> -->
+ 
 </body>
 </html>

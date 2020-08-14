@@ -12,7 +12,7 @@
             <tr>
               <td>All Posts<td>
               <td>Live<td>
-              <td>Invisible<td>
+              <td>Drafts<td>
             </tr>
             <tr>
               <td><?php echo $author->getTotalByAuthor(); ?><td>

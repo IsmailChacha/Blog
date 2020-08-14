@@ -59,11 +59,18 @@
   <!-- jQuery || To be removed during deployment-->
   <script src="<?php echo BASE_URL . '/assets/libraries/jquery-3.5.1.js'; ?>"></script>
 
+  <!-- SMOOTH SCROLL -->
+  <script src="<?php echo BASE_URL . '/assets/js/smoothscroll.js'; ?>"></script>
+
+  <!-- CLOSE NOTIFICATION MESSAGES -->
+  <script src="<?php echo BASE_URL . '/assets/js/closeNotifications.js'; ?>"></script>
+ 
   <!-- Custom scripts -->
   <script src="<?php echo BASE_URL . '/assets/js/scripts.js';?>"></script>
 
   <!-- PRISM  -->
   <script src="<?php echo BASE_URL . '/assets/prism/prism.js';?>"></script>
+  
   <!-- TINYMCE -->
   <script src="<?php echo BASE_URL . '/assets/js/tinymce.js';?>"></script>
 </body>

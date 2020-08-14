@@ -291,7 +291,7 @@ namespace Specific\Controllers
 													'template' => 'single.html.php',
 													'variables' => [ 
 															'post' => $post,
-															'popularPosts' => $this->popularPosts($post->Keywords),
+															'popularPosts' => $this->popularPosts($post->String),
 															'topics' => $this->topics,
 													]
 												];
@@ -445,10 +445,16 @@ namespace Specific\Controllers
 				{
 					$state = 1; 
 					$draft = 0;
+
+					$_SESSION['message'] = 'Article is now live';
+					$_SESSION['type'] = 'success';
 				} elseif($_GET['subfolder'] === 'unpublish')
 				{
 					$state = 0;
 					$draft = 1;
+
+					$_SESSION['message'] = 'Article moved to drafts';
+					$_SESSION['type'] = 'success';
 				}
 				
 				$condition = ['Id' => $_GET['specificId'], 'Published' => $state, 'Draft' => $draft];
@@ -457,10 +463,7 @@ namespace Specific\Controllers
 				$title = $_SESSION['Superuser'] ? 'SuperUser Panel | Manage Posts' : 'Admin Panel | Manage Posts';
 				
 				if($affected_rows)
-				{
-					$_SESSION['message'] = 'Post visibility changed';
-					$_SESSION['type'] = 'success';
-	
+				{	
 					if($_SESSION['Superuser'])
 					{
 						$title = 'SuperUser Panel | Manage Posts';
@@ -743,7 +746,7 @@ namespace Specific\Controllers
 						// GENERATE TITLE
 						$post['Title'] = $this->generateTitle($_POST['post']['Title']);
 						// WORDS TO REMOVE FROM LINK IF PRESENT
-						$words_array = array('a','and','the','an','it','is','can','of','why','not', 'be', 'google', 'fuck', 'on', 'get', 'famous', 'how', 'to');
+						$words_array = array('a','and','the','an','it','is','can','of','why','not', 'be', 'google', 'fuck', 'on', 'get', 'famous', 'how', 'to',);
 						
 						// GENERATE SEO-FRIENDLY URL
 						$post['String'] = $this->generateSEOLink($post['Title'], '-', true, $words_array); // GENERATE SEO SLUG

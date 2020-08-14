@@ -1,7 +1,6 @@
-  
-  // SMOOTH SCROLL
   $(document).ready(function()
   {
+    // SMOOTH SCROLL
     // Add smooth scrolling to all links
     $("#scroll-arrow").on('click', function(event) 
     {
@@ -24,6 +23,14 @@
           window.location.hash = hash;
         });
       } // End if
+    });
+
+    // OPEN AND CLOSE SIDE NAV
+    $('.fuck').on('click', function () 
+    {
+      window.alert('Checking...');
+      $('.nav').toggleClass('display-nav');
+      $('.nav ul').toggleClass('display-nav');
     });
   });
 
@@ -53,3 +60,4 @@
     document.scrollTop = 0; //For Safari
     document.documentElement.scrollTop = 0; //For Chrome, IE and Opera
   }
+  
