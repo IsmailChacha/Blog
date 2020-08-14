@@ -1,4 +1,3 @@
-
   <!-- Admin content -->
   <div class="admin-content">
     <div class="content2">
@@ -10,9 +9,7 @@
       <div class="dashboard-content">
 
       </div>
-
       <!-- //DASHBOARD CONTENT -->
     </div>
   </div>
   <!-- Admin content -->
-  </div>

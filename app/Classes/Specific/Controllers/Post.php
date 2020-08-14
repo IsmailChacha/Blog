@@ -53,12 +53,14 @@ namespace Specific\Controllers
 				// CRITERIA FOR SELECTION
 				// INITIALIZIE CURENT PAGE TRACKER
 				$currentPage = [];
+
 				foreach($this->topics as $topic)
 				{
 					$currentPage[$topic->Name] = 1;
 					$topicPosts = $topic->getPosts($limit, $offset); // GET ARTICLES ENCAPSULATED IN EACH TOPIC
 					$posts[$topic->Name] = $topicPosts; // CREATE AN ENTRY IN POSTS ARRAY WITH KEY BEING TOPIC NAME AND VALUE BEING THE TOPIC ARTICLES
-				}
+				}	
+
 				// display(count($posts['PYTHON']));
 				$title = self::TITLE;
 				$output = '';
@@ -69,6 +71,7 @@ namespace Specific\Controllers
 				{
 					$variables = ['title' => self::TITLE,
 					'template' => 'home.html.php',
+					'description' => $topic->Description,
 					'variables' => [ 
 						'heading' => 'We are working to add posts to this topic. Check back soon.',
 						'popularPosts' =>$this->popularPosts(),
@@ -78,6 +81,7 @@ namespace Specific\Controllers
 				{
 					$variables = ['title' => self::TITLE, 
 					'template' => 'home.html.php',
+					'description' => $topic->Description,
 					'variables' => [
 							'recentPosts' => $recentPosts,
 							'topics' => $this->topics,
@@ -105,7 +109,7 @@ namespace Specific\Controllers
 				if(isset($_GET['specific']) && ($_GET['specific'] !== '' || empty($_GET['specific'])))
 				{
 
-					//THEY ARE NAVIGATING INSIDE TOPICS FOLDE, PAGINATION
+					//THEY ARE NAVIGATING INSIDE TOPICS FOLDER, PAGINATION
 					// PAGINATION INSIDE OF A TOPIC E.G TOPICS/CLOUD
 					if($present = (strstr($_GET['specific'], 'page=')))
 					{
@@ -119,6 +123,7 @@ namespace Specific\Controllers
 
 						$variables = ['title' => $topicname,
 						'template' => 'topicposts.html.php',
+						'description' => $topic->Description,						
 						'variables' => [ 
 							'popularPosts' =>$this->popularPosts($topic->Name),
 							'heading' => $topicname,
@@ -142,12 +147,30 @@ namespace Specific\Controllers
 						$topicPosts = $topic->getPosts($limit);
 						// GENERATE CURRENT PAGES TRACKERS
 						$currentPage = [];
+						$keywords [] = $topic->Name;
 						// OTHER TOPICS' ARTICLES
 						foreach($this->topics as $topic2)
 						{
 							$currentPage [$topic2->Name]  = 1; //RESET THE REST IF THE TOPICS' ARTICLES
 							$otherTopicsPosts[$topic2->Name] = $topic2->getPosts(8, 0); // GET ARTICLES ENCAPSULATED IN EACH TOPIC
-						}			
+							// KEYWORDS
+							$keywords [] = $topic2->Name;
+						}	
+
+						// GENERATE KEYWORDS FOR meta tags
+						$keywordsString = '';
+						$i = 0;
+						foreach($keywords as $value)
+						{
+							if($i == 0)
+							{
+								$keywordsString .= $value;
+							}else 
+							{
+								$keywordsString .= ', ' . $value;
+							}
+							$i++;
+						}
 
 						$otherTopicsPosts[$topic->Name] = $topicPosts; // CREATE AN ENTRY IN POSTS ARRAY WITH KEY BEING TOPIC NAME AND VALUE BEING THE TOPIC ARTICLES
 
@@ -161,6 +184,8 @@ namespace Specific\Controllers
 
 						$variables = ['title' => self::TITLE,
 						'template' => 'home.html.php',
+						'description' => 'Explore our collection of useful learning materials on your path to proficiency in whatever language you are interested in.',
+							'keywords' => $keywordsString,
 						'variables' => [ 
 							'popularPosts' =>$this->popularPosts($topic->Name),
 							'recentPosts' => $recentPosts,
@@ -207,6 +232,7 @@ namespace Specific\Controllers
 					{
 						$variables = ['title' => $topicname,
 						'template' => 'topicposts.html.php',
+						'description' => $topic->Description,
 						'variables' => [ 
 							'heading' => 'We are working to add posts to this topic. Check back soon.',
 							'popularPosts' =>$this->popularPosts(),
@@ -373,6 +399,10 @@ namespace Specific\Controllers
 			} else if($user->Admin)//ADMIN
 			{
 				return true;
+			} else
+			{
+				$this->authentication->logout();
+				return false;
 			}
 		}
 

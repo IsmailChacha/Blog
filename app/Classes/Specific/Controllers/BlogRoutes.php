@@ -126,7 +126,7 @@ namespace Specific\Controllers
 				'profile2' => [
 					'GET' => [
 						'controller' => $userController,
-						'action' => 'profile'
+						'action' => 'profile2'
 					],
 					'login' => true,
 				],

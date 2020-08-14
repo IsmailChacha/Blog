@@ -119,12 +119,11 @@ namespace Ninja
 					$controller = $routes[$this->route][$this->method]['controller'];
 					$action = $routes[$this->route][$this->method]['action'];
 					$page = $controller->$action();
-
 					$title = $page['title'];
 					$page['variables']['topics'] = $topics;
 					$title = $page['title'];
-					$description = $page['description'] ?? 'Get access to the best learning materials for your programming or coding life';
-					$keywords = $page['keywords'] ?? 'Programming, Php, Java';
+					$description = $page['description'] ?? 'Get access to the best learning materials for your programming or coding path';
+					$keywords = $page['keywords'] ?? 'Programming, Php, Java, ';
 					$authorName = $page['authorName'] ?? 'Ismail Chacha';
 
 					//LOAD THE TEMPLATE AND OUTPUT BUFFER INTO THE PAGE REQUESTED
@@ -136,8 +135,8 @@ namespace Ninja
 									'output' => $output,
 									'title' => $title,
 									'topics' => $topics,
-									'description' => $description,
-									'keywords' => $keywords,
+									'description' => strip_tags($description),
+									'keywords' => strip_tags($keywords),
 									'authorName' => $authorName,
 								]);						
 				}

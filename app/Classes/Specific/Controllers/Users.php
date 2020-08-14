@@ -24,6 +24,10 @@ namespace Specific\Controllers
 			} else if($user->Admin)//ADMIN
 			{
 				return true;
+			} else
+			{
+				$this->authentication->logout();
+				return false;
 			}
 		}
 
