@@ -10,12 +10,16 @@
     <?php include ROOT_PATH. "/app/helpers/formerrors.php"; ?>
     <?php include ROOT_PATH. "/app/helpers/messages.php"; ?>
              
+<!-- Admin content -->
+<div>
+  <div>
     <table>
       <thead>
         <th>SN</th>
         <th>Name</th>
         <th>Articles</th>
         <th colspan="2">Action</th>
+      </thead>
       <tbody>
         <?php foreach ($topics as $key => $topic):?>
           <tr>
@@ -31,7 +35,6 @@
           </tr>
         <?php endforeach;?>          
       </tbody>
-      </thead>
     </table>
   </div>
 </div>

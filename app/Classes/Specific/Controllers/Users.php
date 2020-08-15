@@ -44,6 +44,19 @@ namespace Specific\Controllers
 			}
 		}
 
+		private function userOnly()
+		{
+			$user = $this->authentication->getUser();
+			if(!$user->Superuser && !$user->Admin)
+			{
+				return true;
+			}else
+			{
+				$this->authentication->logout();
+				return false;				
+			}
+		}		
+
 		public function dashboard() 
 		{
 			if($this->checkWhetherAdminOrSuperUser())
@@ -62,20 +75,27 @@ namespace Specific\Controllers
 			} else 
 			{
 				header('location:/index.php/signin');
+				exit();
 			}
 		}
 
 		public function dashboard2()
 		{
-			$title = 'My account';
-
-			return [
-				'title' => $title,
-				'template' => 'userdashboard.html.php',
-				'variables' => [
-						'title' => 'Dashboard',
-				],
-			];
+			if($this->userOnly())
+			{
+				$title = 'My account';
+				return [
+					'title' => $title,
+					'template' => 'userdashboard.html.php',
+					'variables' => [
+							'title' => 'Dashboard',
+					],
+				];
+			} else 
+			{
+				header('location:/index.php/signin');
+				exit();
+			}
 		}
 
 		public function profile()
@@ -97,23 +117,32 @@ namespace Specific\Controllers
 			} else 
 			{
 				header('location:/index.php/signin');
+				exit();
 			}
 		}
 
 		public function profile2()
 		{
-			//FETCH INFORMATION ABOUT USER
-			$user = $this->authentication->getUser();
-			$title = 'Profile';
+			if($this->userOnly())
+			{
+				$title = 'My account';
+				//FETCH INFORMATION ABOUT USER
+				$user = $this->authentication->getUser();
+				$title = 'Profile';
 
-			return [
-				'title' => $title,
-				'template' => 'userprofile.html.php',
-				'variables' => [
-					'title' => 'Profile Information',
-					'user' => $user,
-				]
-			];
+				return [
+					'title' => $title,
+					'template' => 'userprofile.html.php',
+					'variables' => [
+						'title' => 'Profile Information',
+						'user' => $user,
+					]
+				];
+			} else 
+			{
+				header('location:/index.php/signin');
+				exit();
+			}
 		}
 
 		//SERVE REGISTRATION FORM
@@ -169,6 +198,12 @@ namespace Specific\Controllers
 			{
 				$valid = false;
 				$errors [] = 'Password cannot be empty';
+			}
+
+			if(count($errors)  >= 4)
+			{
+				unset($errors);
+				$errors[] = 'Please fill out the form';				
 			}
 
 			return ['errors' => $errors, 'valid' => $valid];			
@@ -252,6 +287,7 @@ namespace Specific\Controllers
 			} else
 			{
 				header('location:/index.php/signin');
+				exit();
 			}
 		}
 
@@ -273,6 +309,7 @@ namespace Specific\Controllers
 			} else
 			{
 				header('location:/index.php/signin');
+				exit();
 			}
 		}
 
@@ -338,6 +375,7 @@ namespace Specific\Controllers
 			} else
 			{
 				header('location:/index.php/signin');
+				exit();
 			}
 		}
 
@@ -432,6 +470,7 @@ namespace Specific\Controllers
 			} else
 			{
 				header('location:/index.php/signin');
+				exit();
 			}
 		}
 

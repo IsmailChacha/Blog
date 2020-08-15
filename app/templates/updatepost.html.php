@@ -24,7 +24,7 @@
           <input type="file" name="image_name" id="" class="text-input">
         </div>
         <div>
-        <label for="topic">Topic</label>
+          <label for="topic">Topic</label>
           <select name="post[topic_id]" class="text-input">
             <option value="">Select a topic</option>
 

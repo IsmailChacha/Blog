@@ -1,46 +1,43 @@
-  <!-- Page wrapper -->
-  <div class="page-wrapper">
-    <!-- Content -->
-    <div class="content clearfix">
-      <!-- Main content wrapper -->
-      <div class="main-content-wrapper">
-        <!-- Main content -->
-        <section class="main-content single clearfix">
-          <article class="">
+  <!-- Content -->
+  <section class="content clearfix">
+    <!-- Main content wrapper -->
+    <section class="main-content-wrapper">
+      <!-- Main content -->
+      <section class="main-content single clearfix">
+        <article class="">
 
-            <div class="image-and-moreinfo clearfix">
-              <img src="<?php echo BASE_URL . '/assets/images/' . $post->Image;?>" alt="<?php echo $post->Description;?>" class="post-image" >             
-              <div class="more-info">
-                <h1 class="post-title"><?php echo $post->Title;?></h1>
-                <!-- far fa-user -->
-                <!-- far fa-calendar  -->
-                <span class="post-info"><?php echo 'By ' . $post->getAuthor()->FirstName . ' ' . $post->getAuthor()->LastName; ?></span>
-                <span class="published"><?php echo 'Published on ' . date('l jS F Y', strtotime($post->Date));?></span>
-                 <!-- <div class="socialmedia">
-                    <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-show-count="false">Tweet</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-                </div>  -->
-              </div>     
-                       
-            </div> 
-            
-            <div class="post-content clearfix">
-              <?php echo html_entity_decode($post->Body); ?>
-            </div>            
-          </article>
-        </section>
-        <!-- Main content -->
-      </div>
-      <!-- Main content wrapper -->
-    
-      <!-- Sidebar -->
-      <aside class="sidebar single">
-
+          <section class="image-and-moreinfo clearfix">
+            <img src="<?php echo BASE_URL . '/assets/images/' . $post->Image;?>" alt="<?php echo $post->Description;?>" class="post-image" >             
+            <div class="more-info">
+              <h1 class="post-title"><?php echo $post->Title;?></h1>
+              <!-- far fa-user -->
+              <!-- far fa-calendar  -->
+              <span class="post-info"><?php echo 'By ' . $post->getAuthor()->FirstName . ' ' . $post->getAuthor()->LastName; ?></span>
+              <span class="published"><?php echo 'Published on ' . date('l jS F Y', strtotime($post->Date));?></span>
+                <!-- <div class="socialmedia">
+                  <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-show-count="false">Tweet</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+              </div>  -->
+            </div>     
+                      
+          </section> 
+          
+          <section class="post-content clearfix">
+            <?php echo html_entity_decode($post->Body); ?>
+          </section>            
+        </article>
+      </section>
+      <!-- Main content -->
+    </section>
+    <!-- Main content wrapper -->
+  
+    <!-- Sidebar -->
+    <aside class="sidebar single">
       <!-- Search section -->
-        <div class="section search">
+        <section class="section search">
           <form action="/index.php/search" method="get">
             <input type="text" name="searchterm" class="text-input" placeholder="Search entire site">
           </form>
-        </div>
+        </section>
       <!-- Search section -->        
         
       <!-- Facebook page embed -->
@@ -51,7 +48,7 @@
       <!-- Facebook page embed -->
 
       <!-- Popular posts -->
-        <div class="section popular">
+        <section class="section popular">
           <h3 class="section-title"><?php echo $popularPosts['heading'] ?? 'Popular Articles' ;?></h3>
           <!-- Single popular post -->
           <?php foreach($popularPosts['posts'] as $p):?>
@@ -61,33 +58,31 @@
             </div>
           <?php endforeach;?>
           <!-- //Single popular post -->
-        </div>
-        <!-- //Popular posts -->   
+        </section>
+      <!-- //Popular posts -->   
 
-        <!-- Topics section -->
-        <div class="section topics">
-          <h3 class="section-title">Topics</h3>
-          <ul>
-            <?php foreach($topics as $topic): ?>
-              <li><a href="<?php echo '/index.php/topics/'. str_replace(' ', '-', trim(strtolower($topic->Name)));?>"><?php echo $topic->Name; ?></a></li>
-            <?php endforeach; ?>            
-          </ul>
-        </div>
-        <!-- Topics section -->
-        <!-- Contact us -->
-        <div class="section contactus">
-          <h3 class="section-title">Contact us</h3>
-          <br />
-              <form action="/index.php/contactus" method="post">
-                <input type="email" name="contactus[email]" class="text-input contact-input" placeholder="Email">
-                <textarea name="contactus[message]" class="text-input contact-input" rows="4" placeholder="Message"></textarea>
-                <button type="submit" class="btn btn-big contact-btn"> Send </button>
-              </form>
-        </div>
+      <!-- Topics section -->
+      <section class="section topics">
+        <h3 class="section-title">Topics</h3>
+        <ul>
+          <?php foreach($topics as $topic): ?>
+            <li><a href="<?php echo '/index.php/topics/'. str_replace(' ', '-', trim(strtolower($topic->Name)));?>"><?php echo $topic->Name; ?></a></li>
+          <?php endforeach; ?>            
+        </ul>
+      </section>
+      <!-- Topics section -->
+      <!-- Contact us -->
+      <section class="section contactus">
+        <h3 class="section-title">Contact us</h3>
+        <br />
+            <form action="/index.php/contactus" method="post">
+              <input type="email" name="contactus[email]" class="text-input contact-input" placeholder="Email">
+              <textarea name="contactus[message]" class="text-input contact-input" rows="4" placeholder="Message"></textarea>
+              <button type="submit" class="btn btn-big contact-btn"> Send </button>
+            </form>
+      </section>
         <!-- Contact us -->  
-      </aside>
-      <!-- Sidebar -->
-    </div>
-    <!-- //Content -->
-  </div>
-  <!-- //Page wrapper -->
+    </aside>
+    <!-- Sidebar -->
+  </section>
+  <!-- //Content -->

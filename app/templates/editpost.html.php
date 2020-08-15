@@ -16,23 +16,23 @@
         <div>
           <label for="title">Title</label><br />
           <p id="statusMessage"></p>
-          <input type="text" name="post[Title]" id="title" class="text-input" value="<?php echo $title  ?? '' ;?>" maxlength="70">
+          <input type="text" name="post[Title]" id="title" class="text-input" value="<?php echo $title  ?? '' ;?>" maxlength="70"><br /><br />
         </div>
         <div>
-          <label for="body">Body</label><br />
+          <label for="body">Body</label><br /><br />
           <textarea name="post[Body]" class="text-input"><?php echo $body ?? '' ;?></textarea> <br /><br />
           <!--<script>
             CKEDITOR.replace( 'body' );
           </script>-->
-          <label for="description">Description</label><br />
-          <textarea name="post[Description]" class="text-input"><?php echo $description ?? ''; ?></textarea>
+          <label for="description">Description</label><br /><br />
+          <textarea name="post[Description]" class="text-input"><?php echo $description ?? ''; ?></textarea><br /><br />
 
-          <label for="keywords">Keywords</label><br />
-          <textarea name="post[Keywords]" class="text-input"><?php echo $keywords ?? '' ;?></textarea>
+          <label for="keywords">Keywords</label><br /><br />
+          <textarea name="post[Keywords]" class="text-input"><?php echo $keywords ?? '' ;?></textarea><br /><br />
         </div>
         <div>
-          <label for="image">Image</label>
-          <input type="file" name="image_name" id="" class="text-input">
+          <label for="image">Image</label><br /><br />
+          <input type="file" name="image_name" id="" class="text-input"><br />
         </div>
         <div>
         <label for="topic">Select categories for this post:</label><br /><br />
@@ -49,7 +49,7 @@
                 <input type="checkbox" name="category[]" value="<?=$category->Id?>"/>
                 <label><?=$category->Name?></label> &nbsp;&nbsp;
               <?php endif; ?>
-            <?php endforeach; ?>
+            <?php endforeach; ?><br /><br />
         </div>
         </div>
         <div>

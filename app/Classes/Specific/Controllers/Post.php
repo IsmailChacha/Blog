@@ -487,7 +487,7 @@ namespace Specific\Controllers
 					$_SESSION['type'] = 'success';
 				}
 				
-				$condition = ['Id' => $_GET['specificId'], 'Published' => $state, 'Draft' => $draft];
+				$condition = ['String' => $_GET['specificId'], 'Published' => $state, 'Draft' => $draft];
 	
 				$affected_rows = $this->postsTable->save($condition);
 				$title = $_SESSION['Superuser'] ? 'SuperUser Panel | Manage Posts' : 'Admin Panel | Manage Posts';
@@ -563,6 +563,7 @@ namespace Specific\Controllers
 			} else 
 			{
 				header('location:/index.php/signin');
+				exit();
 			}
 		}
 
@@ -596,12 +597,12 @@ namespace Specific\Controllers
 				}				
 			} else 
 			{
-				if(!empty($files['image_name']['name']))
+				if(!empty($files['Image']['name']))
 				{
-					$image_name = time() .'_'. $files['image_name']['name'];
+					$image_name = time() .'_'. $files['Image']['name'];
 					$destination = ROOT_PATH.'/assets/images/' . $image_name;
 	
-					$result = move_uploaded_file($files['image_name']['tmp_name'], $destination);
+					$result = move_uploaded_file($files['Image']['tmp_name'], $destination);
 	
 					if ($result) 
 					{
@@ -738,7 +739,7 @@ namespace Specific\Controllers
 		private function generateTitle($input, $replace = ' ') 
 		{
 			//remove punctuation, remove multiple/leading/ending spaces
-			$title = trim(preg_replace('/ +/', ' ', preg_replace('/[^a-zA-Z0-9\s]/', ' ', $input)));
+			$title = trim(preg_replace('/ +/', ' ', preg_replace('/[^a-zA-Z0-9?\s]/', ' ', $input)));
 			// replace any double whitespace with a single whitespace
 			$title = preg_replace('/  [^  ]+?/', ' ', $title);
 			return $title;
@@ -750,11 +751,6 @@ namespace Specific\Controllers
 			if($this->checkWhetherAdminOrSuperUser())
 			{
 				$post = $_POST['post'];
-				if(isset($_POST['add']))
-				{
-					$post['Id'] = '';
-				}
-	
 				$files = $_FILES;
 				//PROCESS POST
 				extract($this->validatePost($post)); //CREATE VARIABLES $errors and $valid in this scope
@@ -766,31 +762,33 @@ namespace Specific\Controllers
 				{
 					//FETCH THE AUTHOR OBJECT
 					$authorObject = $this->authentication->getUser();
-					if(isset($_POST['add']) || isset($_POST['edit']))
-					{
-						if(isset($_POST['add']))
-						{
-							$post['Date'] = $this->generateDate();
-						}
+					// WORDS TO REMOVE FROM LINK IF PRESENT
+					$words_array = array();
 
-						// GENERATE TITLE
-						$post['Title'] = $this->generateTitle($_POST['post']['Title']);
-						// WORDS TO REMOVE FROM LINK IF PRESENT
-						$words_array = array('a','and','the','an','it','is','can','of','why','not', 'be', 'google', 'fuck', 'on', 'get', 'famous', 'how', 'to',);
-						
-						// GENERATE SEO-FRIENDLY URL
-						$post['String'] = $this->generateSEOLink($post['Title'], '-', true, $words_array); // GENERATE SEO SLUG
+					if(isset($_POST['add']))
+					{
+						$post['Id'] = '';
 						$post['Published'] = 1;
 						$post['Draft'] = 0;
-	
+						$post['Date'] = $this->generateDate();
+						// GENERATE SEO-FRIENDLY URL
+						$post['String'] = $this->generateSEOLink($post['Title'], '-', true, $words_array); // GENERATE SEO SLUG
+					}elseif(isset($_POST['edit']))
+					{
+						$post['Id'] = $post['Id'];
 					} elseif(isset($_POST['draft']))
 					{
 						$post['Published'] = 0;
 						$post['Draft'] = 1;
+						$post['Id'] = '';
+						$post['Date'] = $this->generateDate();
 					}
-	
+
+					// GENERATE TITLE
+					$post['Title'] = $this->generateTitle($_POST['post']['Title']);
+					
 					$post['Body'] = htmlentities($post['Body']);
-	
+					// display($post);
 					//SAVE POST
 					$postEntity = $authorObject->addPost($post);
 	
@@ -817,7 +815,7 @@ namespace Specific\Controllers
 								if(isset($_POST['preview']))
 								{
 									$postString = strtolower($postEntity->String);
-									echo "<script>window.open(\"/index.php/articles/$postString\")</script>";
+									echo "<script>window.open(\"/index.php/$postString\")</script>";
 	
 									return [
 										'title' => $_SESSION['Superuser'] ? 'SuperUser panel | Add post' : 'Admin panel | Add post',
@@ -929,10 +927,11 @@ namespace Specific\Controllers
 			} else 
 			{
 				header('location:/index.php/signin');
+				exit();
 			}
 		}
 
-		//MANAGE
+		//MANAGE POSTS
 		public function manageposts() 
 		{
 			if($this->checkWhetherAdminOrSuperUser())
@@ -970,6 +969,7 @@ namespace Specific\Controllers
 			} else 
 			{
 				header('location:/index.php/signin');
+				exit();
 			}
 		}
 
@@ -1010,6 +1010,7 @@ namespace Specific\Controllers
 			} else 
 			{
 				header('location:/index.php/signin');
+				exit();				
 			}
 		}
 		
@@ -1020,7 +1021,7 @@ namespace Specific\Controllers
 			{
 				$idOfPostToEdit = $_GET['specificId'];
 
-				$post = $this->postsTable->findOne(['Id' => $idOfPostToEdit]);
+				$post = $this->postsTable->findOne(['String' => $idOfPostToEdit]);
 	
 				return [
 					'title' => $_SESSION['Superuser'] ? 'SuperUser panel | Add post' : 'Admin panel | Add post',
@@ -1041,9 +1042,11 @@ namespace Specific\Controllers
 			} else 
 			{
 				header('location:/index.php/signin');
+				exit();				
 			}
 		}
 
+		// HANDLE DRAFTS
 		public function drafts()
 		{
 			if($this->checkWhetherAdminOrSuperUser())
@@ -1062,6 +1065,7 @@ namespace Specific\Controllers
 			} else 
 			{
 				header('location:/index.php/signin');
+				exit();				
 			}
 		}
 	}

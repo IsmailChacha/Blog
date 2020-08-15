@@ -28,17 +28,18 @@
 					{
 						$pos = stripos($indexes, '/');
 						$newPos = $pos;
-						if($key === '/index.php' || '/index.php/articles')
+						if($key === '/index.php' || '/')
 						{
 							$key = '/'. substr($indexes, 0, $pos);
 						}
-						$value = 'Home';
-						$_GET['navigationLink'][$key] = ucfirst($value);
-						$currentPage = $key;
+							$value = 'Home';
+							$_GET['navigationLink'][$key] = ucfirst($value);
+							$currentPage = $key;
 					}else 
 					{
 						$length = $pos - strlen($indexes);
 						$newPos = stripos($indexes, '/', $pos + 1);
+
 						if($newPos === false)
 						{
 							break;
@@ -50,10 +51,16 @@
 								$key = '/';
 								$value = 'Search';
 								$_GET['navigationLink'][$key] = ucfirst($value);
-							} else
+							} elseif(strstr($value, '-'))
+							{
+								$key = $value;
+								$value2 = ucfirst($value);
+								$_GET['navigationLink'][$key] = str_ireplace('-', ' ', ucfirst($value));
+							}
+							else
 							{
 								$key = '/' . $key;
-								if(stristr($key, 'Page=') || stristr($key, '/index.php/articles=') || stristr($key, 'More=')) //REMOVE PAGINATION FROM NAVIGATION MENU
+								if(stristr($key, 'Page=') || stristr($key, 'More=')) //REMOVE PAGINATION FROM NAVIGATION MENU
 								{
 									unset($key);
 									unset($value);

@@ -23,7 +23,7 @@
                   </div>
                 </div>  
             <?php endforeach; ?>
-        <!-- Generate Pagination -->
+            <!-- Generate Pagination -->
             <div class="pagination">
               <?php 
                 // Calculate number of pages
@@ -55,18 +55,18 @@
         </div> -->
         <!-- //Social media -->
         <!-- Search section -->
-        <div class="section search">
+        <section class="section search">
           <form action="index.php/search" method="get">
             <input type="text" name="searchterm" class="text-input" placeholder="Search entire site">
           </form>
-        </div>
+        </section>
         <!-- Search section -->
         
         <!-- Facebook page embed -->
         <div class="section fb-page" data-href="https://www.facebook.com/Tech-Genie-101835751592250" data-tabs="" data-width="" data-height="" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true">
             <blockquote cite="https://www.facebook.com/Tech-Genie-101835751592250" class="fb-xfbml-parse-ignore"><a
                 href="https://www.facebook.com/Tech-Genie-101835751592250">Tech Genie</a></blockquote>
-          </div>
+        </div>
         <!-- Facebook page embed -->
 
         <!-- Popular posts -->
@@ -83,17 +83,17 @@
         </section>
         <!-- //Popular posts -->           
         <!-- Topics section -->
-        <div class="section topics">
+        <section class="section topics">
           <h3 class="section-title">Topics</h3>
           <ul>
             <?php foreach($topics as $topic): ?>
               <li><a href="<?php echo '/index.php/topics/'. str_replace(' ', '-', trim(strtolower($topic->Name)));?>"><?php echo $topic->Name; ?></a></li>
             <?php endforeach; ?>            
           </ul>
-        </div>
+        </section>
         <!-- Topics section -->
         <!-- Contact us -->
-        <div class="section contactus">
+        <section class="section contactus">
           <h3 class="section-title">Contact us</h3>
           <br />
               <form action="/index.php/contactus" method="post">
@@ -101,10 +101,10 @@
                 <textarea name="contactus[message]" class="text-input contact-input" rows="4" placeholder="Message"></textarea>
                 <button type="submit" class="btn btn-big contact-btn"> Send </button>
               </form>
-        </div>
+        </section>
         <!-- Contact us -->
       </aside>
       <!-- Sidebar -->
     </div>
-  </div>
+</div>
   <!-- //Page wrapper

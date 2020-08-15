@@ -27,6 +27,7 @@ namespace Specific\Controllers
 			}
 		}
 		
+		// MANAGE TOPICS
 		public function managetopics() 
 		{
 			if($this->superUserOnly())
@@ -43,6 +44,7 @@ namespace Specific\Controllers
 			} else
 			{
 				header('location:/index.php/signin');
+				exit();				
 			}			
 		}
 		
@@ -63,9 +65,11 @@ namespace Specific\Controllers
 			} else
 			{
 				header('location:/index.php/signin');
+				exit();				
 			}
 		}
 
+		//ADD TOPIC
 		public function addtopic() 
 		{
 				if($this->superUserOnly())
@@ -125,6 +129,7 @@ namespace Specific\Controllers
 			} else
 			{
 				header('location:/index.php/signin');
+				exit();				
 			}
 		}
 
@@ -151,6 +156,7 @@ namespace Specific\Controllers
 			} else
 			{
 				header('location:/index.php/signin');
+				exit();				
 			}
 		}
 
@@ -181,6 +187,7 @@ namespace Specific\Controllers
 			} else
 			{
 				header('location:/index.php/signin');
+				exit();				
 			}
 		}
 
@@ -208,6 +215,7 @@ namespace Specific\Controllers
 			} else
 			{
 				header('location:/index.php/signin');
+				exit();				
 			}
 		}		
 	}

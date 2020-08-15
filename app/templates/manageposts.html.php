@@ -28,7 +28,7 @@
                   <td><?php echo $post->Title; ?></td>
                   <td><?php echo $post->getAuthor()->FirstName . ' ' . $post->getAuthor()->LastName;?></td>
                   <td>
-                      <a href="<?php echo BASE_URL . '/private/index.php/editarticle/article/'.$post->Id;?>" class="publish" rel="nofollow">Edit</a>
+                      <a href="<?php echo BASE_URL . '/private/index.php/editarticle/article/'.$post->String;?>" class="publish" rel="nofollow">Edit</a>
                   </td>
                     <?php if($_SESSION['Superuser']): ?>
                       <td>
@@ -37,11 +37,11 @@
                     <?php endif ;?>
                     <?php if($post->Published):?>
                       <td>
-                        <a href="<?php echo BASE_URL . '/private/index.php/visibility/unpublish/'.$post->Id;?>" class="publish" rel="nofollow">Unpublish</a>
+                        <a href="<?php echo BASE_URL . '/private/index.php/visibility/unpublish/'.$post->String;?>" class="publish" rel="nofollow">Unpublish</a>
                       </td>
                     <?php else:?>
                       <td>
-                        <a href="<?php echo BASE_URL . '/private/index.php/visibility/publish/'.$post->Id;?>" class="publish" rel="nofollow">Publish</a>
+                        <a href="<?php echo BASE_URL . '/private/index.php/visibility/publish/'.$post->String;?>" class="publish" rel="nofollow">Publish</a>
                       </td>
                     <?php endif; ?>
                 </tr>

@@ -40,7 +40,7 @@
 				</div>						
 			<?php else: ?>
 				<h3 class="recent-post-title"><?php echo $heading ?? ''; ?></h3>
-			<?php endif; ?>
+		<?php endif; ?>
 	</section>
 
 	<!-- //Main Content -->
@@ -75,30 +75,30 @@
 					</div>
 				<?php endforeach;?>
 				<!-- //Single popular post -->
-			</section>
-			<!-- //Popular posts -->   
+		</section>
+		<!-- //Popular posts -->   
 
-			<!-- Topics section -->
-			<section class="section topics">
-				<h3 class="section-title">Topics</h3>
-				<ul>
-					<?php foreach($topics as $topic): ?>
-						<li><a href="<?php echo '/index.php/topics/'. str_replace(' ', '-', trim(strtolower($topic->Name)));?>"><?php echo $topic->Name; ?></a></li>
-					<?php endforeach; ?>            
-				</ul>
-			</section>
-			<!-- Topics section -->
-			<!-- Contact us -->
-			<section class="section contactus">
-				<h3 class="section-title">Contact us</h3>
-				<br />
-						<form action="/index.php/contactus" method="post">
-							<input type="email" name="contactus[email]" class="text-input contact-input" placeholder="Email">
-							<textarea name="contactus[message]" class="text-input contact-input" rows="4" placeholder="Message"></textarea>
-							<button type="submit" class="btn btn-big contact-btn"> Send </button>
-						</form>
-			</section>
-			<!-- Contact us -->  
+		<!-- Topics section -->
+		<section class="section topics">
+			<h3 class="section-title">Topics</h3>
+			<ul>
+				<?php foreach($topics as $topic): ?>
+					<li><a href="<?php echo '/index.php/topics/'. str_replace(' ', '-', trim(strtolower($topic->Name)));?>"><?php echo $topic->Name; ?></a></li>
+				<?php endforeach; ?>            
+			</ul>
+		</section>
+		<!-- Topics section -->
+		<!-- Contact us -->
+		<section class="section contactus">
+			<h3 class="section-title">Contact us</h3>
+			<br />
+					<form action="/index.php/contactus" method="post">
+						<input type="email" name="contactus[email]" class="text-input contact-input" placeholder="Email">
+						<textarea name="contactus[message]" class="text-input contact-input" rows="4" placeholder="Message"></textarea>
+						<button type="submit" class="btn btn-big contact-btn"> Send </button>
+					</form>
+		</section>
+		<!-- Contact us -->  
 	</aside>
 	<!-- Sidebar -->
 </section>

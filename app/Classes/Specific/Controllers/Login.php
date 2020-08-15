@@ -23,7 +23,7 @@ namespace Specific\Controllers
 		{
 			if($_POST['email'] == '' || $_POST['password'] == '' )
 			{
-				$_SESSION['message'] = 'Please fill out all fields';
+				$_SESSION['message'] = 'Please fill out the form';
 				$_SESSION['type'] = 'error';
 
 				return ['template' => 'login.html.php', 

@@ -4,6 +4,7 @@
 			<?php foreach($errors as $error):?>
 					<li><?php echo $error; ?></li>
 			<?php endforeach; ?>
+			<!-- <span id="closeNotification">X</span> -->
 	</div>
 	<?php
 	foreach($errors as $error)

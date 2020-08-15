@@ -1,5 +1,3 @@
-<link rel="stylesheet" href="<?php echo BASE_URL . '/assets/css/admin.css'; ?>">
-
 <!-- Admin content -->
 <div class="admin-content">
 	<div class="content2">
