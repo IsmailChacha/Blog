@@ -142,8 +142,9 @@ namespace Ninja
 				}
 			} else
 			{
-				display('Requested URI was not found on this server');
-				header('location:/');
+				http_response_code(404);
+				header('location:/404.php');
+				exit();				
 			}
 		}
 	}

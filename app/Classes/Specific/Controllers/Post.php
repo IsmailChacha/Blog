@@ -255,9 +255,9 @@ namespace Specific\Controllers
 				}					
 			} else //THEY WANTED TO SO SMTH IN TOPICS FOLDER BUT SMTH WENT WRONG FROM THEIR ENT, EITHER MANUAL TYPING INTO ADDRESS BAR
 			{
-				$_SESSION['message'] = 'That is not a topic we currently support';
-				$_SESSION['type'] = 'error';
-				header('location:/');					
+				http_response_code(404);
+				header('location:/404.php');
+				exit();				
 			}
 
 				unset($_GET['specific']); //REMOVE VARIABLE FORM MEMORY
@@ -324,12 +324,12 @@ namespace Specific\Controllers
 							return $variables;
 					} else 
 					{
-						$_SESSION['message'] = 'Article not found';
-						$_SESSION['type'] = 'error';
-						header('location:/');
+						http_response_code(404);
+						header('location:/404.php');
+						exit();
 					}
 				}
-			} else // IF NOT, DISPLAY PAGE OF ARTICLES PAGE
+			} else // IF NOT, DISPLAY HOME PAGE
 			{
 				$page = 1;
 				$order = 'Date DESC';
@@ -670,28 +670,8 @@ namespace Specific\Controllers
 			return ['errors' => $errors, 'valid' => $valid];
 		}
 
-		// GENERATE FRIENDLY TITLE
-		public function title($text){ 
-			// trim
-			$text = trim($text, '-');
-		
-			// transliterate
-			$text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
-		
-			// lowercase
-			$text = ucfirst($text);
-		
-			if (empty($text))
-			{
-				return 'n-a';
-			}
-		
-			return $text;
-		}
-
 		// GENERATE SEO-FRIENDLY URL'S
-
-		/* takes the input, scrubs bad characters */
+		// TAKES INPUT, SCRUBS UNWANTED WORDS AND CHARACTERS 
 		private function generateSEOLink($input, $replace = '-', $remove_words = true, $words_array = array()) 
 		{
 			//make it lowercase, remove punctuation, remove multiple/leading/ending spaces
@@ -711,7 +691,7 @@ namespace Specific\Controllers
 			return str_replace(' ', $replace, $return);
 		}
 
-		/* takes an input, scrubs unnecessary words */
+		// WORDS TO REMOVE FROM SEO LINK 
 		private function remove_words($input, $replace, $words_array = array(), $unique_words = true)
 		{
 			//separate all words based on spaces
@@ -735,7 +715,7 @@ namespace Specific\Controllers
 		}
 
 		// GENERATE A GOOD TITLE
-		/* takes the input, scrubs bad characters */
+		// TAKES INPUT, SCRUBS UNWANTED WORDS AND CHARACTERS
 		private function generateTitle($input, $replace = ' ') 
 		{
 			//remove punctuation, remove multiple/leading/ending spaces
