@@ -7,9 +7,9 @@
         <article class="">
 
           <section class="image-and-moreinfo clearfix">
-            <img src="<?php echo BASE_URL . '/assets/images/' . $post->Image;?>" alt="<?php echo $post->Description;?>" class="post-image" >             
+            <img src="<?php echo BASE_URL . '/assets/images/' . $post->Image;?>" alt="<?php echo strip_tags($post->String);?>" class="post-image" >             
             <div class="more-info">
-              <h1 class="post-title"><?php echo $post->Title;?></h1>
+              <h1 class="post-title single"><?php echo $post->Title;?></h1>
               <!-- far fa-user -->
               <!-- far fa-calendar  -->
               <span class="post-info"><?php echo 'By ' . $post->getAuthor()->FirstName . ' ' . $post->getAuthor()->LastName; ?></span>

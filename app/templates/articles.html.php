@@ -10,7 +10,7 @@
 					<?php foreach($posts as $post):?>
 						<article class="post clearfix">
 							<div class="recent-post-image">
-								<a href="/index.php/<?php echo $post->String;?>"><img src="<?php echo BASE_URL . '/assets/images/' . $post->Image;?>" alt="<?php echo $post->Description;?>" class="post-image"></a>
+								<a href="/index.php/<?php echo strip_tags($post->String);?>"><img src="<?php echo BASE_URL . '/assets/images/' . $post->Image;?>" alt="<?php echo strip_tags($post->String);?>" class="post-image"></a>
 							</div>
 								
 							<div class="post-preview">
@@ -70,7 +70,7 @@
 				<!-- Single popular post -->
 				<?php foreach($popularPosts['posts'] as $p):?>
 					<div class="post clearfix">
-						<a href="/index.php/<?php echo $p->String;?>"><img src="<?php echo BASE_URL . '/assets/images/' . $p->Image;?>" alt="<?php echo $p->Description;?>"></a>
+						<a href="/index.php/<?php echo $p->String;?>"><img src="<?php echo BASE_URL . '/assets/images/' . $p->Image;?>" alt="<?php echo strip_tags($p->String);?>"></a>
 						<a href="/index.php/<?php echo $p->String;?>" class="title"><h4><?php echo $p->Title;?></h4></a>
 					</div>
 				<?php endforeach;?>

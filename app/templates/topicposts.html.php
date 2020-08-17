@@ -69,7 +69,7 @@
 				<!-- Single popular post -->
 				<?php foreach($popularPosts['posts'] as $p):?>
 					<div class="post clearfix">
-						<a href="/index.php/<?php echo $p->String;?>"><img src="<?php echo BASE_URL . '/assets/images/' . $p->Image;?>" alt=""></a>
+						<a href="/index.php/<?php echo $p->String;?>"><img src="<?php echo BASE_URL . '/assets/images/' . $p->Image;?>" alt="<?php echo strip_tags($p->Description); ?>"></a>
 						<a href="/index.php/<?php echo $p->String;?>" class="title"><h4><?php echo $p->Title;?></h4></a>
 					</div>
 				<?php endforeach;?>

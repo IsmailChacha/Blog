@@ -572,6 +572,7 @@ namespace Specific\Controllers
 		//HANDLES FILES
 		private function handleFiles($post, $files, $errors, $valid):array 
 		{
+
 			if(isset($_POST['add'])) //DONT PERFORM THE CHECK WHEN UPDATING POSTS
 				{
 				//PROCESS IMAGE 
@@ -597,12 +598,12 @@ namespace Specific\Controllers
 				}				
 			} else 
 			{
-				if(!empty($files['Image']['name']))
+				if(!empty($files['image_name']['name']))
 				{
-					$image_name = time() .'_'. $files['Image']['name'];
+					$image_name = time() .'_'. $files['image_name']['name'];
 					$destination = ROOT_PATH.'/assets/images/' . $image_name;
 	
-					$result = move_uploaded_file($files['Image']['tmp_name'], $destination);
+					$result = move_uploaded_file($files['image_name']['tmp_name'], $destination);
 	
 					if ($result) 
 					{
@@ -732,6 +733,7 @@ namespace Specific\Controllers
 			{
 				$post = $_POST['post'];
 				$files = $_FILES;
+
 				//PROCESS POST
 				extract($this->validatePost($post)); //CREATE VARIABLES $errors and $valid in this scope
 	
