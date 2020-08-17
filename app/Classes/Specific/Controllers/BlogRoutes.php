@@ -15,7 +15,7 @@ namespace Specific\Controllers
 		{
 			include ROOT_PATH . '/app/includes/DatabaseConnection.php';
 
-			$this->postsTable = new \Ninja\DatabaseHandler($pdo, 'Articles', 'String', 'AuthorId', '\Specific\Entity\Post', [&$this->usersTable, &$this->postTopics]);
+			$this->postsTable = new \Ninja\DatabaseHandler($pdo, 'Articles', 'Id', 'AuthorId', '\Specific\Entity\Post', [&$this->usersTable, &$this->postTopics]);
 			
 			$this->usersTable = new \Ninja\DatabaseHandler($pdo, 'Users', 'Id', 'Email', '\Specific\Entity\Author', [&$this->postsTable]);
 			

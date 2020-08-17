@@ -622,7 +622,7 @@ namespace Specific\Controllers
 		private function generateDate() 
 		{
 			$date = new \DateTime(); 
-			$formatedDate = $date->format('Y-m-d H:i:s');
+			$formatedDate = $date->format('Y-m-d');
 			return $formatedDate;
 		}
 
@@ -634,7 +634,7 @@ namespace Specific\Controllers
 			if(empty($post['Title']))
 			{
 				$valid = false;
-				array_push($errors, "&times; Title is required"); 
+				array_push($errors, "Title is required"); 
 			} else 
 			{
 				//CHECK FOR EXISTING POST WITH EXACTLY SAME TITLE
@@ -645,7 +645,7 @@ namespace Specific\Controllers
 					if($existingPost)
 					{
 						$valid = false;
-						array_push($errors, "&times; An article with that exact title already exists"); 
+						array_push($errors, "An article with that exact title already exists"); 
 					} 	
 				}
 			}
@@ -653,19 +653,19 @@ namespace Specific\Controllers
 			if(empty($post['Body']))
 				{
 					$valid = false;
-					array_push($errors, "&times; An article body is required");  
+					array_push($errors, "An article body is required");  
 				}
 
 				if(empty($post['Description']))
 				{
 					$valid = false;
-					array_push($errors, "&times; An article description is required");  
+					array_push($errors, "An article description is required");  
 				}
 				
 				if(empty($post['Keywords']))
 				{
 					$valid = false;
-					array_push($errors, "&times; Article keywords are required");  
+					array_push($errors, "Article keywords are required");  
 				}				
 
 			return ['errors' => $errors, 'valid' => $valid];
@@ -755,9 +755,10 @@ namespace Specific\Controllers
 						$post['Date'] = $this->generateDate();
 						// GENERATE SEO-FRIENDLY URL
 						$post['String'] = $this->generateSEOLink($post['Title'], '-', true, $words_array); // GENERATE SEO SLUG
+
 					}elseif(isset($_POST['edit']))
 					{
-						$post['Id'] = $post['Id'];
+						// $post['Id'] = $post['Id'];
 					} elseif(isset($_POST['draft']))
 					{
 						$post['Published'] = 0;
@@ -767,13 +768,14 @@ namespace Specific\Controllers
 					}
 
 					// GENERATE TITLE
-					$post['Title'] = $this->generateTitle($_POST['post']['Title']);
+					$post['Title'] = $this->generateTitle($post['Title']);
 					
 					$post['Body'] = htmlentities($post['Body']);
-					// display($post);
+
 					//SAVE POST
+					// display($post);
+
 					$postEntity = $authorObject->addPost($post);
-	
 					//INSERT CATEGORY RECORDS
 					if($postEntity)
 					{
@@ -1004,23 +1006,32 @@ namespace Specific\Controllers
 				$idOfPostToEdit = $_GET['specificId'];
 
 				$post = $this->postsTable->findOne(['String' => $idOfPostToEdit]);
+				if(is_object($post))
+				{
+					return [
+						'title' => $_SESSION['Superuser'] ? 'SuperUser panel | Add post' : 'Admin panel | Add post',
+						'template' => 'editpost.html.php',
+						'variables' => [
+							'heading' => 'Edit post',
+							'post' => $post,
+							'id' => $post->Id,
+							'string' => $post->String,
+							'title' => $post->Title,
+							'body' => $post->Body,
+							'description' => $post->Description,
+							'keywords' => $post->Keywords,
+							'published' => $post->Published,
+							'categories' => $this->topics,
+						]
+					];					
+				} else
+				{
+					$_SESSION['message'] = 'Article not found for editing';
+					$_SESSION['type'] = 'error';
+					header('location:/private/index.php/manageposts');
+					exit();		
+				}
 	
-				return [
-					'title' => $_SESSION['Superuser'] ? 'SuperUser panel | Add post' : 'Admin panel | Add post',
-					'template' => 'editpost.html.php',
-					'variables' => [
-						'heading' => 'Edit post',
-						'post' => $post,
-						'id' => $post->Id,
-						'string' => $post->String,
-						'title' => $post->Title,
-						'body' => $post->Body,
-						'description' => $post->Description,
-						'keywords' => $post->Keywords,
-						'published' => $post->Published,
-						'categories' => $this->topics,
-					]
-				];
 			} else 
 			{
 				header('location:/index.php/signin');

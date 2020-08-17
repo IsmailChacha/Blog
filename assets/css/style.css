@@ -1,6 +1,5 @@
   * {
-    margin: 0;
-    padding: 0;
+    margin: 0;  
     box-sizing: border-box;
     transition: all .5s;
   }
@@ -580,6 +579,8 @@
   } 
 
   .content .main-content.single .post-content{
+    padding: 0px 8px;
+    font-size: 1.2em;
     font-size: 1.12em;
     color:#555;
   } 

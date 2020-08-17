@@ -20,7 +20,7 @@
         </div>
         <div>
           <label for="body">Body</label><br /><br />
-          <textarea name="post[Body]" class="text-input"><?php echo $body ?? '' ;?></textarea> <br /><br />
+          <textarea name="post[Body]"><?php echo $body ?? '' ;?></textarea> <br /><br />
           <!--<script>
             CKEDITOR.replace( 'body' );
           </script>-->
