@@ -23,14 +23,16 @@
 
   <!-- PRISM -->
   <link rel="stylesheet" href="<?php echo BASE_URL . '/assets/prism/prism.css';?>">
-  <pre><code class="language-xxxx">...</code></pre>
 
 </head>
 
 <body>
+<pre><code class="language-xxxx">...</code></pre>
 
 <!-- HEADER FILE -->
-  <?php include ROOT_PATH . '/app/helpers/header.php'; ?>
+<?php 
+    include ROOT_PATH . '/app/helpers/header.php'; 
+?>
 <!-- //HEADER FILE -->
 
 <main>
@@ -63,7 +65,7 @@
         </div> -->
     </div>
   </div>
-
+<!-- 
   <div class="navigation">
     <?php foreach($_GET['navigationLink'] as $key => $value):?>
       <?php if($key == $_GET['currentPage']):?>
@@ -72,7 +74,7 @@
         <a href="<?php echo $key?>"><?php echo $value . '&raquo;'; ?></a>
       <?php endif;?>
     <?php endforeach;?>
-  </div>
+  </div> -->
 
   <i class="fa fa-chevron-up chevron-up" id="scroll-arrow" title="Go to the top"></i>
 
@@ -81,9 +83,10 @@
   <!--// GENERATED CONTENT -->
 
 </main>
-
 <!-- FOOTER FILE -->
-  <?php include ROOT_PATH . '/app/helpers/footer.php';?>
+<?php 
+    include ROOT_PATH . '/app/helpers/footer.php'; 
+?>
 <!-- //FOOTER FILE -->
 
   <!-- SCRIPTS -->

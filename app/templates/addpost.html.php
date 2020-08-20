@@ -49,9 +49,14 @@
           <?php endif;?>
         </div>
         <div>
+        <?php if($_SESSION['Superuser']):?>
           <button type="submit" name="add" class="btn btn-big" value="add">Publish</button>
           <button type="submit" name="draft" class="btn btn-big" value="Save draft">Save draft</button>
-          <button type="submit" name="preview" class="btn btn-big" value="Preview">Preview</button>
+          <!-- <button type="submit" name="preview" class="btn btn-big" value="Preview">Preview</button> -->
+        <?php elseif($_SESSION['Admin']):?>
+          <button type="submit" name="draft" class="btn btn-big" value="Save">Save</button>
+          <!-- <button type="submit" name="preview" class="btn btn-big" value="Preview">Preview</button> -->
+        <?php endif;?>
         </div>
       </form>
     </div>

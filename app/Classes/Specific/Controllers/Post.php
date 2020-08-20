@@ -5,9 +5,9 @@ namespace Specific\Controllers
 	class Post
 	{
 		private $postsTable; // ARTICLES TABLE INSTANCE OF DATABASEHANDLER CLASS
-		private $usersTable;  // USES TABLE INSTANCE OF DATABASEHANDLER CLASS
+		private $usersTable;  // USERS TABLE INSTANCE OF DATABASEHANDLER CLASS
 		private $topicsTable;  // TOPICS TABLE INSTANCE OF DATABASEHANDLER CLASS
-		private $authentication;  // ATHENTICATION CLASS INSTANCE 
+		private $authentication;  // AUTHENTICATION CLASS INSTANCE 
 		private $topics;
 		public $posts;
 		
@@ -279,7 +279,7 @@ namespace Specific\Controllers
 					$page = substr($present, ($position +1));
 					$limit = 12; //LIMIT
 					$offset = ($page-1) * $limit; // TURN PAGE NUMBER INTO AN OFFSET
-					$order = 'Date DESC'; //ORDER
+					$order = 'Id DESC'; //ORDER
 
 					$posts = $this->postsTable->findAll(['Published' => 1], $order, $limit, $offset); //SELECT
 
@@ -332,7 +332,7 @@ namespace Specific\Controllers
 			} else // IF NOT, DISPLAY HOME PAGE
 			{
 				$page = 1;
-				$order = 'Date DESC';
+				$order = 'Id DESC';
 				$limit = 15;
 				$offset = ($page-1) * $limit;
 
@@ -425,51 +425,61 @@ namespace Specific\Controllers
 		{
 			if($this->superUserOnly())
 			{
-				if($this->checkWhetherAdminOrSuperUser())
-				{
-					$condition = ['String' => $_GET['specificId']];
-					$affected_rows = $this->postsTable->delete($condition);
-					$title = 'SuperUser Panel | Manage Posts';
+				$condition = ['String' => $_GET['specificId']];
+				// FETCH IT FIRST
+				$postToDelete = $this->postsTable->findOne(['String' => $_GET['specificId']]);
 
+				if(is_object($postToDelete))
+				{
+					// DELETE CORRESPONDING RECORDING RECORD IN ARTICLE TOPICS TABLE
+					$affected_rows = $postToDelete->clearCategories();
+					// THEN DELETE IT
 					if(is_object($affected_rows))
 					{
-						$_SESSION['message'] = 'Deleted successfully';
-						$_SESSION['type'] = 'success';
-		
-						return [
-							'title' => $title,
-							'template' => 'manageposts.html.php',
-							'variables' => [
-											'posts' => $this->postsTable->findAll([], 'Date DESC'),
-											'heading' => 'Manage Posts',
-							]
-						];
+						$affected_rows = $postToDelete->deletePost($condition);
+
+						if(is_object($affected_rows))
+						{
+							$_SESSION['message'] = 'Deleted successfully';
+							$_SESSION['type'] = 'success';
+							$title = 'SuperUser Panel | Manage Posts';
+							
+							return [
+								'title' => $title,
+								'template' => 'manageposts.html.php',
+								'variables' => [
+												'posts' => $this->postsTable->findAll([], 'Date DESC'),
+												'heading' => 'Manage Posts',
+								]
+							];
+						}
 					}
-					} else 
-					{
-						$title = 'SuperUser Panel | Manage Posts';
-						$_SESSION['message'] = 'An error occurred processing your request';
-						$_SESSION['type'] = 'error';
-		
-						return [
-							'title' => $title,
-							'template' => 'manageposts.html.php',
-							'variables' => [
-											'posts' => $this->posts,
-											'heading' => 'Manage Posts',
-							]
-						];
-					}	
+				} else 
+				{
+					$title = 'SuperUser Panel | Manage Posts';
+					$_SESSION['message'] = 'Article not found. Try again';
+					$_SESSION['type'] = 'error';
+	
+					return [
+						'title' => $title,
+						'template' => 'manageposts.html.php',
+						'variables' => [
+										'posts' => $this->posts,
+										'heading' => 'Manage Posts',
+						]
+					];
+				}							
 			} else 
 			{
 				header('location:/index.php/signin');
+				exit();
 			}
 		}
 
 		//CHANGE POST VISIBILITY
 		public function togglePublish()
 		{
-			if($this->checkWhetherAdminOrSuperUser())
+			if($this->superUserOnly())
 			{
 				if($_GET['subfolder'] === 'publish')
 				{
@@ -487,79 +497,78 @@ namespace Specific\Controllers
 					$_SESSION['type'] = 'success';
 				}
 				
-				$condition = ['String' => $_GET['specificId'], 'Published' => $state, 'Draft' => $draft];
-	
-				$affected_rows = $this->postsTable->save($condition);
+				$conditions = ['Published' => $state, 'Draft' => $draft];
+				$post = $this->postsTable->findOne(['String' => $_GET['specificId']]);
 				$title = $_SESSION['Superuser'] ? 'SuperUser Panel | Manage Posts' : 'Admin Panel | Manage Posts';
-				
-				if($affected_rows)
-				{	
-					if($_SESSION['Superuser'])
-					{
-						$title = 'SuperUser Panel | Manage Posts';
-	
-						return [
-							'title' => $title,
-							'template' => 'manageposts.html.php',
-							'variables' => [
-								'posts' => $this->postsTable->findAll([], 'Date DESC'),
-								'heading' => 'Manage Posts',
-							]
-						];
-					} else 
-					{
-						$_SESSION['message'] = 'Post visibility changed';
-						$_SESSION['type'] = 'success';
-	
-						$title = 'Admin Panel | Manage Posts';
-	
-						$author = $this->authentication->getUser();
-	
-						return [
-							'title' => $title,
-							'template' => 'manageposts.html.php',
-							'variables' => [
-								'posts' => $author->getPosts(15),
-								'heading' => 'Manage Posts',
-							]
-						];
-					}
-				} else 
+				if($post)
 				{
-					if($_SESSION['Superuser'])
-					{
-						$_SESSION['message'] = 'An error occurred processing your request.Sorry about that.';
-						$_SESSION['type'] = 'error';
-	
-						$title = 'SuperUser Panel | Manage Posts';
-	
-						return [
-							'title' => $title,
-							'template' => 'manageposts.html.php',
-							'variables' => [
-								'posts' => $this->postsTable->findAll([], 'Date DESC'),
-								'heading' => 'Manage Posts',
-							]
-						];
+					$affected_rows = $post->togglePublish($conditions);
+					if($affected_rows)
+					{	
+						if($_SESSION['Superuser'])
+						{
+							return [
+								'title' => $title,
+								'template' => 'manageposts.html.php',
+								'variables' => [
+									'posts' => $this->postsTable->findAll([], 'Date DESC'),
+									'heading' => 'Manage Posts',
+								]
+							];
+						} else 
+						{
+							$author = $this->authentication->getUser();
+		
+							return [
+								'title' => $title,
+								'template' => 'manageposts.html.php',
+								'variables' => [
+									'posts' => $author->getPosts(15),
+									'heading' => 'Manage Posts',
+								]
+							];
+						}
 					} else 
 					{
-						$_SESSION['message'] = 'An error occurred processing your request.Sorry about that.';
-						$_SESSION['type'] = 'error';
-	
-						$title = 'Admin Panel | Manage Posts';
-	
-						$author = $this->authentication->getUser();
-	
-						return [
-							'title' => $title,
-							'template' => 'manageposts.html.php',
-							'variables' => [
-								'posts' => $author->getPosts(15),
-								'heading' => 'Manage Posts',
-							]
-						];
-					}
-				}	
+						if($_SESSION['Superuser'])
+						{
+							$_SESSION['message'] = 'An error occurred processing your request.Sorry about that.';
+							$_SESSION['type'] = 'error';
+		
+							$title = 'SuperUser Panel | Manage Posts';
+		
+							return [
+								'title' => $title,
+								'template' => 'manageposts.html.php',
+								'variables' => [
+									'posts' => $this->postsTable->findAll([], 'Date DESC'),
+									'heading' => 'Manage Posts',
+								]
+							];
+						} else 
+						{
+							$_SESSION['message'] = 'An error occurred processing your request.Sorry about that.';
+							$_SESSION['type'] = 'error';
+		
+							$title = 'Admin Panel | Manage Posts';
+		
+							$author = $this->authentication->getUser();
+		
+							return [
+								'title' => $title,
+								'template' => 'manageposts.html.php',
+								'variables' => [
+									'posts' => $author->getPosts(15),
+									'heading' => 'Manage Posts',
+								]
+							];
+						}
+					}	
+				} else
+				{
+					header('location:/404.php');
+					exit();
+				}
 			} else 
 			{
 				header('location:/index.php/signin');
@@ -631,6 +640,7 @@ namespace Specific\Controllers
 		{
 			$valid = true;
 			$errors = [];
+
 			if(empty($post['Title']))
 			{
 				$valid = false;
@@ -641,8 +651,9 @@ namespace Specific\Controllers
 				//DONT PERFORM THE CHECK WHEN UPDATING POSTS
 				if(isset($_POST['add']))
 				{
-					$existingPost = $this->postsTable->findAll(['Title' => trim($post['Title'])]);
-					if($existingPost)
+					$existingPost = $this->postsTable->findOne(['Title' => trim($post['Title'])]);
+
+					if(is_object($existingPost))
 					{
 						$valid = false;
 						array_push($errors, "An article with that exact title already exists"); 
@@ -892,6 +903,8 @@ namespace Specific\Controllers
 					//INCASE ANY OF THE REQUIRED FIELDS IS EMPTY OR INVALID, RETURN AND PREFILL THE POST UPLOAD FORM
 					$title = $post['Title'];
 					$body = $post['Body'];
+					$description = $post['Description'];
+					$keywords = $post['Keywords'];
 					$published = isset($post['Published']) ? 1 : 0;
 					
 					return [
@@ -901,6 +914,8 @@ namespace Specific\Controllers
 							'heading' => 'Review post',
 							'title' => $title,
 							'body' => $body,
+							'description' => $description,
+							'keywords' => $keywords,
 							'published' => $published,
 							'categories' => $this->topics,
 							'errors' => $errors,

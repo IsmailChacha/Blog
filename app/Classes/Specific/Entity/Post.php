@@ -16,13 +16,15 @@ namespace Specific\Entity
 
 		private $usersTable;
 		private $postTopicsTable;
+		private $postsTable;
 
 		public $author;
 
-		public function __construct(\Ninja\DatabaseHandler $usersTable, \Ninja\DatabaseHandler $postTopicsTable)
+		public function __construct(\Ninja\DatabaseHandler $usersTable, \Ninja\DatabaseHandler $postTopicsTable, \Ninja\DatabaseHandler $postsTable)
 		{
 			$this->usersTable = $usersTable;
 			$this->postTopicsTable = $postTopicsTable;
+			$this->postsTable = $postsTable;
 		}
 
 		public function getAuthor()
@@ -55,6 +57,18 @@ namespace Specific\Entity
 		public function clearCategories()
 		{
 			return $this->postTopicsTable->deleteWhere(['ArticleId' => $this->Id]);
+		}
+
+		public function deletePost()
+		{
+			$conditions = ['Id' => $this->Id];
+			return $this->postsTable->deleteWhere($conditions);
+		}
+
+		public function togglePublish($conditions)
+		{
+			$conditions['Id'] = $this->Id;
+			return $this->postsTable->save($conditions);
 		}
 	}
 }

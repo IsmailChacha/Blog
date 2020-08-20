@@ -77,6 +77,7 @@
 				}
 				// display2($_GET['navigationLink']);
 				$_GET['currentPage'] = $currentPage;
+				// display2($_GET['currentPage']);
 			}
 
 			// START THE CAR

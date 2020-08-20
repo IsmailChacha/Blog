@@ -56,9 +56,11 @@ namespace Ninja
 		{
 			
 			$routes = $this->routes->getRoutes();
-			$authentication = $this->routes->getAuthentication();
 			$topicsTable = $this->routes->getTopicsTable();
 			$topics = $topicsTable->findAll([], 'Name ASC');
+
+			$authentication = $this->routes->getAuthentication();
+
 
 			// CHECK WHETHER REQUESTED PAGE EXISTS IN ROUTES DATA STRUCTURE
 			if(array_key_exists($this->route, $routes))
@@ -71,7 +73,7 @@ namespace Ninja
 					//WE NEED TO KNOW WHETHER THEY ARE LOGGED IN OR NOT
 					if(isset($routes[$this->route]['login']) && $routes[$this->route]['login'] && $authentication->isLoggedIn())
 					{
-						if((time() - $_SESSION['Time Of Last LogIn']) > 10)
+						if((time() - $_SESSION['Time Of Last LogIn']) > 36000000)
 						{
 							$authentication->logout();
 							$_SESSION['message'] = 'You\'ve been logged out due to inactivity';
