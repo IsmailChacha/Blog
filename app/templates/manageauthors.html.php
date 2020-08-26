@@ -3,7 +3,6 @@
   <div class="content2">
     <div class="button-group">
       <a href="<?php echo BASE_URL.'/private/index.php/createauthor';?>" class="btn btn-big">Create author</a>
-      <a href="<?php echo BASE_URL.'/private/index.php/manageauthors';?>" class="btn btn-big"><?=$heading;?></a>
     </div>
   
     <h2 class="page-title"><?=$heading;?></h2>

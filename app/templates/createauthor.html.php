@@ -2,8 +2,6 @@
   <div class="admin-content">
     <div class="content2">
       <div class="button-group">
-        <a href="<?php echo BASE_URL.'/private/index.php/createauthor';?>" class="btn btn-big">Create User</a>
-        <a href="<?php echo BASE_URL.'/private/index.php/manageauthors';?>" class="btn btn-big">Manage Users</a>
       </div>
 
       <h2 class="page-title"><?php echo $heading ?? '';?></h2>

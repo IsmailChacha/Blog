@@ -10,8 +10,7 @@ namespace Specific\Controllers
 		private $authentication;  // AUTHENTICATION CLASS INSTANCE 
 		private $topics;
 		public $posts;
-		
-		public const TITLE = 'TECH GENIE';
+		public $variables;
 		private const ROOT_PATH = '';
 
 		public function __construct(\Ninja\DatabaseHandler $postsTable, \Ninja\DatabaseHandler $usersTable, \Ninja\DatabaseHandler $topicsTable,  \Ninja\Authentication $authentication)
@@ -23,6 +22,7 @@ namespace Specific\Controllers
 			//RETURNS AN ARRAY OF \SPECIFC\ENTITY\JOKE OBJECTS 
 			$this->posts = $this->postsTable->findAll(['Published' => 1], 'Date ASC');
 			$this->authentication = $authentication;
+			$this->variables = new \Ninja\Variables($this->authentication);
 
 			$this->ROOT_PATH = ROOT_PATH;
 		}
@@ -62,14 +62,14 @@ namespace Specific\Controllers
 				}	
 
 				// display(count($posts['PYTHON']));
-				$title = self::TITLE;
+				$title = \Ninja\Variables::TITLE;
 				$output = '';
 
 				$recentPosts = ['posts' => $posts, 'heading' => 'Articles By Topic'];
 
 				if(empty($posts)) // CHECK IF THE POSTS ARRAY IS EMPTY
 				{
-					$variables = ['title' => self::TITLE,
+					$variables = ['title' => \Ninja\Variables::TITLE,
 					'template' => 'home.html.php',
 					'description' => $topic->Description,
 					'variables' => [ 
@@ -79,7 +79,7 @@ namespace Specific\Controllers
 					];
 				} else //NOT EMPTY
 				{
-					$variables = ['title' => self::TITLE, 
+					$variables = ['title' => \Ninja\Variables::TITLE, 
 					'template' => 'home.html.php',
 					'description' => $topic->Description,
 					'variables' => [
@@ -121,7 +121,7 @@ namespace Specific\Controllers
 						$offset = ($page-1) * $limit;
 						$topicPosts = $topic->getPosts($limit, $offset);
 
-						$variables = ['title' => $topicname,
+						$variables = ['title' => $topicname . ' - '  . \Ninja\Variables::TITLE,
 						'template' => 'topicposts.html.php',
 						'description' => $topic->Description,						
 						'variables' => [ 
@@ -182,16 +182,16 @@ namespace Specific\Controllers
 						$topicPosts = $otherTopicsPosts;
 						$recentPosts = ['posts' => $topicPosts, 'heading' => 'Articles By Topic'];
 
-						$variables = ['title' => self::TITLE,
-						'template' => 'home.html.php',
-						'description' => 'Explore our collection of useful learning materials on your path to proficiency in whatever language you are interested in.',
-							'keywords' => $keywordsString,
-						'variables' => [ 
-							'popularPosts' =>$this->popularPosts($topic->Name),
-							'recentPosts' => $recentPosts,
-							'totalArticles' => $topic->totalPosts(),
-							'currentPage' => $currentPage,
-							]
+						$variables = ['title' => \Ninja\Variables::TITLE,
+												'template' => 'home.html.php',
+												'description' => 'Explore our collection of useful learning materials on your path to proficiency in whatever language you are interested in.',
+													'keywords' => $keywordsString,
+												'variables' => [ 
+																			'popularPosts' =>$this->popularPosts($topic->Name),
+																			'recentPosts' => $recentPosts,
+																			'totalArticles' => $topic->totalPosts(),
+																			'currentPage' => $currentPage,
+												]
 						];
 
 						// IF NOT VIEWING ARTICLES INSIDE  TOPICS FOLDER, THEY WANT TO VIEW A SPECIFIC ARTICLE THAT LIVES IN A PARTICULAR TOPIC
@@ -203,7 +203,7 @@ namespace Specific\Controllers
 						$description = $post->Description ?? 'A simple post';
 						$keywords = $post->Keywords ?? 'Keywords';
 	
-						$variables = ['title' => $post->Title,
+						$variables = ['title' => $post->Title . ' - '  . \Ninja\Variables::TITLE,
 													'authorName' => $authorName,
 													'description' => $description,
 													'keywords' => $keywords,					
@@ -230,7 +230,7 @@ namespace Specific\Controllers
 
 					if(empty($topicPosts))
 					{
-						$variables = ['title' => $topicname,
+						$variables = ['title' => $topicname . ' - '  . \Ninja\Variables::TITLE,
 						'template' => 'topicposts.html.php',
 						'description' => $topic->Description,
 						'variables' => [ 
@@ -240,7 +240,7 @@ namespace Specific\Controllers
 					];
 					} else 
 					{
-						$variables = ['title' => $topicname,
+						$variables = ['title' => $topicname . ' - '  . \Ninja\Variables::TITLE,
 						'template' => 'topicposts.html.php',
 						'variables' => [ 
 							'popularPosts' =>$this->popularPosts($topic->Name),
@@ -255,9 +255,7 @@ namespace Specific\Controllers
 				}					
 			} else //THEY WANTED TO SO SMTH IN TOPICS FOLDER BUT SMTH WENT WRONG FROM THEIR ENT, EITHER MANUAL TYPING INTO ADDRESS BAR
 			{
-				http_response_code(404);
-				header('location:/404.php');
-				exit();				
+				$this->variables->notFound();
 			}
 
 				unset($_GET['specific']); //REMOVE VARIABLE FORM MEMORY
@@ -283,7 +281,7 @@ namespace Specific\Controllers
 
 					$posts = $this->postsTable->findAll(['Published' => 1], $order, $limit, $offset); //SELECT
 
-					$variables = ['title' => self::TITLE,
+					$variables = ['title' => \Ninja\Variables::TITLE,
 												'template' => 'articles.html.php',
 												'variables' => [ 
 														'heading' => 'Recent Articles',
@@ -292,8 +290,8 @@ namespace Specific\Controllers
 														'popularPosts' => $this->popularPosts(),
 														'topics' => $this->topics,
 														'currentPage' => $page,
-												]
-											];		
+													]
+						];		
 
 					return $variables;
 
@@ -310,7 +308,7 @@ namespace Specific\Controllers
 						$description = $post->Description ?? 'A simple post';
 						$keywords = $post->Keywords ?? 'Keywords';
 	
-						$variables = ['title' => $post->Title,
+						$variables = ['title' => $post->Title . ' - '  . \Ninja\Variables::TITLE,
 													'authorName' => $authorName,
 													'description' => $description,
 													'keywords' => $keywords,
@@ -324,9 +322,7 @@ namespace Specific\Controllers
 							return $variables;
 					} else 
 					{
-						http_response_code(404);
-						header('location:/404.php');
-						exit();
+						$this->variables->notFound();
 					}
 				}
 			} else // IF NOT, DISPLAY HOME PAGE
@@ -337,7 +333,7 @@ namespace Specific\Controllers
 				$offset = ($page-1) * $limit;
 
 				$posts = $this->postsTable->findAll(['Published' => 1], $order, $limit, $offset);
-				$variables = ['title' => self::TITLE,
+				$variables = ['title' => \Ninja\Variables::TITLE,
 											'template' => 'articles.html.php',
 											'variables' => [ 
 													'heading' => 'Recent Articles',
@@ -389,41 +385,10 @@ namespace Specific\Controllers
 			return $variables;	
 		}
 
-		//CHECK WHETHER LOGGED IN USER IS ADMIN/SUPER => WORKS PERFECTLY
-		private function checkWhetherAdminOrSuperUser():bool //WORKS PERFECTLY
-		{
-			$user = $this->authentication->getUser();
-			if($user->Superuser) //SUPERUSER
-			{
-				return true;
-			} else if($user->Admin)//ADMIN
-			{
-				return true;
-			} else
-			{
-				$this->authentication->logout();
-				return false;
-			}
-		}
-
-		//ACCESS CONTROL
-		private function superUserOnly()
-		{
-			$user = $this->authentication->getUser();
-			if($user->Superuser)
-			{
-				return true;
-			}else
-			{
-				$this->authentication->logout();
-				return false;				
-			}
-		}
-
 		//SUPERUSER
 		public function delete() 
 		{
-			if($this->superUserOnly())
+			if($this->variables->superUserOnly())
 			{
 				$condition = ['String' => $_GET['specificId']];
 				// FETCH IT FIRST
@@ -442,10 +407,9 @@ namespace Specific\Controllers
 						{
 							$_SESSION['message'] = 'Deleted successfully';
 							$_SESSION['type'] = 'success';
-							$title = 'SuperUser Panel | Manage Posts';
 							
 							return [
-								'title' => $title,
+								'title' => \Ninja\Variables::SUPERUSERTITLE,
 								'template' => 'manageposts.html.php',
 								'variables' => [
 												'posts' => $this->postsTable->findAll([], 'Date DESC'),
@@ -456,30 +420,18 @@ namespace Specific\Controllers
 					}
 				} else 
 				{
-					$title = 'SuperUser Panel | Manage Posts';
-					$_SESSION['message'] = 'Article not found. Try again';
-					$_SESSION['type'] = 'error';
-	
-					return [
-						'title' => $title,
-						'template' => 'manageposts.html.php',
-						'variables' => [
-										'posts' => $this->posts,
-										'heading' => 'Manage Posts',
-						]
-					];
+					$this->variables->notFound();
 				}							
 			} else 
 			{
-				header('location:/index.php/signin');
-				exit();
+				$this->variables->notAuthorized();
 			}
 		}
 
 		//CHANGE POST VISIBILITY
 		public function togglePublish()
 		{
-			if($this->superUserOnly())
+			if($this->variables->superUserOnly())
 			{
 				if($_GET['subfolder'] === 'publish')
 				{
@@ -499,7 +451,7 @@ namespace Specific\Controllers
 				
 				$conditions = ['Published' => $state, 'Draft' => $draft];
 				$post = $this->postsTable->findOne(['String' => $_GET['specificId']]);
-				$title = $_SESSION['Superuser'] ? 'SuperUser Panel | Manage Posts' : 'Admin Panel | Manage Posts';
+				$title = $_SESSION['Superuser'] ? \Ninja\Variables::SUPERUSERTITLE : \Ninja\Variables::ADMINTITLE;
 				if($post)
 				{
 					$affected_rows = $post->togglePublish($conditions);
@@ -535,10 +487,8 @@ namespace Specific\Controllers
 							$_SESSION['message'] = 'An error occurred processing your request.Sorry about that.';
 							$_SESSION['type'] = 'error';
 		
-							$title = 'SuperUser Panel | Manage Posts';
-		
 							return [
-								'title' => $title,
+								'title' => \Ninja\Variables::SUPERUSERTITLE,
 								'template' => 'manageposts.html.php',
 								'variables' => [
 									'posts' => $this->postsTable->findAll([], 'Date DESC'),
@@ -550,12 +500,10 @@ namespace Specific\Controllers
 							$_SESSION['message'] = 'An error occurred processing your request.Sorry about that.';
 							$_SESSION['type'] = 'error';
 		
-							$title = 'Admin Panel | Manage Posts';
-		
 							$author = $this->authentication->getUser();
 		
 							return [
-								'title' => $title,
+								'title' => \Ninja\Variables::ADMINTITLE,
 								'template' => 'manageposts.html.php',
 								'variables' => [
 									'posts' => $author->getPosts(15),
@@ -566,13 +514,11 @@ namespace Specific\Controllers
 					}	
 				} else
 				{
-					header('location:/404.php');
-					exit();
+					$this->variables->notFound();
 				}
 			} else 
 			{
-				header('location:/index.php/signin');
-				exit();
+				$this->variables->notAuthorized();
 			}
 		}
 
@@ -598,6 +544,7 @@ namespace Specific\Controllers
 					} else 
 					{
 						$valid = false;
+						http_response_code(500);
 						array_push($errors, "An error occurred uploading image");
 					}
 				} else
@@ -619,6 +566,7 @@ namespace Specific\Controllers
 						$post['Image'] = $image_name;
 					} else {
 						$valid = false;
+						http_response_code(500);
 						array_push($errors, "An error occurred uploading image");
 					}				
 				}
@@ -740,7 +688,7 @@ namespace Specific\Controllers
 		//SAVE ARTICLE => ADD || UPDATE 
 		public function save()
 		{
-			if($this->checkWhetherAdminOrSuperUser())
+			if($this->variables->checkWhetherAdminOrSuperUser())
 			{
 				$post = $_POST['post'];
 				$files = $_FILES;
@@ -796,7 +744,7 @@ namespace Specific\Controllers
 						if($postEntity)
 						{
 							//INSERT CATEGORY RECORD FOR POST IF NOT DRAFT => SAVES ME ALOT OF TROUBLE SOMEWHERE
-							if(!isset($_POST['draft']))
+							if(isset($_POST['category']) && !isset($_POST['draft']))
 							{
 								foreach($_POST['category'] as $categoryId)
 								{
@@ -813,7 +761,7 @@ namespace Specific\Controllers
 									echo "<script>window.open(\"/index.php/$postString\")</script>";
 	
 									return [
-										'title' => $_SESSION['Superuser'] ? 'SuperUser panel | Add post' : 'Admin panel | Add post',
+										'title' => \Ninja\Variables::SUPERUSERTITLE,
 										'template' => 'editpost.html.php',
 										'variables' => [
 											'heading' => 'Edit post',
@@ -846,7 +794,7 @@ namespace Specific\Controllers
 										$_SESSION['type'] = 'success';
 		
 										return [
-											'title' => 'SuperUser panel | Manage Posts',
+											'title' => \Ninja\Variables::SUPERUSERTITLE,
 											'template' => 'manageposts.html.php',
 											'variables' => [
 												'heading' => 'Manage Posts',
@@ -860,7 +808,7 @@ namespace Specific\Controllers
 		
 										$author = $this->authentication->getUser();
 										return [
-											'title' =>'Admin panel | Manage Posts',
+											'title' => \Ninja\Variables::ADMINTITLE,
 											'template' => 'manageposts.html.php',
 											'variables' => [
 												'posts' => $author->getPosts(15),
@@ -871,11 +819,12 @@ namespace Specific\Controllers
 								}
 							} else 
 							{
+								http_response_code(500);
 								$_SESSION['message'] = 'An error occurred processing your request';
 								$_SESSION['type'] = 'error';
 	
 								return [
-									'title' => $_SESSION['Superuser'] ? 'SuperUser panel | Manage Posts' : 'Admin panel | Manage Posts',
+									'title' => $_SESSION['Superuser'] ? \Ninja\Variables::SUPERUSERTITLE : \Ninja\Variables::ADMINTITLE,
 									'template' => 'addpost.html.php',
 									'variables' => [
 										'posts' => $this->postsTable->findAll(),
@@ -886,6 +835,7 @@ namespace Specific\Controllers
 						}
 					} else 
 					{
+						http_response_code(500);
 						$_SESSION['message'] = 'An error occurred processing your request';
 						$_SESSION['type'] = 'error';
 	
@@ -908,7 +858,7 @@ namespace Specific\Controllers
 					$published = isset($post['Published']) ? 1 : 0;
 					
 					return [
-						'title' => $_SESSION['Superuser'] ? 'SuperUser panel | Add post' : 'Admin panel | Add post',
+						'title' => $_SESSION['Superuser'] ? \Ninja\Variables::SUPERUSERTITLE : \Ninja\Variables::ADMINTITLE,
 						'template' => 'editpost.html.php',
 						'variables' => [
 							'heading' => 'Review post',
@@ -925,25 +875,22 @@ namespace Specific\Controllers
 				} 
 			} else 
 			{
-				header('location:/index.php/signin');
-				exit();
+				$this->variables->notAuthorized();
 			}
 		}
 
 		//MANAGE POSTS
 		public function manageposts() 
 		{
-			if($this->checkWhetherAdminOrSuperUser())
+			if($this->variables->checkWhetherAdminOrSuperUser())
 			{
 				if($_SESSION['Superuser'])
 				{
 					$conditions = ['Draft' => 0];
 					$all = $this->postsTable->findAll($conditions, 'Date DESC');
-
-					$title = 'SuperUser Panel | Manage Posts';
 		
 					return [
-						'title' => $title,
+						'title' => \Ninja\Variables::SUPERUSERTITLE,
 						'template' => 'manageposts.html.php',
 						'variables' => [
 										'posts' => $all,
@@ -954,10 +901,9 @@ namespace Specific\Controllers
 				{
 					$author = $this->authentication->getUser();
 					$posts = $author->getPosts(15);
-					$title = 'Author panel | Manage Posts';
 		
 					return [
-						'title' => $title,
+						'title' => \Ninja\Variables::ADMINTITLE,
 						'template' => 'manageposts.html.php',
 						'variables' => [
 										'posts' => $posts,
@@ -967,23 +913,20 @@ namespace Specific\Controllers
 				}
 			} else 
 			{
-				header('location:/index.php/signin');
-				exit();
+				$this->variables->notAuthorized();
 			}
 		}
 
 		//SERVE ADD POST FORM
 		public function addpost() 
 		{
-			if($this->checkWhetherAdminOrSuperUser())
+			if($this->variables->checkWhetherAdminOrSuperUser())
 			{
 				if($_SESSION['Superuser'])
 				{
 
-					$title = 'SuperUser Panel | Add Post';
-
 					return [
-						'title' => $title,
+						'title' => \Ninja\Variables::SUPERUSERTITLE,
 						'template' => 'addpost.html.php',
 						'variables' => [
 							'heading' => 'Add post',
@@ -994,10 +937,9 @@ namespace Specific\Controllers
 				} else 
 				{
 				{
-					$title = 'Author Panel | Add Post';
 
 					return [
-						'title' => $title,
+						'title' => \Ninja\Variables::ADMINTITLE,
 						'template' => 'addpost.html.php',
 						'variables' => [
 							'heading' => 'Add post',
@@ -1008,15 +950,14 @@ namespace Specific\Controllers
 				}
 			} else 
 			{
-				header('location:/index.php/signin');
-				exit();				
+				$this->variables->notAuthorized();		
 			}
 		}
 		
 		//SERVE EDIT POST FORM
 		public function editpost()
 		{
-			if($this->checkWhetherAdminOrSuperUser())
+			if($this->variables->checkWhetherAdminOrSuperUser())
 			{
 				$idOfPostToEdit = $_GET['specificId'];
 
@@ -1024,7 +965,7 @@ namespace Specific\Controllers
 				if(is_object($post))
 				{
 					return [
-						'title' => $_SESSION['Superuser'] ? 'SuperUser panel | Add post' : 'Admin panel | Add post',
+						'title' => $_SESSION['Superuser'] ? \Ninja\Variables::SUPERUSERTITLE : \Ninja\Variables::ADMINTITLE,
 						'template' => 'editpost.html.php',
 						'variables' => [
 							'heading' => 'Edit post',
@@ -1043,27 +984,25 @@ namespace Specific\Controllers
 				{
 					$_SESSION['message'] = 'Article not found for editing';
 					$_SESSION['type'] = 'error';
-					header('location:/private/index.php/manageposts');
-					exit();		
+					$this->variables->notFound();
 				}
 	
 			} else 
 			{
-				header('location:/index.php/signin');
-				exit();				
+				$this->variables->notAuthorized();	
 			}
 		}
 
 		// HANDLE DRAFTS
 		public function drafts()
 		{
-			if($this->checkWhetherAdminOrSuperUser())
+			if($this->variables->checkWhetherAdminOrSuperUser())
 			{
 				$conditions = ['Draft' => 1];
 				$drafts = $this->postsTable->findAll($conditions, 'Date DESC');
 	
 				return [
-					'title' => $_SESSION['Superuser'] ? 'SuperUser panel | Add post' : 'Admin panel | Add post',
+					'title' => $_SESSION['Superuser'] ? \Ninja\Variables::SUPERUSERTITLE : \Ninja\Variables::ADMINTITLE,
 					'template' => 'drafts.html.php',
 					'variables' => [
 						'heading' => 'Drafts',
@@ -1072,8 +1011,7 @@ namespace Specific\Controllers
 				];
 			} else 
 			{
-				header('location:/index.php/signin');
-				exit();				
+				$this->variables->notAuthorized();
 			}
 		}
 	}

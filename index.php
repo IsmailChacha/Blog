@@ -54,8 +54,7 @@
 							} elseif(strstr($value, '-'))
 							{
 								$key = $value;
-								$value2 = ucfirst($value);
-								$_GET['navigationLink'][$key] = str_ireplace('-', ' ', ucfirst($value));
+								$_GET['navigationLink'][$key] = ucwords(str_ireplace('-', ' ', $value));
 							}
 							else
 							{
@@ -66,7 +65,7 @@
 									unset($value);
 								} else
 								{
-									$_GET['navigationLink'][$key] = ucfirst($value);
+									$_GET['navigationLink'][$key] = ucwords(str_ireplace('-', ' ', $value));
 									$currentPage = $key;
 								}
 							}

@@ -15,7 +15,7 @@
 			<input type="password" name="password" class="text-input">
 		</div>
 
-		<button type="submit" name="" class="btn btn-big">Login</button><br /><br />
+		<button type="submit" name="" class="btn btn-big auth">Login</button><br /><br />
 		<p>Don't have an accout yet? <a href="<?php echo BASE_URL .'/index.php/signup';?>">Sign Up</a></p>
 	</form>
 </div>

@@ -1,10 +1,8 @@
 <!-- Admin content -->
   <div class="admin-content">
-
-    <div class="content2">
+    <div class="content">
       <div class="button-group">
         <a href="<?php echo BASE_URL . '/private/index.php/addpost';?>" class="btn btn-big">Add Article</a>
-        <a href="<?php echo BASE_URL . '/private/index.php/manageposts';?>" class="btn btn-big">Manage Articles</a>
         <a href="<?php echo BASE_URL . '/private/index.php/drafts';?>" class="btn btn-big">Drafts</a>
       </div>
 
@@ -55,4 +53,6 @@
     </div>
   </div>
 <!-- Admin content -->
-</div>
+
+
+

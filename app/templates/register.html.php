@@ -25,7 +25,7 @@
       <input type="password" name="user[Password]" class="text-input" value="<?php echo $password  ?? ''; ?>">
     </div>
 
-    <button type="submit" name="register-btn" class="btn btn-big">Register</button><br /><br />
+    <button type="submit" name="register-btn" class="btn btn-big auth">Register</button><br /><br />
     <p>Already have an account? <a href="<?php echo BASE_URL .'/index.php/signin';?>">Sign In</a></p>
   </form>
 </div>

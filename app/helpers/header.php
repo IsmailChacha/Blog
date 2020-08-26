@@ -1,15 +1,15 @@
 <!-- Header -->
   <header>
-    <a href="<?php echo BASE_URL .'/';?>" class="logo">
-      <h1 class="logo-text"><span class="logo-color">TECH</span>GENIE</h1>
-    </a>
+  <div class="header-container">
+    <a href="<?php echo BASE_URL .'/';?>" class="logo"><?php echo $siteName; ?></a>
     
     <i class="fas fa-bars menu-toggle" id="menu-toggle"></i>
 
     <ul class="nav">
       <li><a href="/index.php/aboutus">About Us</a></li>
       <?php if(isset($_SESSION['Id'])):?>
-        <li>  <a href="#" class="user-menu">
+        <li> 
+           <a href="#" class="user-menu">
               <i class="fa fa-user"></i>
               <?php echo $_SESSION['Name']?>
               <i class="fa fa-chevron-down chevron-down"></i>
@@ -32,6 +32,7 @@
         <li><a href="<?php echo BASE_URL .'/index.php/signin';?>">Sign In</a></li>
       <?php endif;?>
     </ul>
+  </div>
     
     <!-- Side Nav -->
     <div class="sidenav" id="sidenav">
@@ -41,11 +42,13 @@
         </form>
         <h2><?php echo "Topics"; ?></h2>
 
-        <button type="button" name="closebtn" class="closebtn btn" id="closeSideNav">&times;
+        <button type="button" name="closebtn" class="closebtn btn" id="closeSideNav">x
         </button>
     
         <?php foreach($topics as $topic): ?>
-          <a href="<?php echo '/index.php/topics/'.str_replace(' ', '-', trim(strtolower($topic->Name)));?>"><?php echo $topic->Name; ?></a>
+					<?php if($topic->totalPosts() !== 0): ?>
+						<li><a href="<?php echo '/index.php/topics/'. str_replace(' ', '-', trim(strtolower($topic->Name)));?>"><?php echo $topic->Name; ?></a></li>
+					<?php endif ; ?>
         <?php endforeach; ?>
 
         <h2><?php echo "Menu"; ?></h2>

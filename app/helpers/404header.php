@@ -1,8 +1,7 @@
 <!-- Header -->
 <header>
-    <a href="<?php echo BASE_URL .'/';?>" class="logo">
-      <h1 class="logo-text"><span class="logo-color">TECH</span>GENIE</h1>
-    </a>
+  <div class="header-container">
+    <a href="<?php echo BASE_URL .'/';?>" class="logo"><?php echo '<span class="logo-style">MINDS</span>JOURNAL'; ?></a>
     
     <i class="fas fa-bars menu-toggle" id="menu-toggle"></i>
 
@@ -32,6 +31,7 @@
         <li><a href="<?php echo BASE_URL .'/index.php/signin';?>">Sign In</a></li>
       <?php endif;?>
     </ul>
+  </div>
     
     <!-- Side Nav -->
     <div class="sidenav" id="sidenav">
@@ -63,7 +63,7 @@
           <a href="<?php echo BASE_URL .'/index.php/signin';?>">Sign In</a>
         <?php endif;?>
       </div>
-    </div>
+    </>
       
     <!-- //Side Nav -->
   </header>

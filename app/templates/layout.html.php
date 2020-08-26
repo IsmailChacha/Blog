@@ -7,6 +7,7 @@
   <meta name="keywords" content="<?php echo $keywords;?>">
   <meta name="description" content="<?php echo $description;?>">
   <meta name="author" content="<?php echo $authorName;?>">
+  <link rel="favicon" href="/favicon.ico">
   <!-- <meta http-equiv="refresh" content="120"> -->
   
   <title><?php echo $title; ?></title>
@@ -22,12 +23,12 @@
   <!--font-family: 'Lato', sans-serif;-->
 
   <!-- PRISM -->
-  <link rel="stylesheet" href="<?php echo BASE_URL . '/assets/prism/prism.css';?>">
+  <!-- <link rel="stylesheet" href="<?php echo BASE_URL . '/assets/prism/prism.css';?>"> -->
 
 </head>
 
 <body>
-<pre><code class="language-xxxx">...</code></pre>
+<!-- <pre><code class="language-xxxx">...</code></pre> -->
 
 <!-- HEADER FILE -->
 <?php 
@@ -35,7 +36,7 @@
 ?>
 <!-- //HEADER FILE -->
 
-<main>
+<div class="admin-wrapper">
   <!-- JavaScript SDK For Facebook Page-->
   <div id="fb-root"></div>
     <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v7.0"
@@ -65,24 +66,37 @@
         </div> -->
     </div>
   </div>
-<!-- 
-  <div class="navigation">
-    <?php foreach($_GET['navigationLink'] as $key => $value):?>
-      <?php if($key == $_GET['currentPage']):?>
-        <a class="activeLink" href="<?php echo $key?>"><?php echo $value . '&raquo;'; ?></a>
-      <?php else:?>
-        <a href="<?php echo $key?>"><?php echo $value . '&raquo;'; ?></a>
-      <?php endif;?>
-    <?php endforeach;?>
-  </div> -->
 
+  <!-- <?php $exceptionPages = ['/index.php/signin', '/index.php/signup']; ?>
+    
+  <?php if(!in_array($_GET['currentPage'], $exceptionPages)): ?>
+    <div class="navigation">
+      <?php $i = 0; ?>
+      <?php foreach($_GET['navigationLink'] as $key => $value):?>
+        <?php if($i === 0): ?>
+          <?php if($key == $_GET['currentPage']):?>
+            <a class="activeLink" href="<?php echo $key?>"><?php echo  ucfirst($value); ?></a>
+          <?php else:?>
+            <a href="<?php echo $key?>"><?php echo  ucfirst($value); ?></a>
+          <?php endif;?>
+        <?php else:?>
+          <?php if($key == $_GET['currentPage']):?>
+          <a class="activeLink" href="<?php echo $key?>"><?php echo '/ ' . ucfirst($value); ?></a>
+          <?php else:?>
+            <a href="<?php echo $key?>"><?php echo  '/ ' . ucfirst($value); ?></a>
+          <?php endif;?>
+        <?php endif ;?>
+        <?php $i++; ?>
+      <?php endforeach;?>
+    </div>
+  <?php endif; ?> -->
+  
   <i class="fa fa-chevron-up chevron-up" id="scroll-arrow" title="Go to the top"></i>
 
   <!-- GENERATED CONTENT -->
     <?php echo $output; ?>
   <!--// GENERATED CONTENT -->
-
-</main>
+</div>
 <!-- FOOTER FILE -->
 <?php 
     include ROOT_PATH . '/app/helpers/footer.php'; 
@@ -101,7 +115,7 @@
   <script src="<?php echo BASE_URL . '/assets/jquery/jquerycookie/jquery.cookie.js'?>"></script>
 
   <!--  PRISM-->
-  <script src="<?php echo BASE_URL . '/assets/prism/prism.js';?>"></script>
+  <!-- <script src="<?php echo BASE_URL . '/assets/prism/prism.js';?>"></script> -->
   <!-- <script src="https://myCDN.com/prism@v1.x/components/prism-okaidia.min.js"></script>
   <script src="https://myCDN.com/prism@v1.x/plugins/autoloader/prism-autoloader.min.js"></script> -->
   

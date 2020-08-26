@@ -6,66 +6,26 @@ namespace Specific\Controllers
 	{
 		private $usersTable; //USERS TABLE INSTANCE OF DATABASEHANDLER CLASS
 		private $authentication; //AUTHENTICATION CLASS INSTANCE
+		private $variables = '';
+
+		private const REGTITLE = 'Sign Up' . ' - ' . \Ninja\Variables::TITLE;
 
 		public function __construct(\Ninja\DatabaseHandler $usersTable, \Ninja\DatabaseHandler $mailingList, \Ninja\Authentication $authentication)
 		{
 			$this->usersTable = $usersTable;
 			$this->mailingList = $mailingList;
 			$this->authentication = $authentication;
+			$this->variables = new \Ninja\Variables($this->authentication);
 		}
-
-		//CHECK WHETHER LOGGED IN USER IS ADMIN/SUPER => WORKS PERFECTLY
-		private function checkWhetherAdminOrSuperUser():bool //WORKS PERFECTLY
-		{
-			$user = $this->authentication->getUser();
-			if($user->Superuser) //SUPERUSER
-			{
-				return true;
-			} else if($user->Admin)//ADMIN
-			{
-				return true;
-			} else
-			{
-				$this->authentication->logout();
-				return false;
-			}
-		}
-
-		private function superUserOnly()
-		{
-			$user = $this->authentication->getUser();
-			if($user->Superuser)
-			{
-				return true;
-			}else
-			{
-				$this->authentication->logout();
-				return false;				
-			}
-		}
-
-		private function userOnly()
-		{
-			$user = $this->authentication->getUser();
-			if(!$user->Superuser && !$user->Admin)
-			{
-				return true;
-			}else
-			{
-				$this->authentication->logout();
-				return false;				
-			}
-		}		
 
 		public function dashboard() 
 		{
-			if($this->checkWhetherAdminOrSuperUser())
+			if($this->variables->checkWhetherAdminOrSuperUser())
 			{
 				$author = $this->authentication->getUser();
-				$title = $_SESSION['Superuser'] ? 'SuperUser Panel | Dashboard' : 'Author Panel | Dashboard';
 				
 				return [
-					'title' => $title,
+					'title' => $_SESSION['Superuser'] ? \Ninja\Variables::SUPERUSERTITLE : \Ninja\Variables::ADMINTITLE,
 					'template' => 'dashboard.html.php',
 					'variables' => [
 						'title' => 'Dashboard',
@@ -74,18 +34,16 @@ namespace Specific\Controllers
 				];
 			} else 
 			{
-				header('location:/index.php/signin');
-				exit();
+				$this->variables->notAuthorized();
 			}
 		}
 
 		public function dashboard2()
 		{
-			if($this->userOnly())
+			if($this->variables->UserOnly())
 			{
-				$title = 'My account';
 				return [
-					'title' => $title,
+					'title' => \Ninja\Variables::USERTITLE,
 					'template' => 'userdashboard.html.php',
 					'variables' => [
 							'title' => 'Dashboard',
@@ -93,21 +51,19 @@ namespace Specific\Controllers
 				];
 			} else 
 			{
-				header('location:/index.php/signin');
-				exit();
+				$this->variables->notAuthorized();
 			}
 		}
 
 		public function profile()
 		{
-			if($this->checkWhetherAdminOrSuperUser())
+			if($this->variables->checkWhetherAdminOrSuperUser())
 			{
 				//FETCH INFORMATION ABOUT USER
 				$user = $this->authentication->getUser();
-				$title = $_SESSION['Superuser'] ? 'SuperUser Panel | Profile' : 'Author Panel | Profile';
 
 				return [
-					'title' => $title,
+					'title' => $_SESSION['Superuser'] ? \Ninja\Variables::SUPERUSERTITLE : \Ninja\Variables::ADMINTITLE,
 					'template' => 'profile.html.php',
 					'variables' => [
 						'title' => 'Profile Information',
@@ -116,22 +72,20 @@ namespace Specific\Controllers
 				];
 			} else 
 			{
-				header('location:/index.php/signin');
-				exit();
+				$this->variables->notAuthorized();
 			}
 		}
 
 		public function profile2()
 		{
-			if($this->userOnly())
+			if($this->variables->UserOnly())
 			{
 				$title = 'My account';
 				//FETCH INFORMATION ABOUT USER
 				$user = $this->authentication->getUser();
-				$title = 'Profile';
 
 				return [
-					'title' => $title,
+					'title' => \Ninja\Variables::USERTITLE,
 					'template' => 'userprofile.html.php',
 					'variables' => [
 						'title' => 'Profile Information',
@@ -140,15 +94,14 @@ namespace Specific\Controllers
 				];
 			} else 
 			{
-				header('location:/index.php/signin');
-				exit();
+				$this->variables->notAuthorized();
 			}
 		}
 
 		//SERVE REGISTRATION FORM
 		public function registrationForm():array
 		{
-			return ['template' => 'register.html.php', 'title' => 'Create a new account'];
+			return ['template' => 'register.html.php', 'title' => self::REGTITLE];
 		}
 
 		//VALIDATE FIELDS DURING REGISTRATION 
@@ -229,6 +182,7 @@ namespace Specific\Controllers
 				$user['Password'] = Password_hash($user['Password'], PASSWORD_DEFAULT); //Hash the Password
 				$user['Date'] = $this->generateDate();
 				$affected_rows = $this->usersTable->save($user);
+
 				if($affected_rows)
 				{
 					$_SESSION['message'] = 'Registration successful. Want to check out your account?';
@@ -243,7 +197,7 @@ namespace Specific\Controllers
 
 					return  [
 						'template' => 'register.html.php', 
-						'title' => 'Register an account', 
+						'title' => self::REGTITLE, 
 						'variables' => 
 							[
 							'user' => $user
@@ -255,7 +209,7 @@ namespace Specific\Controllers
 				// If the data is not valid, show the form again and prefill it
 				return  [
 					'template' => 'register.html.php', 
-					'title' => 'Register an account', 
+					'title' => self::REGTITLE, 
 					'variables' => 
 						[
 						'errors' => $errors,
@@ -269,7 +223,7 @@ namespace Specific\Controllers
 		//MANAGE AUTHORS
 		public function manageauthors()
 		{
-			if($this->superUserOnly())
+			if($this->variables->superUserOnly())
 			{
 				$conditions = ['Admin' => 1];
 				$authors = $this->usersTable->findAll($conditions);
@@ -277,7 +231,7 @@ namespace Specific\Controllers
 				$title = 'SuperUser Panel | Manage Users';
 	
 				return [
-					'title' => $title,
+					'title' => \Ninja\Variables::SUPERUSERTITLE,
 					'template' => 'manageauthors.html.php',
 					'variables' => [
 						'heading' => 'Manage authors',
@@ -286,21 +240,20 @@ namespace Specific\Controllers
 				];
 			} else
 			{
-				header('location:/index.php/signin');
-				exit();
+				$this->variables->notAuthorized();
 			}
 		}
 
 		//PROMOTE USER 
 		public function displayForm() 
 		{
-			if($this->superUserOnly())
+			if($this->variables->superUserOnly())
 			{
 
 				$title = 'SuperUser Panel | Create author';
 
 				return [
-					'title' => $title,
+					'title' => \Ninja\Variables::SUPERUSERTITLE,
 					'template' => 'createauthor.html.php',
 					'variables' => [
 						'heading' => 'Enter user\'s validated email',
@@ -308,14 +261,13 @@ namespace Specific\Controllers
 				];
 			} else
 			{
-				header('location:/index.php/signin');
-				exit();
+				$this->variables->notAuthorized();
 			}
 		}
 
 		public function searchUserToPromote() 
 		{
-			if($this->superUserOnly())
+			if($this->variables->superUserOnly())
 			{
 				$conditions = ['Email' => filter_var(strtolower($_POST['email']), FILTER_VALIDATE_EMAIL)];
 				$users = $this->usersTable->findAll($conditions);
@@ -328,7 +280,7 @@ namespace Specific\Controllers
 					$title = 'SuperUser Panel | Create author';
 	
 					return [
-						'title' => $title,
+						'title' => \Ninja\Variables::SUPERUSERTITLE,
 						'template' => 'createauthor.html.php',
 						'variables' => [
 							'heading' => 'Enter user\'s validated email',
@@ -346,7 +298,7 @@ namespace Specific\Controllers
 						$title = 'SuperUser Panel | Demote user';
 	
 							return [
-								'title' => $title,
+								'title' => \Ninja\Variables::SUPERUSERTITLE,
 								'template' => 'promoteauthor.html.php',
 								'variables' => [
 									'heading' => 'Demote author',
@@ -362,7 +314,7 @@ namespace Specific\Controllers
 						$title = 'SuperUser Panel | Promote user';
 	
 						return [
-							'title' => $title,
+							'title' => \Ninja\Variables::SUPERUSERTITLE,
 							'template' => 'promoteauthor.html.php',
 							'variables' => [
 								'heading' => 'Promote user',
@@ -374,14 +326,13 @@ namespace Specific\Controllers
 				}
 			} else
 			{
-				header('location:/index.php/signin');
-				exit();
+				$this->variables->notAuthorized();
 			}
 		}
 
 		public function promoteUser() 
 		{
-			if($this->superUserOnly())
+			if($this->variables->superUserOnly())
 			{
 				if(!isset($_POST['admin']))
 				{
@@ -405,7 +356,7 @@ namespace Specific\Controllers
 						$_SESSION['type'] = 'success';
 	
 						return [
-							'title' => $title,
+							'title' => \Ninja\Variables::SUPERUSERTITLE,
 							'template' => 'manageauthors.html.php',
 							'variables' => [
 								'heading' => 'Manage authors',
@@ -419,7 +370,7 @@ namespace Specific\Controllers
 						$_SESSION['type'] = 'error';
 	
 						return [
-							'title' => $title,
+							'title' => \Ninja\Variables::SUPERUSERTITLE,
 							'template' => 'createauthor.html.php',
 							'variables' => [
 								'heading' => 'Manage authors',
@@ -445,7 +396,7 @@ namespace Specific\Controllers
 						$_SESSION['type'] = 'success';
 	
 						return [
-							'title' => $title,
+							'title' => \Ninja\Variables::SUPERUSERTITLE,
 							'template' => 'manageauthors.html.php',
 							'variables' => [
 								'heading' => 'Manage authors',
@@ -459,7 +410,7 @@ namespace Specific\Controllers
 						$_SESSION['type'] = 'error';
 	
 						return [
-							'title' => $title,
+							'title' => \Ninja\Variables::SUPERUSERTITLE,
 							'template' => 'createauthor.html.php',
 							'variables' => [
 								'heading' => 'Manage authors',
@@ -469,8 +420,7 @@ namespace Specific\Controllers
 				}
 			} else
 			{
-				header('location:/index.php/signin');
-				exit();
+				$this->variables->notAuthorized();
 			}
 		}
 

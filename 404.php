@@ -6,7 +6,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="author" content="<?php echo 'Ismail Chacha';?>">
-  <title><?php echo 'TECHGENIE'; ?></title>
+  <title><?php echo 'MINDSJOURNAL'; ?></title>
   <link rel="stylesheet" href="<?php echo BASE_URL . '/assets/css/style.css';?>"/>
   <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;1,300&display=swap" rel="stylesheet"/> 
   <!--font-family: 'Lato', sans-serif;-->
@@ -15,17 +15,17 @@
 <body>
 <?php include ROOT_PATH . '/app/helpers/404header.php'; ?>
 
-<main class="NotFound" style="position: relative;top: 66px;">
+<div class="NotFound page-wrapper" style="position: relative;top: 66px;">
 	<i class="fa fa-chevron-up chevron-up" id="scroll-arrow" title="Go to the top"></i>
 	<!-- Page wrapper -->
 	<div class="page-wrapper">
 			<div class="content clearfix col-3">
-          <h1 class="post-title errorpage">ERROR 404</h1>
-          <h2 class="fourofour"><?php echo 'NOT FOUND'; ?></h2>
+          <h1 class="post-title errorpage">404</h1>
+          <h2 class="fourofour"><?php echo 'PAGE NOT FOUND'; ?></h2>
 			</div>
 	</div>
 		<!-- //Page wrapper-->
-</main>
+</div>
 
   <!-- SCRIPTS -->
   <!-- jQuery-->

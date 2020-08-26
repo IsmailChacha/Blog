@@ -3,7 +3,6 @@
   <div class="content2">
     <div class="button-group">
       <a href="<?php echo BASE_URL.'/private/index.php/addtopic';?>" class="btn btn-big">Add Topic</a>
-      <a href="<?php echo BASE_URL.'/private/index.php/managetopics';?>" class="btn btn-big">Manage Topics</a>
     </div>
     
     <h2 class="page-title"><?php echo $heading ?? '';?></h2>

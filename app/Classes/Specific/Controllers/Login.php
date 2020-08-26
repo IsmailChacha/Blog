@@ -5,6 +5,7 @@ namespace Specific\Controllers
 	class Login
 	{
 		private $authentication; //AUTHENTICATION CLASS INSTANCE
+		private const LOGTITLE = 'Sign In' . ' - ' . \Ninja\Variables::TITLE;
 
 		//INITIALIZE AUTHENTICATION CLASS
 		public function __construct(\Ninja\Authentication $authentication)
@@ -15,32 +16,39 @@ namespace Specific\Controllers
 		//GENERATES LOGIN FORM TEMPLATE
 		public function loginForm()
 		{
-			return ['template' => 'login.html.php', 'title' => 'Log in'];
+			return ['template' => 'login.html.php', 'title' => self::LOGTITLE];
 		}
 
 		//HANDLE THE LOGIN PROCESS
 		public function processLogin()
 		{
+			$errors = [];
+
 			if($_POST['email'] == '' || $_POST['password'] == '' )
 			{
-				$_SESSION['message'] = 'Please fill out the form';
-				$_SESSION['type'] = 'error';
+				array_push($errors, 'Please fill out the form');
+				$type = 'error';
 
 				return ['template' => 'login.html.php', 
-								'title' => 'Login',
-							];
+								'title' => self::LOGTITLE,
+								'variables' => [
+									'errors' => $errors,
+									'type' => $type,
+								]
+				];
 			} else 
 			{
 				if($this->authentication->login($_POST['email'], $_POST['password']))
 				{
 					header('location:/');
+					exit();
 				} else 
 				{
 					$_SESSION['message'] = 'Invalid username/password combination';
 					$_SESSION['type'] = 'error';
 
-				return ['template' => 'login.html.php', 
-						'title' => 'Login',
+					return ['template' => 'login.html.php', 
+									'title' => self::LOGTITLE,
 					];
 				}
 			}

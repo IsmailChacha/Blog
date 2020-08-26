@@ -11,7 +11,11 @@ namespace Ninja
 
 		public function __construct(\Ninja\DatabaseHandler $usersTable, $usernameColumn, $passwordColumn)
 		{
-			session_start();
+			if(!isset($_SESSION))
+			{
+				session_start();
+			}
+			
 			$this->usersTable = $usersTable;
 			$this->usernameColumn = $usernameColumn;
 			$this->passwordColumn = $passwordColumn;
@@ -23,17 +27,15 @@ namespace Ninja
 			$username = strtolower($username);
 
 			//LOGOUT ANY LOGGED IN USER BEFORE LOGGING IN ANOTHER
-			if(!empty($_SESSION) && $_SESSION['username'] !== $username)
+			if(!empty($_SESSION['username']) && $_SESSION['username'] !== $username)
 			{
 				$this->logout();
 			}
 
 			$conditions = [$this->usernameColumn => $username];
-			$users = $this->usersTable->findAll($conditions);
-
-			if(!empty($users) && password_verify($password, $users[0]->{$this->passwordColumn}))
+			$user = $this->usersTable->findOne($conditions);
+			if(is_object($user) && password_verify($password, $user->{$this->passwordColumn}))
 			{
-				$user = $users[0];
 				session_regenerate_id(); //REGENERATE SESSION ID
 
 				//SET SESSION VARIABLES
@@ -64,8 +66,7 @@ namespace Ninja
 			} else 
 			{
 				$conditions = [$this->usernameColumn => strtolower($_SESSION['username'])];
-				$users = $this->usersTable->findAll($conditions);
-				$this->user = $users[0];
+				$this->user = $this->usersTable->findOne($conditions);
 				if(!empty($this->user) && $this->user->{$this->passwordColumn} === $_SESSION['password'])
 				{
 					return true;
@@ -81,7 +82,6 @@ namespace Ninja
 		{
 			if($this->isLoggedIn())
 			{
-				$_SESSION['Time Of Last LogIn'] = time();
 				return $this->user;
 			} else 
 			{

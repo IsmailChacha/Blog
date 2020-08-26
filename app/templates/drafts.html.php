@@ -2,8 +2,6 @@
 <div class="admin-content">
 	<div class="content2">
 		<div class="button-group">
-			<a href="<?php echo BASE_URL . '/private/index.php/addpost';?>" class="btn btn-big">Add Article</a>
-			<a href="<?php echo BASE_URL . '/private/index.php/manageposts';?>" class="btn btn-big">Manage Articles</a>
 		</div>
 
 		<h2 class="page-title"><?php echo $heading; ?></h2>

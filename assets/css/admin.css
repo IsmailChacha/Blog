@@ -1,6 +1,7 @@
 /* NAVBAR */
-header {
-  background:ghostwhite;
+header.admin-header {
+  background: #006669;
+  border-bottom: 1px solid steelblue;
 }
 
 .admin-wrapper {
@@ -13,11 +14,8 @@ header {
 
 /* LEFT SIDEBAR */
 .admin-wrapper .left-sidebar {
-  flex: 2;
-  height: 100%;
-  border-right: 1px solid silver;
-  background-color: ghostwhite;
-  font-size: 1.15em;
+  width: 100%;
+
 }
 
 .admin-wrapper .left-sidebar ul {
@@ -29,27 +27,70 @@ header {
 .admin-wrapper .left-sidebar ul li a {
   padding: 18px;
   display: block;
-  color:#555;
-  border-bottom: 1px solid silver;
+  color:white;
 }
 
 .admin-wrapper .left-sidebar ul li a:hover {
-  background-color: gainsboro;
+  background-color: #0d7f83;
 }
 
 /* ADMIN CONTENT */
-
-.admin-wrapper .admin-content {
-  flex: 10;
+.sidebar-container {
+  overflow-y: auto;
+  flex: 1.8;
   height: 100%;
-  padding: 40px 20px 40px;;
-  font-size: 1.15em;
-  overflow-y: scroll;
+  border-right: 1px solid white;
+  background-color: #006669;
 }
 
-.admin-wrapper .admin-content .content .dashboard-content h4 {
+.admin-content {
+  flex: 8;
+  height: 100%;
+  padding: 0px 14px 0px;;
+  /* font-size: 1.15em; */
+  overflow-y: auto;
+  background: #f5f6f7;
+}
+
+.admin-controls-container {
+  flex: 2.2;
+  height: 100%;
+  background: #006669;
+}
+
+.admin-controls-container button{
+  border: 1px solid white;
+}
+
+.admin-controls-container *{
+  color: white;
+}
+
+.topics {
+  margin-bottom: 8px;
+}
+
+.actions button{
+  float: left;
+  margin-bottom: 8px;
+}
+
+.admin-controls {
+  padding: 8px 8px;
+}
+
+.admin-controls input[type=checkbox]{
+  text-align: left;
+}
+
+.admin-content .content .dashboard-content h4 {
   margin: auto !important;
   text-align: center;
+}
+
+.button-group {
+  position: relative;
+  top: 16px;
 }
 
 .admin-content .page-title {
