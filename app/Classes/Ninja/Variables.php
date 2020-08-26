@@ -3,7 +3,7 @@ namespace Ninja
 {
 	class Variables
 	{
-		public const SITENAME = '<span class="logo-style">MINDS</span>JOURNAL';
+		public const SITENAME = '<span class="logo-style">MINDS</span><span class="logo-style-two">JOURNAL</span>';
 		public const TITLE = 'MINDSJOURNAL';
 		public const SUPERUSERTITLE = 'SuperUser Panel' . ' - ' . self::TITLE;
 		public const ADMINTITLE = 'Admin Panel' . ' - ' . self::TITLE;
