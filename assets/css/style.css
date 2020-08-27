@@ -161,12 +161,12 @@
   }
 
   div.navigation {
-    margin: 8px 0px 8px 8px;
+    margin: 4px 0px 10px 8px;
     display: inline-block;
-    /* background: #f5f6f7; */
+    background: #f5f6f7;
     padding: 4px 5px;
-    /* border: 1px solid #ccc;
-    border-radius: 5px; */
+    border: 1px solid #ccc;
+    border-radius: 5px;
   }
 
   .navigation a {
@@ -274,15 +274,22 @@
   }
 
   .mpopup-head h3 {
-    padding: 10px 16px;
+    padding: 4px;
     font-size: 25px;
     text-align: center;
+    color: #b22f2f;
+  }
+
+  .mpopup-head p {
+    padding: 8px;
+    text-align: center;
+    color: #555;
   }
 
   .mpopup-main {padding: 8px 14px;}
 
   .mpopup-main input{
-    margin: 8px 2px;
+    margin-bottom: 10px;
   }
 
   .mpopup-main input[type="submit"]{
@@ -365,7 +372,7 @@
 
   .header-container {
     height: inherit;
-    padding: 18px;
+    padding: 15px;
     vertical-align: middle;
   }
 
@@ -422,7 +429,7 @@
   header ul li ul {
     float:left;
     position: absolute;
-    top: 42px;
+    top: 52.5px;
     width: 184px;
     display: none;
     z-index: 1;
@@ -448,7 +455,7 @@
 
   header ul li a {
     display:block;
-    padding: 7px;
+    padding: 12px;
     text-decoration: none;
   }
 

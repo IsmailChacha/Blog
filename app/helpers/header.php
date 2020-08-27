@@ -42,8 +42,8 @@
         </form>
         <h2><?php echo "Topics"; ?></h2>
 
-        <button type="button" name="closebtn" class="closebtn btn" id="closeSideNav">x
-        </button>
+        <span name="closebtn" class="closebtn btn close" id="closeSideNav">X
+        </span>
     
         <?php foreach($topics as $topic): ?>
 					<?php if($topic->totalPosts() !== 0): ?>

@@ -49,7 +49,8 @@
     <div class="mpopup-content">
         <div class="mpopup-head">
             <span class="close">X</span>
-            <h3 class="">Subscribe to our newsletter</h3>
+            <h3 class="">Join our newsletter</h3>
+            <p>Be the first to receive new blogs directly to your mailbox</p>
         </div>
         <div class="mpopup-main">
           <!-- Join Our News Letter -->
@@ -67,7 +68,8 @@
     </div>
   </div>
 
-  <!-- <?php $exceptionPages = ['/index.php/signin', '/index.php/signup']; ?>
+  <!-- BREADCRUMBS -->
+  <?php $exceptionPages = ['/index.php/signin', '/index.php/signup']; ?>
     
   <?php if(!in_array($_GET['currentPage'], $exceptionPages)): ?>
     <div class="navigation">
@@ -89,7 +91,9 @@
         <?php $i++; ?>
       <?php endforeach;?>
     </div>
-  <?php endif; ?> -->
+  <?php endif; ?>
+  
+  <!-- BREADCRUMBS -->
   
   <i class="fa fa-chevron-up chevron-up" id="scroll-arrow" title="Go to the top"></i>
 
