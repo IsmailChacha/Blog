@@ -69,6 +69,7 @@
   </div>
 
   <!-- BREADCRUMBS -->
+<!--   
   <?php $exceptionPages = ['/index.php/signin', '/index.php/signup']; ?>
     
   <?php if(!in_array($_GET['currentPage'], $exceptionPages)): ?>
@@ -91,7 +92,7 @@
         <?php $i++; ?>
       <?php endforeach;?>
     </div>
-  <?php endif; ?>
+  <?php endif; ?> -->
   
   <!-- BREADCRUMBS -->
   

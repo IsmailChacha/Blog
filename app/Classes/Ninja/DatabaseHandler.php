@@ -93,8 +93,7 @@ namespace Ninja
 				$i++;
 			}
 
-      $affected_rows = $this->executeQuery($sql, $conditions);
-			return $affected_rows;
+      return $this->executeQuery($sql, $conditions);
 		}
 
 		public function deleteWhere(array $conditions)
@@ -114,8 +113,7 @@ namespace Ninja
 				$i++;
 			}
 
-			$affected_rows = $this->executeQuery($sql, $conditions);
-			return $affected_rows;
+			return $this->executeQuery($sql, $conditions);
 		}
 
 		// FETCH RECORDS 
@@ -265,8 +263,7 @@ namespace Ninja
 				$i++;
 			}
 			$stmt = $this->executeQuery($sql, $conditions); 
-			$result = $stmt->fetchObject($this->className, $this->constructorArgs);
-			return $result;  
+			return $stmt->fetchObject($this->className, $this->constructorArgs);
 		}
 	}
 }

@@ -5,9 +5,9 @@ namespace Ninja
 	{
 		public const SITENAME = '<span class="logo-style">MINDS</span><span class="logo-style-two">JOURNAL</span>';
 		public const TITLE = 'MINDSJOURNAL';
-		public const SUPERUSERTITLE = 'SuperUser Panel' . ' - ' . self::TITLE;
-		public const ADMINTITLE = 'Admin Panel' . ' - ' . self::TITLE;
-		public const USERTITLE = 'Account' . ' - ' . self::TITLE;
+		public const SUPERUSERTITLE = 'ADMIN' . ' - ' . self::TITLE;
+		public const ADMINTITLE = 'AUTHOR' . ' - ' . self::TITLE;
+		public const USERTITLE = 'ACCOUNT' . ' - ' . self::TITLE;
 
 		public $authentication;
 

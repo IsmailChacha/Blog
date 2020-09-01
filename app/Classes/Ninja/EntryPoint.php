@@ -10,8 +10,6 @@ namespace Ninja {
 		private $routes; //ALL THE APLLICATION ROUTES
 		private $authentication;
 		private $variables;
-		private const SITENAME = \Ninja\Variables::SITENAME;
-		private const TITLE = \Ninja\Variables::TITLE;
 
 		//INITIALIZES THE ROUTE, METHOD OF ACCESS, AND ALL THE AVAILABLE ROUTES
 		public function __construct(string $route, string $method, \Ninja\Routes $routes)
@@ -76,7 +74,7 @@ namespace Ninja {
 					//WE NEED TO KNOW WHETHER THEY ARE LOGGED IN OR NOT
 					if (isset($routes[$this->route]['login']) && $routes[$this->route]['login'] && $this->authentication->isLoggedIn()) 
 					{
-						if ((time() - $_SESSION['Time Of Last LogIn']) > 36000000) 
+						if ((time() - $_SESSION['Time Of Last LogIn']) > 86400000) 
 						{
 							$this->variables->sessionManager();
 						} else 
@@ -98,9 +96,9 @@ namespace Ninja {
 								'layout-two.html.php',
 								[
 									'output' => $output,
-									'siteName' => self::SITENAME,
-									'title' => self::TITLE,
-									'footer' => self::TITLE,
+									'siteName' => \Ninja\Variables::SITENAME,
+									'title' => $title,
+									'footer' => \Ninja\Variables::TITLE,
 								]
 							);
 							http_response_code(201);
@@ -120,7 +118,7 @@ namespace Ninja {
 				} else 
 				{
 					// BUT THEY COULD STILL BE LOGGED IN:
-					if (isset($_SESSION['Time of Last Login']) && (time() - $_SESSION['Time Of Last LogIn']) > 36000000) 
+					if (isset($_SESSION['Time of Last Login']) && (time() - $_SESSION['Time Of Last LogIn']) > 86400000) 
 					{
 						$this->variables->sessionManager();
 					} else
@@ -146,9 +144,9 @@ namespace Ninja {
 							'layout.html.php',
 							[
 								'output' => $output,
-								'siteName' => self::SITENAME,
+								'siteName' => \Ninja\Variables::SITENAME,
 								'title' => $title,
-								'footer' => self::TITLE,
+								'footer' => \Ninja\Variables::TITLE,
 								'topics' => $topics,
 								'description' => strip_tags($description),
 								'keywords' => strip_tags($keywords),

@@ -429,7 +429,7 @@
   header ul li ul {
     float:left;
     position: absolute;
-    top: 52.5px;
+    top: 50.5px;
     width: 184px;
     display: none;
     z-index: 1;
@@ -465,8 +465,9 @@
 
   header ul li a:hover {
     background: #014244;
-    border: 1px solid white;
-    border-radius: 5px;
+    /*border: 1px solid white;*/
+    border-radius: 4px;
+    /*transition: all 0s;*/
   }
 
   header .menu-toggle {
