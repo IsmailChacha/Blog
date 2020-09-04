@@ -11,7 +11,7 @@
               <img src="<?php echo BASE_URL . '/assets/images/' . $post->Image;?>" alt="<?php echo strip_tags($post->String);?>" class="featured-image" >
             </div>             
             <div class="more-info">
-              <h1 class="post-title single"><?php echo $post->Title;?></h1>
+              <h1 class="title single"><?php echo ucwords(strtolower($post->Title));?></h1>
               <!-- far fa-user -->
               <!-- far fa-calendar  -->
               <span class="post-info"><?php echo 'Written by ' . $post->getAuthor()->FirstName . ' ' . $post->getAuthor()->LastName; ?></span>
