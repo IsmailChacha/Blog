@@ -36,7 +36,7 @@
 ?>
 <!-- //HEADER FILE -->
 
-<div class="admin-wrapper">
+<div class="page-wrapper">
   <!-- JavaScript SDK For Facebook Page-->
   <div id="fb-root"></div>
     <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v7.0"
@@ -69,8 +69,8 @@
   </div>
 
   <!-- BREADCRUMBS -->
-<!--   
-  <?php $exceptionPages = ['/index.php/signin', '/index.php/signup']; ?>
+  
+  <!-- <?php $exceptionPages = ['/index.php/signin', '/index.php/signup']; ?>
     
   <?php if(!in_array($_GET['currentPage'], $exceptionPages)): ?>
     <div class="navigation">
@@ -78,9 +78,9 @@
       <?php foreach($_GET['navigationLink'] as $key => $value):?>
         <?php if($i === 0): ?>
           <?php if($key == $_GET['currentPage']):?>
-            <a class="activeLink" href="<?php echo $key?>"><?php echo  ucfirst($value); ?></a>
+            <a class="activeLink" href="<?php echo $key?>"><?php echo ucfirst($value); ?></a>
           <?php else:?>
-            <a href="<?php echo $key?>"><?php echo  ucfirst($value); ?></a>
+            <a href="<?php echo $key?>"><?php echo ucfirst($value); ?></a>
           <?php endif;?>
         <?php else:?>
           <?php if($key == $_GET['currentPage']):?>
@@ -101,12 +101,14 @@
   <!-- GENERATED CONTENT -->
     <?php echo $output; ?>
   <!--// GENERATED CONTENT -->
+
+  <!-- FOOTER FILE -->
+  <?php 
+      include ROOT_PATH . '/app/helpers/footer.php'; 
+  ?>
+  <!-- //FOOTER FILE -->
 </div>
-<!-- FOOTER FILE -->
-<?php 
-    include ROOT_PATH . '/app/helpers/footer.php'; 
-?>
-<!-- //FOOTER FILE -->
+
 
   <!-- SCRIPTS -->
   <!-- jQuery-->

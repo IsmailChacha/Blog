@@ -14,7 +14,20 @@
 							</div>
 								
 							<div class="post-preview">
-								<h3><a href="/index.php/<?php echo $post->String;?>"><?php echo $post->Title;?></a></h3>
+								<?php 
+										$description = strip_tags($post->Description); 
+										$wordCount = strlen($description); 
+
+										if($wordCount <= 120) 
+										{
+											$elipsis = '';
+										} else 
+										{
+											$elipsis = '...';
+										} 
+								?>
+								<h3><a href="/index.php/<?php echo $post->String;?>"><?php echo strip_tags($post->Title);?></a></h3>
+								<p class="description"><?php echo substr($description, 0, 120) . $elipsis; ?></p>
 							</div>
 						</article>  
 					<?php endforeach;?>			

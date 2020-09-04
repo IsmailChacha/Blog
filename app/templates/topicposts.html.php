@@ -46,3 +46,4 @@
 	<!-- //Main Content -->
 		
 	<?php include ROOT_PATH . '/app/helpers/sidebar.php';?>
+</section>

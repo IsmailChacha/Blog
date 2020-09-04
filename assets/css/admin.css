@@ -1,15 +1,15 @@
 /* NAVBAR */
 header.admin-header {
-  background: #006669;
-  border-bottom: 1px solid steelblue;
+  background: #1f385c;
+  /*border-bottom: 1px solid steelblue;*/
 }
 
 .admin-wrapper {
   display: flex;
-  height: calc(100% - 66px);
+  height: calc(100% - 44px);
   width: 100%;
   position: absolute;
-  top: 66px;
+  top: 44px;
 }
 
 /* LEFT SIDEBAR */
@@ -27,43 +27,54 @@ header.admin-header {
 .admin-wrapper .left-sidebar ul li a {
   padding: 18px;
   display: block;
-  color:white;
+  /* color:#aaa; */
 }
 
 .admin-wrapper .left-sidebar ul li a:hover {
-  background-color: #0d7f83;
+  /* background-color: #aab5c5; */
 }
 
 /* ADMIN CONTENT */
 .sidebar-container {
   overflow-y: auto;
-  flex: 1.8;
+  flex: 1.5;
   height: 100%;
-  border-right: 1px solid white;
-  background-color: #006669;
+  /* border-right: 1px solid white; */
+  background-color: #E1E9F5;
 }
 
 .admin-content {
-  flex: 8;
+  flex: 8.5;
   height: 100%;
   padding: 0px 14px 0px;;
   /* font-size: 1.15em; */
   overflow-y: auto;
-  background: #f5f6f7;
+  background: #EBF1FA;
 }
 
+.admin-content input {
+  background: white;
+  border: 1px solid #aaa;
+}
+
+.admin-content .text-input {
+  background: white;
+  border: 1px solid #aaa;
+}
+
+
 .admin-controls-container {
-  flex: 2.2;
+  flex: 2;
   height: 100%;
-  background: #006669;
+  background: #E1E9F5;
 }
 
 .admin-controls-container button{
-  border: 1px solid white;
+  border: 1px solid #aaa;
 }
 
 .admin-controls-container *{
-  color: white;
+  /* color: #aaa; */
 }
 
 .topics {
@@ -143,4 +154,9 @@ th, td {
 
 form div {
   margin-bottom: 15px;
+}
+
+label {
+  /* color: #222; */
+  /* font-weight: bold; */
 }

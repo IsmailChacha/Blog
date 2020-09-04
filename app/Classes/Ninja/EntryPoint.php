@@ -91,7 +91,7 @@ namespace Ninja {
 							http_response_code(202);
 							$output = $this->outputBuffer($page);
 
-							//SERVE THE PAGE
+							//RENDER THE PAGE
 							echo $this->loadTemplate(
 								'layout-two.html.php',
 								[
@@ -139,8 +139,9 @@ namespace Ninja {
 						http_response_code(202);
 						$output = $this->outputBuffer($page);
 
-						//SERVE THE PAGE
-						echo $this->loadTemplate(
+						//RENDER THE PAGE
+						echo $this->loadTemplate
+						(
 							'layout.html.php',
 							[
 								'output' => $output,

@@ -22,12 +22,14 @@
 		<section class="section popular">
 				<h3 class="section-title"><?php echo $popularPosts['heading'] ?? 'Popular Articles' ;?></h3>
 				<!-- Single popular post -->
-				<?php foreach($popularPosts['posts'] as $p):?>
+				<?php $i = 1; foreach($popularPosts['posts'] as $p):?>
 					<div class="post clearfix">
 						<!-- <a href="/index.php/<?php echo $p->String;?>"><img src="<?php echo BASE_URL . '/assets/images/' . $p->Image;?>" alt="<?php echo strip_tags($p->String);?>"></a> -->
+
+						<div class="counter"><?=$i;?></div>
 						<a href="/index.php/<?php echo $p->String;?>" class="title"><?php echo $p->Title;?></h4></a>
 					</div>
-				<?php endforeach;?>
+				<?php $i++; endforeach;?>
 				<!-- //Single popular post -->
 		</section>
 		<!-- //Popular posts -->   
