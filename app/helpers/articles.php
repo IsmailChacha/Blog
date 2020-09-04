@@ -16,7 +16,7 @@
 					$elipsis = ',...';
 				} 
 		?>
-		<h3><a href="/index.php/<?php echo $post->String;?>"><?php echo strip_tags($post->Title);?></a></h3>
+		<h3><a href="/index.php/<?php echo $post->String;?>"><?php echo ucwords(strtolower($post->Title));?></a></h3>
 		<p class="description"><?php echo substr($description, 0, 120) . $elipsis; ?></p>
 	</div>
 </article>  
