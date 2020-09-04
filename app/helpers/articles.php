@@ -13,7 +13,7 @@
 					$elipsis = '';
 				} else 
 				{
-					$elipsis = '...';
+					$elipsis = ',...';
 				} 
 		?>
 		<h3><a href="/index.php/<?php echo $post->String;?>"><?php echo strip_tags($post->Title);?></a></h3>

@@ -616,6 +616,7 @@
     background: #E1E9F5;
     /*border: 1px solid #444;*/
     border-radius: 4px;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
   } 
 
   .image-and-moreinfo .more-info {
@@ -647,20 +648,34 @@
 		font-size:1.1em;
   } 
 
+  .content .main-content.single .post-content a{
+    color: blue;
+  } 
+
+  .content .main-content.single .post-content a:hover{
+    color: #009bff;
+  } 
+
   .content .main-content .post  {
     float: left;
-    height: 330px;
+    height: 360px;
     /*height: 100px;*/
     width: 32.5%;
-    margin: 2px;
+    margin: 2px 2px 16px 2px;
     /*cursor: pointer;*/
     /*background: #222;*/
     background: #E1E9F5;
     /*background: #2574CE;*/
     border-radius: 4px;
+    overflow: hidden;
     /*border: 1px solid #ccc;*/
      /*box-shadow: 1rem 1rem 1rem -.5rem #a0a0a0; */
      /*box-shadow: -1rem .5rem .5rem -.5rem white; */
+     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  }
+
+  .content .main-content .post:hover  {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
   }
 
   .content .main-content .post .recent-post-image {
@@ -682,19 +697,20 @@
   .content .main-content .post-preview h3{
     text-align: left;
     /* font-family: 'Lato', sans-serif; */
-		font-size: large;
+    font-size: large;
+    padding: 8px;
   }
 
   .content .main-content .post-preview p.description{
-  padding: 8px;
   text-align: left;
   font-size: 1.05em;
+  padding: 8px;
   /* font-family: 'Lato', sans-serif; */
   }
 
   .content .main-content .post-preview h3 a{
     color: #4c4c4c;
-    padding: 8px;
+    /* padding: 8px; */
   }
 
   .content .main-content .post-preview h3 a:hover{
@@ -1166,7 +1182,7 @@
     }
 
 		.content .main-content .post-preview h3 a {
-		    padding: 16px 8px;
+		    /* padding: 16px 8px; */
 		}
 
 		.content .main-content  p.description {
@@ -1181,6 +1197,7 @@
       padding-bottom: .8rem;
       border: none;
       margin-bottom: 16px;
+      height: 360px;
     }
 
     .content .main-content.single .post-title {
@@ -1231,8 +1248,7 @@
 
     .content .main-content.single .image-and-moreinfo {
       margin-bottom: 14px;
-      border-bottom: 1px solid #aaa;
-      background: inherit;
+      background: #E1E9F5;
     }
 
     .content .main-content.single .more-info {
