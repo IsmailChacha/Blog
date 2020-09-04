@@ -13,13 +13,7 @@
             <a href="<?php echo '/index.php/topics/'. str_replace(' ', '-', trim(strtolower($topic)));?>"><h2  class="topics" ><?=$topic; ?></h2></a>
           <?php endif; ?>
           <?php foreach($postsArray as $post): ?>
-              <div class="post clearfix">
-                <a href="/index.php/<?php echo $post->String;?>" alt=""><img src="<?php echo BASE_URL . '/assets/images/' . $post->Image;?>" alt="<?php echo strip_tags($post->Description);?>" class="post-image"></a>
-                  
-                <div class="post-preview clearfix">
-                  <a href="/index.php/<?php echo $post->String;?>"><h4><?php echo $post->Title;?></h4></a>
-                </div>
-              </div>  
+						<?php require ROOT_PATH . '/app/helpers/articles.php';?>
           <?php endforeach; ?>
           <!-- Generate Pagination -->
           <div class="pagination">

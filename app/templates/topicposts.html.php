@@ -7,16 +7,7 @@
 				<div class="topicPosts clearfix">
 					<h1 class="post-title"><?php echo $heading ?? ''; ?></h1>
 					<?php foreach($topicPosts as $post):?>
-						<div class="post clearfix">
-							<div class="recent-post-image">
-								<a href="/index.php/<?php echo $post->String;?>" alt=""><img src="<?php echo BASE_URL . '/assets/images/' . $post->Image;?>" alt="" class="post-image"></a>
-							</div>
-								
-							<div class="post-preview">
-								<h3><a href="/index.php/<?php echo $post->String;?>"><?php echo $post->Title;?></a></h3>
-								<a href="/index.php/<?php echo $post->String;?>"><p class="preview-text">
-							</div>
-						</div>  
+						<?php require ROOT_PATH . '/app/helpers/articles.php';?>
 					<?php endforeach;?>
 				</div>
 				<!-- Generate Pagination -->
