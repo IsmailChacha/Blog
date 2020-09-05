@@ -1,5 +1,3 @@
-  <!-- Admin content wrapper-->
-  <div class="admin-content">
     <div class="content2">
       <div class="button-group">
       </div>
@@ -19,4 +17,3 @@
       </form>
     </div>
   </div>
-  <!-- Admin content -->

@@ -395,6 +395,17 @@
     font-family: cursive;
   }
 
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  .hide-scroll-bar::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .hide-scroll-bar {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+
   /* NAVBAR */
   header {
     position:fixed;
@@ -415,6 +426,7 @@
 
   header * {
     color: #aaa;
+    list-style-type: none;
   }
 
   header a:hover {
@@ -460,8 +472,8 @@
   }
 
   header ul li {
-    float:left;
     position: relative;
+    float: left;
   }
 
   header ul li ul {
@@ -512,7 +524,8 @@
     z-index: 1;
     top: 0;
     left: 0;
-    background-color: black;
+    /* background-color: black; */
+    background-color: #1F385C;
     overflow-x: hidden;
     overflow-y: scroll;
     transition: 0.5s;
@@ -522,7 +535,7 @@
     padding: 4px;
     text-align: left;
     text-decoration: none;
-    color: white;
+    /* color: white; */
     display: inline-block;
     transition: 0.3s;
   }
@@ -535,16 +548,20 @@
     padding: 16px 8px;
   }
 
+  .sidenav2 ul {
+
+  }
+
   .sidenav2 h2 {
     clear: both;
     padding: 8px;
-    margin: 40px 0 5px 5px;
+    margin: 20px 5px 5px;;
     font-size: 200%;
   }
 
   .sidenav a:hover {
-      color: #555;
-      transition: .5s;
+      /* color: #555; */
+      /* transition: .5s; */
   }
 
   .sidenav .closebtn {
@@ -557,6 +574,7 @@
     right: 5px;
     font-size: 16px;
     padding: 8px 8px;
+    background: inherit;
   }
 
   .sidenav .sidesearch {
@@ -595,8 +613,7 @@
     /*padding: 0px 10px;*/
     float: left;
     min-height: 100%;
-    /* background: #EBF1FA; */
-    background: #fff;
+    background: #EBF1FA;
     margin: 0px 6px;
   }
 
@@ -605,6 +622,7 @@
     /* padding-bottom: 100px; */
     margin-bottom: 100px;
     /*background: white;*/
+    background: #fff;
   } 
 
   .content .main-content.single .postinfo{
@@ -1110,8 +1128,10 @@
       font-size: 30px;
     }
 
-    h1.post-title.single {
+    h1.title.single {
       font-size: 20px;
+      margin-bottom: 8px;
+      padding: 0px 10px;
     }
 
     h2.topics {
@@ -1129,6 +1149,17 @@
       overflow: hidden;
     }
 
+    header ul#sidenav-topics {
+      padding: 8px;
+      width: 100%;
+      max-height: max-content;
+      overflow: hidden;
+    }
+
+    a#links {
+      padding: 8px;
+    }
+
     header ul li ul {
       position: static;
       width: 100%;
@@ -1143,7 +1174,7 @@
     }
 
     .section.topics {
-      display: none;
+      /* display: none; */
     }
 
     .page-wrapper{
@@ -1160,7 +1191,6 @@
 
     .content {
       margin: 0px auto;
-      padding: 0px 8px;
     }
 
     .auth-content {
@@ -1283,7 +1313,7 @@
     .content .main-content.single .image-and-moreinfo img{
       width: 100%;
       /* border-radius: 5px; */
-      padding: 10px;
+      padding: 0px 10px;
     } 
 
     .content .main-content.single {
@@ -1301,6 +1331,19 @@
 
     .mpopup-content {
       width: 90%;
+    }
+  }
+
+  @media only screen and (min-width: 600px) {
+    h1.title.single {
+      padding: 0px 10px;
+      margin-bottom: 0px;
+      font-size: 20px;
+    }
+
+    .content .main-content.single .more-info span {
+      font-size: 1em;
+      padding: 4px 10px;
     }
   }
 

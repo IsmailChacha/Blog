@@ -44,12 +44,14 @@
 
         <span name="closebtn" class="closebtn btn close" id="closeSideNav">X
         </span>
-    
-        <?php foreach($topics as $topic): ?>
-					<?php if($topic->totalPosts() !== 0): ?>
-						<li><a href="<?php echo '/index.php/topics/'. str_replace(' ', '-', trim(strtolower($topic->Name)));?>"><?php echo $topic->Name; ?></a></li>
-					<?php endif ; ?>
-        <?php endforeach; ?>
+        
+        <ul id="sidenav-topics">
+          <?php foreach($topics as $topic): ?>
+            <?php if($topic->totalPosts() !== 0): ?>
+              <li><a href="<?php echo '/index.php/topics/'. str_replace(' ', '-', trim(strtolower($topic->Name)));?>"><?php echo $topic->Name; ?></a></li>
+            <?php endif ; ?>
+          <?php endforeach; ?>
+        </ul>
 
         <h2><?php echo "Menu"; ?></h2>
 
@@ -58,16 +60,16 @@
 
             <?php if($_SESSION['Superuser'] || $_SESSION['Admin']):?>
               <a href="<?php echo BASE_URL . '/private/'; ?>">Dashboard</a>
-              <a href="<?php echo BASE_URL .'/index.php/signout'?>" class="logout">Logout</a>
+              <a href="<?php echo BASE_URL .'/index.php/signout'?>" class="logout links">Logout</a>
             <?php elseif($_SESSION['Admin']): ?>
               <a href="<?php echo BASE_URL . '/private/'; ?>">Dashboard</a>
-              <a href="<?php echo BASE_URL .'/index.php/signout'?>" class="logout">Logout</a>         
+              <a href="<?php echo BASE_URL .'/index.php/signout'?>" class="logout links">Logout</a>         
             <?php else:?>
-              <a href="<?php echo BASE_URL .'/index.php/signout'?>" class="logout">Logout</a>
+              <a href="<?php echo BASE_URL .'/index.php/signout'?>" class="logout links">Logout</a>
             <?php endif;?>       
         <?php else:?>
-          <a href="<?php echo BASE_URL .'/index.php/signup'; ?>">Sign Up</a>
-          <a href="<?php echo BASE_URL .'/index.php/signin';?>">Sign In</a>
+          <a href="<?php echo BASE_URL .'/index.php/signup'; ?>" class="links">Sign Up</a>
+          <a href="<?php echo BASE_URL .'/index.php/signin';?>" class="links">Sign In</a>
         <?php endif;?>
       </div>
     </div>

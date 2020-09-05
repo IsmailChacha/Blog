@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="hide-scroll-bar">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -43,11 +43,13 @@
     <!-- //Admin Left Sidebar -->
 
     
-    <!-- GENERATED CONTENT -->
-
-    <?php echo $output?>
-
-    <!-- //GENERATED CONTENT -->
+    <!-- Admin content -->
+    <div class="admin-content hide-scroll-bar">
+      <!-- GENERATED CONTENT -->
+        <?php echo $output; ?>
+      <!--// GENERATED CONTENT -->
+    </div>
+    <!-- Admin content -->
 
   </div>
   <!-- //Admin page wrapper -->

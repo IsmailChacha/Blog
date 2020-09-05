@@ -1,4 +1,4 @@
-<div class="sidebar-container">
+<div class="sidebar-container hide-scroll-bar">
   <!-- Left side bar -->
   <div class="left-sidebar">
     <ul>

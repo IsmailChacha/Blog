@@ -1,16 +1,12 @@
-<!-- Admin content -->
-<div class="admin-content">
-  <div class="content2">
-    <div class="button-group">
-      <a href="<?php echo BASE_URL.'/private/index.php/addtopic';?>" class="btn btn-big">Add Topic</a>
-    </div>
+<div class="content2">
+  <div class="button-group">
+    <a href="<?php echo BASE_URL.'/private/index.php/addtopic';?>" class="btn btn-big">Add Topic</a>
+  </div>
+  
+  <h2 class="page-title"><?php echo $heading ?? '';?></h2>
+  <?php include ROOT_PATH. "/app/helpers/formerrors.php"; ?>
+  <?php include ROOT_PATH. "/app/helpers/messages.php"; ?>
     
-    <h2 class="page-title"><?php echo $heading ?? '';?></h2>
-    <?php include ROOT_PATH. "/app/helpers/formerrors.php"; ?>
-    <?php include ROOT_PATH. "/app/helpers/messages.php"; ?>
-             
-<!-- Admin content -->
-<div>
   <div>
     <table>
       <thead>
@@ -37,4 +33,3 @@
     </table>
   </div>
 </div>
-<!-- Admin content -->

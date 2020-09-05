@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="hide-scroll-bar">
 <head>
   
   <meta charset="UTF-8">
