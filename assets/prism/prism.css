@@ -22,6 +22,7 @@ pre[class*="language-"] {
 	font-weight: 400;
 	--bg-opacity: 1;
 	padding: 1rem 0;
+	overflow: scroll;
 
 	-moz-tab-size: 4;
 	-o-tab-size: 4;
@@ -45,6 +46,7 @@ pre[class*="language-"] {
 pre[class*="language-"] {
 	/* background: #2d2d2d; */
 	background: #E1E9F5;
+	/* background: #c3cedf; */
 }
 
 /* Inline code */
@@ -59,7 +61,7 @@ pre[class*="language-"] {
 .token.prolog,
 .token.doctype,
 .token.cdata {
-	color: #999;
+	/* color: #999; */
 }
 
 .token.punctuation {

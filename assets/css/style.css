@@ -70,7 +70,7 @@
   }
 
   h2 {
-    color: black;
+    /* color: black; */
     font-weight: bolder;
   }
 
@@ -595,7 +595,8 @@
     /*padding: 0px 10px;*/
     float: left;
     min-height: 100%;
-    background: #EBF1FA;
+    /* background: #EBF1FA; */
+    background: #fff;
     margin: 0px 6px;
   }
 
@@ -655,6 +656,10 @@
     letter-spacing: normal;
 		line-height: 1.5;
 		font-size:1.1em;
+  } 
+
+  .content .main-content.single .post-content img, video {
+    max-width: 100%;
   } 
 
   .content .main-content.single .post-content a{
@@ -1166,7 +1171,7 @@
     } 
 
     .content .main-content .post  {
-    width: 48%;
+    width: 49%;
     float: left;
     height: 300px;
     /*padding: 8px;*/
@@ -1206,9 +1211,13 @@
       padding-bottom: .8rem;
       border: none;
       margin-bottom: 16px;
-      height: 360px;
+      height: 420px;
     }
 
+    .content .main-content.single .post-content img, video {
+      max-width: 100%;
+    } 
+    
     .content .main-content.single .post-title {
       text-align: center;
     }

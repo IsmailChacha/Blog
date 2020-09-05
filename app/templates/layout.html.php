@@ -101,6 +101,8 @@
   <!-- GENERATED CONTENT -->
     <?php echo $output; ?>
   <!--// GENERATED CONTENT -->
+  
+  <pre><code class="language-xxxx"></code></pre>
 
   <!-- FOOTER FILE -->
   <?php 
@@ -139,8 +141,6 @@
   <script src="<?php echo BASE_URL . '/assets/js/closeNotifications.js'; ?>"></script>
  
   <!-- Custom scripts -->
-  <!-- <script src="<?php echo BASE_URL . '/assets/js/scripts.js'; ?>"></script> -->
-  <pre><code class="language-xxxx"></code></pre>
- 
+  <!-- <script src="<?php echo BASE_URL . '/assets/js/scripts.js'; ?>"></script> --> 
 </body>
 </html>
