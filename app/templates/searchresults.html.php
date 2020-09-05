@@ -6,7 +6,7 @@
 
 		<?php if(isset($searchResults)): ?>
 			<h2 class="recent-post-title"><?php echo $heading ?? ''; ?></h2>
-			<h4><?php echo $secondHeading ?? '';?></h4>
+			<h4 class="numberofresults"><?php echo $secondHeading ?? '';?></h4>
 			<?php foreach($searchResults as $post):?>
 				<?php require ROOT_PATH . '/app/helpers/articles.php';?>
 			<?php endforeach;?>
