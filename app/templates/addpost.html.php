@@ -42,16 +42,16 @@
     <div>
         <label for="topic">Select categories for this post:</label><br /><br />
           <?php foreach ($categories as $category): ?>
-            <input type="checkbox" name="category[]" value="<?=$category->Id?>" />
+            <input type="checkbox" name="category[]" value="<?=$category->Id?>" form="addpost"/>
             <label><?=$category->Name?></label> &nbsp;&nbsp;
           <?php endforeach; ?>
         </div>
         <div>
           <?php if(empty($published)):?>
-            <input type="checkbox" name="post[Published]" value="1" id="" class="w3-check" disabled>
+            <input type="checkbox" name="post[Published]" value="1" id="" form="addpost" class="w3-check" disabled>
             <label for="published">Published </label>
           <?php else:?>
-            <input type="checkbox" name="post[Published]" value="1" id="" class="w3-check" checked disabled>
+            <input type="checkbox" name="post[Published]" value="1" id="" form="addpost" class="w3-check" checked disabled>
             <label for="published">Published </label>
           <?php endif;?>
         </div>

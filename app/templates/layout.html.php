@@ -23,12 +23,12 @@
   <!--font-family: 'Lato', sans-serif;-->
 
   <!-- PRISM -->
-  <!-- <link rel="stylesheet" href="<?php echo BASE_URL . '/assets/prism/prism.css';?>"> -->
+  <link rel="stylesheet" href="<?php echo BASE_URL . '/assets/prism/prism.css';?>">
+  <script src="<?php echo BASE_URL . '/assets/prism/prism.js';?>"></script>
 
 </head>
 
 <body>
-<!-- <pre><code class="language-xxxx">...</code></pre> -->
 
 <!-- HEADER FILE -->
 <?php 
@@ -140,6 +140,7 @@
  
   <!-- Custom scripts -->
   <!-- <script src="<?php echo BASE_URL . '/assets/js/scripts.js'; ?>"></script> -->
+  <pre><code class="language-xxxx"></code></pre>
  
 </body>
 </html>

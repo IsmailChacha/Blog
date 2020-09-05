@@ -1,7 +1,7 @@
 <!-- Header -->
 <header>
   <div class="header-container">
-    <a href="<?php echo BASE_URL .'/';?>" class="logo"><?php echo '<span class="logo-style">MINDS</span>JOURNAL'; ?></a>
+    <a href="<?php echo BASE_URL .'/';?>" class="logo"><?php echo '<span class="logo-style">LINUX</span>POST'; ?></a>
     
     <i class="fas fa-bars menu-toggle" id="menu-toggle"></i>
 

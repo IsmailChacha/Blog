@@ -6,7 +6,7 @@
 
 		<?php if(isset($posts)): ?>
 			<section class="articles clearfix">
-				<h1 class="post-title"><?php echo $heading ?? ''; ?></h1>
+				<!-- <h1 class="post-title"><?php #echo $heading ?? ''; ?></h1> -->
 					<?php foreach($posts as $post):?>
 						<?php require ROOT_PATH . '/app/helpers/articles.php';?>
 					<?php endforeach;?>		
