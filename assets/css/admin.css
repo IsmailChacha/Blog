@@ -95,12 +95,12 @@
   }
 
   .admin-content .page-title {
+    position: relative;
+    top: 14px;
     text-align: left;
-    margin: 1em;
     font-weight: bold;
     font-size: 30px;
-    padding: 10px;
-    margin-bottom: 10px; 
+    padding: 10px 0px;
   }
 
   table {
@@ -208,7 +208,7 @@
   }
 
   .btn-big {
-    margin: 4px;
+    margin: 4px 0px;
     padding: .4rem .8em;
   }
 }
