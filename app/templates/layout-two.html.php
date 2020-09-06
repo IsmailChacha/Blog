@@ -19,7 +19,7 @@
   <link rel="stylesheet" href="<?php echo BASE_URL . '/assets/css/admin.css'; ?>">
 
   <!-- TINYMCE CDN -->
-  <script src="https://cdn.tiny.cloud/1/njws75lq3200zpiulso28at7bkoi4ws0tqp8k2kyk06x883j/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+  <script src="https://cdn.tiny.cloud/1/tt9aq3ysz1b3wdzyy7n6ng4qo9ixs8hq8whih1x6wfr86b7o/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
 
   <!-- Google fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;1,300&display=swap" rel="stylesheet"> 

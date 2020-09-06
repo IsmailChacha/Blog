@@ -1,5 +1,10 @@
 tinymce.init({
 	selector: 'textarea',
+	height: 600,
+	// content_css : 'writer',
+	browser_spellcheck: true,
+  contextmenu: false,
+	// inline: true,
 	menu: 
 	{
 		file: { title: 'File', items: 'newdocument restoredraft | preview | print ' },
@@ -12,7 +17,7 @@ tinymce.init({
 		help: { title: 'Help', items: 'help' }
 	},
 
-	plugins: 'a11ychecker advcode codesample casechange formatpainter linkchecker autolink lists checklist media mediaembed pageembed permanentpen table advtable tinycomments tinymcespellchecker advlist link image charmap print preview anchor searchreplace visualblocks fullscreen insertdatetime media table',
+	plugins: 'a11ychecker advcode codesample casechange formatpainter linkchecker autolink lists checklist media mediaembed pageembed permanentpen table advtable tinycomments tinymcespellchecker advlist link image charmap print preview anchor searchreplace visualblocks fullscreen insertdatetime media table powerpaste',
 	toolbar: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | codesample code showcomments casechange checklist  formatpainter',
 	toolbar_mode: 'floating',
 	tinycomments_mode: 'embedded',

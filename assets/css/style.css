@@ -385,16 +385,6 @@
     margin-left: 8px;
   }
 
-  .logo-style{
-    background: #06d3d5 !important;
-    background: -moz-linear-gradient(-68deg,#b22f2f 25%,#e8a319 90%) !important;
-    background: -webkit-linear-gradient(-68deg,#b22f2f 25%,#e8a319 90%) !important;
-    background: linear-gradient(156deg,#b22f2f 25%,#e8a319 90%) !important;
-    background-clip: text;
-    margin-right: 5px;
-    padding: 0px 4px;
-  }
-
   header ul {
     float:right;
     margin:0px;

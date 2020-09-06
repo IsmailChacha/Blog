@@ -1,146 +1,146 @@
-  /* NAVBAR */
-  header.admin-header {
-    background: #1f385c;
-  }
+/* NAVBAR */
+header.admin-header {
+  background: #1f385c;
+}
 
-  .admin-wrapper {
-    display: flex;
-    height: calc(100% - 44px);
-    width: 100%;
-    position: absolute;
-    top: 44px;
-  }
+.admin-wrapper {
+  display: flex;
+  height: calc(100% - 44px);
+  width: 100%;
+  position: absolute;
+  top: 44px;
+}
 
-  /* LEFT SIDEBAR */
-  .admin-wrapper .left-sidebar {
-    width: 100%;
+/* LEFT SIDEBAR */
+.admin-wrapper .left-sidebar {
+  width: 100%;
 
-  }
+}
 
-  .admin-wrapper .left-sidebar ul {
-    list-style-type: none;
-    margin: 0px;
-    padding: 0px;
-  }
+.admin-wrapper .left-sidebar ul {
+  list-style-type: none;
+  margin: 0px;
+  padding: 0px;
+}
 
-  .admin-wrapper .left-sidebar ul li a:hover {
-    background: #EBF1FA;
-  }
+.admin-wrapper .left-sidebar ul li a:hover {
+  background: #EBF1FA;
+}
 
-  .admin-wrapper .left-sidebar ul li a {
-    padding: 18px;
-    display: block;
-  }
+.admin-wrapper .left-sidebar ul li a {
+  padding: 18px;
+  display: block;
+}
 
-  /* ADMIN CONTENT */
-  .sidebar-container {
-    overflow-y: auto;
-    height: 100%;
-    flex: 2;
-    background-color: #E1E9F5;
-  }
+/* ADMIN CONTENT */
+.sidebar-container {
+  overflow-y: auto;
+  height: 100%;
+  flex: 2;
+  background-color: #E1E9F5;
+}
 
-  .admin-content {
-    flex: 10;
-    height: 100%;
-    padding: 0px 14px 0px;;
-    overflow-y: auto;
-    background: #EBF1FA;
-  }
+.admin-content {
+  flex: 10;
+  height: 100%;
+  padding: 0px 14px 0px;;
+  overflow-y: auto;
+  background: #EBF1FA;
+}
 
-  .admin-content input {
-    background: white;
-    border: 1px solid #aaa;
-  }
+.admin-content input {
+  background: white;
+  border: 1px solid #aaa;
+}
 
-  .admin-content .text-input {
-    background: white;
-    border: 1px solid #aaa;
-  }
+.admin-content .text-input {
+  background: white;
+  border: 1px solid #aaa;
+}
 
-  .admin-controls-container {
-    flex: 2;
-    height: 100%;
-  }
+.admin-controls-container {
+  flex: 2;
+  height: 100%;
+}
 
-  .admin-controls-container button{
-    border: 1px solid #aaa;
-  }
+.admin-controls-container button{
+  border: 1px solid #aaa;
+}
 
-  label {
-    font-size: 1.05rem;
-  }
+label {
+  font-size: 1.05rem;
+}
 
-  .topics {
-    margin-bottom: 8px;
-  }
+.topics {
+  margin-bottom: 8px;
+}
 
-  .actions button{
-    float: left;
-    margin-bottom: 8px;
-  }
+.actions button{
+  float: left;
+  margin-bottom: 8px;
+}
 
-  .admin-controls {
-    padding: 8px 8px;
-  }
+.admin-controls {
+  padding: 8px 8px;
+}
 
-  .admin-controls input[type=checkbox]{
-    text-align: left;
-  }
+.admin-controls input[type=checkbox]{
+  text-align: left;
+}
 
-  .admin-content .content .dashboard-content h4 {
-    margin: auto !important;
-    text-align: center;
-  }
+.admin-content .content .dashboard-content h4 {
+  margin: auto !important;
+  text-align: center;
+}
 
-  .button-group {
-    position: relative;
-    top: 16px;
-  }
+.button-group {
+  position: relative;
+  top: 16px;
+}
 
-  .admin-content .page-title {
-    position: relative;
-    top: 14px;
-    text-align: left;
-    font-weight: bold;
-    font-size: 30px;
-    padding: 10px 0px;
-    margin: 16px 0px;
-  }
+.admin-content .page-title {
+  position: relative;
+  top: 14px;
+  text-align: left;
+  font-weight: bold;
+  font-size: 30px;
+  padding: 10px 0px;
+  margin: 16px 0px;
+}
 
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 1.1rem;
-  }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 1.1rem;
+}
 
-  th, td {
-    padding: 15px;
-    text-align: left;
-    border-bottom: 1px solid #d3d3d3;
-  }
+th, td {
+  padding: 15px;
+  text-align: left;
+  border-bottom: 1px solid #d3d3d3;
+}
 
-  .edit {
-    color: green;
-  }
+.edit {
+  color: green;
+}
 
-  .delete {
-    color: red;
-  }
+.delete {
+  color: red;
+}
 
-  .publish {
-    color: blue;
-  }
+.publish {
+  color: blue;
+}
 
-  .edit:hover, 
-  .delete:hover, 
-  .publish:hover {
-    text-decoration: underline;
-  }
+.edit:hover, 
+.delete:hover, 
+.publish:hover {
+  text-decoration: underline;
+}
 
-  form div {
-    margin-bottom: 15px;
-  }
+form div {
+  margin-bottom: 15px;
+}
 
 @media only screen and (max-width: 600px){
 
