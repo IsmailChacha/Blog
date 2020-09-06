@@ -22,11 +22,11 @@
 							<td><?php echo $post->Title; ?></td>
 							<td><?php echo $post->getAuthor()->FirstName . ' ' . $post->getAuthor()->LastName;?></td>
 							<td>
-									<a href="<?php echo BASE_URL . '/private/index.php/editarticle/article/'.$post->String;?>" class="publish" rel="nofollow">Edit</a>
+									<a href="<?php echo BASE_URL . '/private/index.php/editarticle/article/'.$post->String;?>" class="publish" rel="nofollow"><i class="fas fa-pencil-alt" title="Continue editing"></i></a>
 							</td>
 								<?php if($_SESSION['Superuser']): ?>
 									<td>
-										<a href="javascript:deleteArticle('<?php echo $post->Title;?>', '<?php echo $post->String;?>')" class="publish" rel="nofollow">Delete</a></td>
+										<a href="javascript:deleteArticle('<?php echo $post->Title;?>', '<?php echo $post->String;?>')" class="publish" rel="nofollow"><i class="fas fa-trash-alt" title="Trash"></i></a></td>
 									</td>
 								<?php endif ;?>
 								<?php if($post->Published):?>

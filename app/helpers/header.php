@@ -10,26 +10,26 @@
       <?php if(isset($_SESSION['Id'])):?>
         <li> 
            <a href="#" class="user-menu">
-              <i class="fa fa-user"></i>
+              <i class="fas fa-user-circle"></i>
               <?php echo $_SESSION['Name']?>
               <i class="fa fa-chevron-down chevron-down"></i>
             </a>
           <ul class="user-dropdown">
             <?php if($_SESSION['Superuser']):?>
               <li><a href="<?php echo BASE_URL . '/private/';?>">Dashboard</a></li>
-              <li><a href="<?php echo BASE_URL .'/index.php/signout'?>" class="logout">Logout</a></li>
+              <li><a href="<?php echo BASE_URL .'/index.php/signout'?>" class="logout"><i class="fas fa-sign-out-alt"></i>Logout</a></li>
             <?php elseif($_SESSION['Admin']):?>
               <li><a href="<?php echo BASE_URL . '/private/';?>">Dashboard</a></li>
               <li><a href="<?php echo BASE_URL .'/index.php/signout';?>" class="logout">Logout</a></li>
             <?php else:?>
               <li><a href="<?php echo BASE_URL . '/user/';?>">Account</a></li>
-              <li><a href="<?php echo BASE_URL .'/index.php/signout'?>" class="logout">Logout</a></li>
+              <li><a href="<?php echo BASE_URL .'/index.php/signout'?>" class="logout"><i class="fas fa-sign-out-alt"></i>Logout</a></li>
             <?php endif;?>       
           </ul>
         </li>
       <?php else:?>
         <li><a href="<?php echo BASE_URL .'/index.php/signup';?>">Sign Up</a></li>
-        <li><a href="<?php echo BASE_URL .'/index.php/signin';?>">Sign In</a></li>
+        <li><a href="<?php echo BASE_URL .'/index.php/signin';?>">Sign In <i class="fas fa-sign-in-alt"></i></a></li>
       <?php endif;?>
     </ul>
   </div>
@@ -56,20 +56,20 @@
         <h2><?php echo "Menu"; ?></h2>
 
         <?php if(isset($_SESSION['Id'])):?>
-            <a href="#" class="user-menu"><i class="fa fa-user"></i><?php echo $_SESSION['Name']?><i class="fa fa-chevron-down chevron-down"></i></a>
+            <a href="#" class="user-menu"><i class="fas fa-user-circle"></i><?php echo $_SESSION['Name']?><i class="fa fa-chevron-down chevron-down"></i></a>
 
             <?php if($_SESSION['Superuser'] || $_SESSION['Admin']):?>
               <a href="<?php echo BASE_URL . '/private/'; ?>">Dashboard</a>
-              <a href="<?php echo BASE_URL .'/index.php/signout'?>" class="logout links">Logout</a>
+              <a href="<?php echo BASE_URL .'/index.php/signout'?>" class="logout links"><i class="fas fa-sign-out-alt"></i>Logout</a>
             <?php elseif($_SESSION['Admin']): ?>
               <a href="<?php echo BASE_URL . '/private/'; ?>">Dashboard</a>
-              <a href="<?php echo BASE_URL .'/index.php/signout'?>" class="logout links">Logout</a>         
+              <a href="<?php echo BASE_URL .'/index.php/signout'?>" class="logout links"><i class="fas fa-sign-out-alt"></i>Logout</a>         
             <?php else:?>
-              <a href="<?php echo BASE_URL .'/index.php/signout'?>" class="logout links">Logout</a>
+              <a href="<?php echo BASE_URL .'/index.php/signout'?>" class="logout links"><i class="fas fa-sign-out-alt"></i>Logout</a>
             <?php endif;?>       
         <?php else:?>
           <a href="<?php echo BASE_URL .'/index.php/signup'; ?>" class="links">Sign Up</a>
-          <a href="<?php echo BASE_URL .'/index.php/signin';?>" class="links">Sign In</a>
+          <a href="<?php echo BASE_URL .'/index.php/signin';?>" class="links">Sign In <i class="fas fa-sign-in-alt"></i></a>
         <?php endif;?>
       </div>
     </div>

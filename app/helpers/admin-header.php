@@ -8,12 +8,12 @@
     <ul class="nav">
       <?php if(isset($_SESSION['username'])): ?>
         <li> <a href="#" class="user-menu">
-            <i class="fa fa-user"></i>
+            <i class="fas fa-user-circle"></i>
             <?php echo $_SESSION['Name'];?>
             <i class="fa fa-chevron-down chevron-down"></i>
           </a>
           <ul class="user-dropdown">
-            <li><a href="<?php echo BASE_URL. '/index.php/signout';?>" class="logout">Logout</a></li>
+            <li><a href="<?php echo BASE_URL. '/index.php/signout';?>" class="logout"><i class="fas fa-sign-out-alt"></i>&nbsp;Logout</a></li>
           </ul>
         </li>
       <?php endif;?>

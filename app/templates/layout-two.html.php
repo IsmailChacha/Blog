@@ -36,7 +36,7 @@
 
   <!-- Admin page wrapper -->
   <div class="admin-wrapper">
-    <i class="fas fa-arrow-up" id="scroll-arrow"></i>
+  <i class="fas fa-chevron-circle-up" id="scroll-arrow"></i>
   
     <!-- Admin Left Sidebar -->
     <?php require_once(ROOT_PATH. '/app/helpers/superuser-sidebar.php');?>

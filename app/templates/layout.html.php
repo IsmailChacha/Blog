@@ -96,7 +96,8 @@
   
   <!-- BREADCRUMBS -->
   
-  <i class="fa fa-chevron-up chevron-up" id="scroll-arrow" title="Go to the top"></i>
+  <!-- <i class="fa fa-chevron-up chevron-up" id="scroll-arrow" title="Go to the top"></i> -->
+  <i class="fas fa-chevron-circle-up" id="scroll-arrow"></i>
 
   <!-- GENERATED CONTENT -->
     <?php echo $output; ?>

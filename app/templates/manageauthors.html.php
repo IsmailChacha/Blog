@@ -1,6 +1,6 @@
 <div class="content2">
   <div class="button-group">
-    <a href="<?php echo BASE_URL.'/private/index.php/createauthor';?>" class="btn btn-big">Create author</a>
+    <a href="<?php echo BASE_URL.'/private/index.php/createauthor';?>" class="btn btn-big"><i class="fas fa-plus-square" title="Add new"></i>&nbsp;New author</a>
   </div>
 
   <h2 class="page-title"><?=$heading;?></h2>
