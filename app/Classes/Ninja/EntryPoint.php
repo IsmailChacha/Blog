@@ -64,8 +64,6 @@ namespace Ninja {
 			// CHECK WHETHER REQUESTED PAGE EXISTS IN ROUTES DATA STRUCTURE
 			if (array_key_exists($this->route, $routes)) 
 			{
-				http_response_code(200);
-				http_response_code(202);
 				//IF THE REQUESTED PAGE REQUIRES A LOGGED IN USER => 
 				if (isset($routes[$this->route]['login']) && $routes[$this->route]['login'])
 				{
@@ -74,7 +72,7 @@ namespace Ninja {
 					//WE NEED TO KNOW WHETHER THEY ARE LOGGED IN OR NOT
 					if (isset($routes[$this->route]['login']) && $routes[$this->route]['login'] && $this->authentication->isLoggedIn()) 
 					{
-						if ((time() - $_SESSION['Time Of Last LogIn']) > 86400000) 
+						if ((time() - $_SESSION['Time Of Last LogIn']) > 21600000) 
 						{
 							$this->variables->sessionManager();
 						} else 
@@ -88,7 +86,6 @@ namespace Ninja {
 
 							$title = $page['title'];
 
-							http_response_code(202);
 							$output = $this->outputBuffer($page);
 
 							//RENDER THE PAGE
@@ -101,7 +98,7 @@ namespace Ninja {
 									'footer' => \Ninja\Variables::TITLE,
 								]
 							);
-							http_response_code(201);
+							http_response_code(200);
 						}
 						//IF THEY ARE NOT LOGGED IN, REDIRECT THEM AND DISPLAY AN ERROR
 					} else if (isset($routes[$this->route]['login']) && $routes[$this->route]['login'] && !$this->authentication->isLoggedIn()) 
@@ -118,7 +115,7 @@ namespace Ninja {
 				} else 
 				{
 					// BUT THEY COULD STILL BE LOGGED IN:
-					if (isset($_SESSION['Time of Last Login']) && (time() - $_SESSION['Time Of Last LogIn']) > 86400000) 
+					if (isset($_SESSION['Time Of Last LogIn']) && ((time() - $_SESSION['Time Of Last LogIn']) > 21600000)) 
 					{
 						$this->variables->sessionManager();
 					} else
@@ -136,7 +133,6 @@ namespace Ninja {
 						$authorName = $page['authorName'] ?? 'Ismail Chacha';
 
 						//LOAD THE TEMPLATE AND OUTPUT BUFFER INTO THE PAGE REQUESTED
-						http_response_code(202);
 						$output = $this->outputBuffer($page);
 
 						//RENDER THE PAGE
@@ -154,7 +150,7 @@ namespace Ninja {
 								'authorName' => $authorName,
 							]
 						);
-						http_response_code(201);
+						http_response_code(200);
 					}
 				}
 			} else 
