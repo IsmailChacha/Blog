@@ -347,6 +347,30 @@
     scrollbar-width: none;  /* Firefox */
   }
 
+  .prefix::before {
+    content: '$';
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    text-align: right;
+    margin-right: .5rem;
+    --text-opacity: 1;
+  }
+
+  .hover-effect {
+    display: none;
+    color: blue;
+    font-size: inherit;
+    margin-left: 5px;
+  }
+
+  article h2:hover .hover-effect{
+    display: inline;
+  }
+
   /* NAVBAR */
   header {
     position:fixed;

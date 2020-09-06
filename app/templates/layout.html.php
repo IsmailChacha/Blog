@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="hide-scroll-bar">
+<html lang="en">
 <head>
   
   <meta charset="UTF-8">
@@ -103,7 +103,7 @@
     <?php echo $output; ?>
   <!--// GENERATED CONTENT -->
   
-  <pre><code class="language-xxxx"></code></pre>
+  <!-- <pre><code></code></pre> -->
 
   <!-- FOOTER FILE -->
   <?php 
@@ -142,6 +142,6 @@
   <script src="<?php echo BASE_URL . '/assets/js/closeNotifications.js'; ?>"></script>
  
   <!-- Custom scripts -->
-  <!-- <script src="<?php echo BASE_URL . '/assets/js/scripts.js'; ?>"></script> --> 
+  <script src="<?php echo BASE_URL . '/assets/js/updateCode.js'; ?>"></script> 
 </body>
 </html>
