@@ -1,0 +1,1 @@
+sitemap: http://www.linuxpost.com/sitemap.xml

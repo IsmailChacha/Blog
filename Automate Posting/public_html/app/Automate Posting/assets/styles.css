@@ -1,0 +1,133 @@
+* {
+	margin:0;
+	box-sizing: border-box;
+}
+
+html, body {
+	min-height: 100%;
+	background: #fff;
+}
+
+main {
+	width: 60%;
+	height: inherit;
+	margin: 5% auto 0;
+	padding: 10px;
+	background: #f3f5f7;
+	border: 1px solid #ccc;
+}
+
+#csv-gen-header {
+	height: 40px;
+	width: 75%;
+	margin: 0 auto;
+	padding: 8px;
+}
+
+#csv-gen-main-content {
+	width: 75%;
+	margin: 0 auto;
+	padding: 8px;
+}
+
+#info {
+	width: 75%;
+	margin: 0 auto;
+	padding: 8px;
+}
+
+#input-form {
+	width: 75%;
+	margin: 0 auto;
+	padding: 8px;
+}
+
+input {
+	width: 100%;
+	padding: 10px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	transition: all .5s;
+	margin: 8px 0;
+}
+
+#resource:focus {
+	border: 1px solid rgb(181, 137, 223);
+}
+
+#submit-resource {
+	background: #7795b3;
+	padding: 10px;
+	border: 1px solid #ccc;
+	outline: none;
+	width: 100%;
+	margin: 8px 0;
+	border-radius: 5px;
+	cursor: pointer;
+}
+
+#submit-resource:hover {
+	background: #88a3be;	
+} 
+
+.responses {
+	width: 75%;
+	margin: 0 auto;
+	padding: 8px;
+	background-color: #fff;
+	display: none;
+}
+
+.action-buttons {
+	padding: 10px;
+	border: 1px solid #ccc;
+	outline: none;
+	width: 48%;
+	margin: 8px 0;
+	border-radius: 5px;
+	cursor: pointer;
+	color: white;
+}
+
+#continue {
+	background-color: #4CAF50;
+}
+
+#cancel {
+	background-color: red;
+}
+
+#continue:hover {
+	background-color: #4d924f;
+}
+
+#cancel:hover {
+	background-color: rgb(223, 84, 84);
+}
+
+.status {
+	padding: 8px 0;
+	text-align: center;
+	font-size: 1.1em;
+	color: teal;
+}
+
+.message {
+	padding: 8px 0;
+	text-align: center;
+	background-color: rgb(181, 137, 223);
+}
+
+.number {
+	padding: 8px 0;
+	text-align: center;
+	background-color: silver;
+}
+
+#final-response {
+	width: 75%;
+	margin: 0 auto;
+	padding: 8px;
+	background-color: rgb(109, 93, 138);
+}
+

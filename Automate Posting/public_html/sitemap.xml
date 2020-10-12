@@ -1,0 +1,134 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+		<!--	created with www.mysitemapgenerator.com	-->
+		<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<url>
+	<loc>https://thelinuxpost.com/</loc>
+	<lastmod>2020-10-02T17:20:44+01:00</lastmod>
+	<priority>1.0</priority>
+</url>
+<url>
+	<loc>https://thelinuxpost.com/signin</loc>
+	<lastmod>2020-10-02T17:20:44+01:00</lastmod>
+	<priority>1.0</priority>
+</url>
+<url>
+	<loc>https://thelinuxpost.com/topics/ajax</loc>
+	<lastmod>2020-10-02T17:20:46+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://thelinuxpost.com/topics/how-to</loc>
+	<lastmod>2020-10-02T17:20:46+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://thelinuxpost.com/topics/html5-&amp;-css3</loc>
+	<lastmod>2020-10-02T17:20:47+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://thelinuxpost.com/topics/java</loc>
+	<lastmod>2020-10-02T17:20:47+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://thelinuxpost.com/topics/javascript</loc>
+	<lastmod>2020-10-02T17:20:47+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://thelinuxpost.com/topics/jquery</loc>
+	<lastmod>2020-10-02T17:20:47+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://thelinuxpost.com/topics/php</loc>
+	<lastmod>2020-10-02T17:20:47+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://thelinuxpost.com/topics/python</loc>
+	<lastmod>2020-10-02T17:20:47+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://thelinuxpost.com/topics/ubuntu</loc>
+	<lastmod>2020-10-02T17:20:48+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://thelinuxpost.com/topics/ux</loc>
+	<lastmod>2020-10-02T17:20:48+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://thelinuxpost.com/designing-a-responsive-social-login-form-with-css</loc>
+	<lastmod>2020-10-02T17:20:48+01:00</lastmod>
+	<priority>1.0</priority>
+</url>
+<url>
+	<loc>https://thelinuxpost.com/javascript-functions</loc>
+	<lastmod>2020-10-02T17:20:48+01:00</lastmod>
+	<priority>1.0</priority>
+</url>
+<url>
+	<loc>https://thelinuxpost.com/how-to-install-python-on-linux</loc>
+	<lastmod>2020-10-02T17:20:48+01:00</lastmod>
+	<priority>1.0</priority>
+</url>
+<url>
+	<loc>https://thelinuxpost.com/variables-and-data-types-in-javascript</loc>
+	<lastmod>2020-10-02T17:20:48+01:00</lastmod>
+	<priority>1.0</priority>
+</url>
+<url>
+	<loc>https://thelinuxpost.com/java-arrays</loc>
+	<lastmod>2020-10-02T17:20:48+01:00</lastmod>
+	<priority>1.0</priority>
+</url>
+<url>
+	<loc>https://thelinuxpost.com/variables-in-java</loc>
+	<lastmod>2020-10-02T17:20:49+01:00</lastmod>
+	<priority>1.0</priority>
+</url>
+<url>
+	<loc>https://thelinuxpost.com/a-simple-game-with-javascript</loc>
+	<lastmod>2020-10-02T17:20:49+01:00</lastmod>
+	<priority>1.0</priority>
+</url>
+<url>
+	<loc>https://thelinuxpost.com/generate-clean-search-engine-friendly-url</loc>
+	<lastmod>2020-10-02T17:20:49+01:00</lastmod>
+	<priority>1.0</priority>
+</url>
+<url>
+	<loc>https://thelinuxpost.com/how-to-install-mongodb-on-ubuntu-2004</loc>
+	<lastmod>2020-10-02T17:20:49+01:00</lastmod>
+	<priority>1.0</priority>
+</url>
+<url>
+	<loc>https://thelinuxpost.com/how-scan-control-improves-the-readability-of-content-cards</loc>
+	<lastmod>2020-10-02T17:20:49+01:00</lastmod>
+	<priority>1.0</priority>
+</url>
+<url>
+	<loc>https://thelinuxpost.com/why-you-should-never-use-pure-black-for-text-or-backgrounds</loc>
+	<lastmod>2020-10-02T17:20:50+01:00</lastmod>
+	<priority>1.0</priority>
+</url>
+<url>
+	<loc>https://thelinuxpost.com/what-is-php-and-why-should-i-learn-php</loc>
+	<lastmod>2020-10-02T17:20:50+01:00</lastmod>
+	<priority>1.0</priority>
+</url>
+<url>
+	<loc>https://thelinuxpost.com/aboutus</loc>
+	<lastmod>2020-10-02T17:20:50+01:00</lastmod>
+	<priority>1.0</priority>
+</url>
+<url>
+	<loc>https://thelinuxpost.com/tryit/htmlandcss/a-responsive-social-login-form.html</loc>
+	<lastmod>2020-10-02T17:20:50+01:00</lastmod>
+	<priority>0.6</priority>
+</url>
+</urlset>

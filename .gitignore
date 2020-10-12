@@ -4,6 +4,7 @@ assets/icons/
 assets/jquery/
 assets/libraries/
 assets/images/
+app/includes/DatabaseConnection.php
 
 
 
